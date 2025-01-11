@@ -1,1 +1,42 @@
+body {
+  font-family: 'Charm', cursive;
+  background-color: #f7f3e9;
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
 
+header {
+  background-color: #d4c0a1;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #6b4226;
+}
+
+button {
+  font-family: 'Charm', cursive;
+  background-color: #6b4226;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #54351b;
+}
+
+.tarot-deck {
+  margin: 20px auto;
+}
+
+#card-display img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
