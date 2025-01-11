@@ -89,10 +89,34 @@ const tarotDeck = [
 ];
 
 document.getElementById("draw-card-btn").addEventListener("click", () => {
-  const card = tarotDeck[Math.floor(Math.random() * tarotDeck.length)];
-  const cardDisplay = document.getElementById("card-display");
-  const interpretation = document.getElementById("interpretation");
+  const randomIndexes = [];
+  while (randomIndexes.length < 3) {
+    const index = Math.floor(Math.random() * tarotDeck.length);
+    if (!randomIndexes.includes(index)) {
+      randomIndexes.push(index);
+    }
+  }
 
-  cardDisplay.innerHTML = `<h3>${card.name}</h3>`;
-  interpretation.textContent = card.meaning;
+  const past = tarotDeck[randomIndexes[0]];
+  const present = tarotDeck[randomIndexes[1]];
+  const future = tarotDeck[randomIndexes[2]];
+
+  const cardDisplay = document.getElementById("card-display");
+  cardDisplay.innerHTML = `
+    <div class="card">
+      <h3>Past</h3>
+      <p><strong>${past.name}</strong></p>
+      <p>${past.meaning}</p>
+    </div>
+    <div class="card">
+      <h3>Present</h3>
+      <p><strong>${present.name}</strong></p>
+      <p>${present.meaning}</p>
+    </div>
+    <div class="card">
+      <h3>Future</h3>
+      <p><strong>${future.name}</strong></p>
+      <p>${future.meaning}</p>
+    </div>
+  `;
 });
