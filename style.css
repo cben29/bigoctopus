@@ -1,42 +1,121 @@
-body {
-  font-family: 'Charm', cursive;
-  background-color: #f7f3e9;
-  color: #333;
-  text-align: center;
+/* General Reset */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-header {
-  background-color: #d4c0a1;
+body {
+  font-family: 'Charm', cursive;
+  background-color: #fefaf3; /* Soft parchment-like color */
+  color: #4e3b2c; /* Rich dark brown for text */
+  text-align: center;
+  line-height: 1.6;
   padding: 20px;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #6b4226;
+/* Header Section */
+header {
+  background: linear-gradient(135deg, #e4cba5, #d6ad8c);
+  padding: 20px 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 3rem;
+  color: #4e3b2c;
+}
+
+header p {
+  font-size: 1.2rem;
+  color: #6b5042;
+}
+
+/* Tarot Deck Section */
+.tarot-deck {
+  margin: 30px auto;
 }
 
 button {
   font-family: 'Charm', cursive;
-  background-color: #6b4226;
-  color: white;
+  font-size: 1.2rem;
+  background-color: #6b5042; /* Rich brown button */
+  color: #fefaf3; /* Light parchment text */
   border: none;
+  border-radius: 5px;
   padding: 10px 20px;
-  margin: 20px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-  background-color: #54351b;
+  background-color: #4e3b2c; /* Darker hover color */
+  transform: scale(1.05);
 }
 
-.tarot-deck {
-  margin: 20px auto;
+#card-display {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
 }
 
-#card-display img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 20px;
+/* Tarot Card Styling */
+.card {
+  border: 2px solid #d6ad8c; /* Subtle gold border */
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+  background: linear-gradient(135deg, #fff8ea, #f9edd7); /* Soft parchment gradient */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  color: #6b5042;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #4e3b2c;
+}
+
+/* Reading Section */
+#reading {
+  margin-top: 40px;
+}
+
+#reading h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #6b5042;
+}
+
+#reading p {
+  font-size: 1.2rem;
+  color: #4e3b2c;
+}
+
+/* Footer Section */
+footer {
+  margin-top: 50px;
+  padding: 10px;
+  background-color: #e4cba5;
+  color: #4e3b2c;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+footer p {
+  font-size: 0.9rem;
 }
