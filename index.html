@@ -123,11 +123,8 @@
             }
         }
 
-        // Logout function (removes user data from localStorage)
+        // Logout function (does not remove credentials, just redirects to login)
         function logout() {
-            // Remove username and password from localStorage
-            localStorage.removeItem('username');
-            localStorage.removeItem('password');
             console.log('You have logged out!');
             // Hide the homepage and show the login form
             document.getElementById('home-page').classList.add('hidden');
