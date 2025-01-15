@@ -17,14 +17,30 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: #B9E0B1; /* Pistachio color */
+            background-color: #C9E3C4; /* Lighter Pistachio Green */
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
         .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .dropdown {
+            margin-top: 20px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
             cursor: pointer;
         }
     </style>
@@ -36,14 +52,66 @@
         <img id="play-pause-img" src="images/play.png" alt="Play" class="cursor-pointer w-48 h-48" onclick="togglePlayPause()" />
     </div>
 
+    <!-- Audio Element -->
+    <audio id="audio-player" src="" preload="auto" style="display:none;"></audio>
+
+    <!-- Dropdown Menu for Track Selection -->
+    <div class="dropdown">
+        <select id="track-selector" onchange="changeTrack()">
+            <option value="goblinTinker">Track 1</option>
+            <option value="islandMeetGreet">Track 2</option>
+            <option value="magicScout">Track 3</option>
+            <option value="nightInVenice">Track 4</option>
+            <option value="pleasantPorridge">Track 5</option>
+        </select>
+    </div>
+
     <script>
+        let isPlaying = false;
+        const audioPlayer = document.getElementById('audio-player');
+
         // Toggle between play and pause images
         function togglePlayPause() {
-            const playPauseImg = document.getElementById('play-pause-img');
-            if (playPauseImg.src.includes('play.png')) {
-                playPauseImg.src = 'images/pause.png'; // Change to pause
+            if (isPlaying) {
+                audioPlayer.pause();
+                document.getElementById('play-pause-img').src = 'images/play.png'; // Change to play
             } else {
-                playPauseImg.src = 'images/play.png'; // Change to play
+                audioPlayer.play();
+                document.getElementById('play-pause-img').src = 'images/pause.png'; // Change to pause
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Change track based on dropdown selection
+        function changeTrack() {
+            const trackSelector = document.getElementById('track-selector');
+            const selectedTrack = trackSelector.value;
+
+            // Set the correct track based on user selection
+            switch (selectedTrack) {
+                case 'goblinTinker':
+                    audioPlayer.src = 'music/Goblin_Tinker_Soldier_Spy.mp3'; // Track 1
+                    break;
+                case 'islandMeetGreet':
+                    audioPlayer.src = 'music/Island Meet and Greet.mp3'; // Track 2
+                    break;
+                case 'magicScout':
+                    audioPlayer.src = 'music/Magic Scout - Cottages.mp3'; // Track 3
+                    break;
+                case 'nightInVenice':
+                    audioPlayer.src = 'music/Night in Venice.mp3'; // Track 4
+                    break;
+                case 'pleasantPorridge':
+                    audioPlayer.src = 'music/Pleasant Porridge.mp3'; // Track 5
+                    break;
+                default:
+                    audioPlayer.src = '';
+                    break;
+            }
+
+            // If the music is already playing, start the new track immediately
+            if (isPlaying) {
+                audioPlayer.play();
             }
         }
     </script>
