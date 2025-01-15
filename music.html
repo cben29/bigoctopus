@@ -16,7 +16,7 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: black;
+            background-color: #C9E4C5; /* Pastel Pistachio Green */
             color: white;
             display: flex;
             flex-direction: column;
@@ -30,6 +30,7 @@
             width: 100px;
             height: 100px;
             cursor: pointer;
+            margin-top: 20px;
         }
 
         select {
@@ -38,12 +39,31 @@
             font-size: 1rem;
             border-radius: 5px;
             border: 1px solid #ddd;
+            background-color: white;
+            color: black;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #D8E2DC;
+            color: black;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #A3C9A8;
         }
     </style>
 </head>
 <body>
     <!-- Home Button -->
-    <a href="home.html" class="absolute top-4 left-4 text-lg text-white underline">Home</a>
+    <a href="home.html" class="home-button">Home</a>
 
     <!-- Music Player -->
     <img id="play-pause" src="play.png" alt="Play Button" onclick="togglePlayPause()">
