@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bigoctopus</title>
+    <title>BigOctopus - Login & Sign Up</title>
 
     <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,46 +15,89 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        /* Apply Gamja Flower font to all elements */
         body {
             font-family: 'Gamja Flower', cursive;
+            background-color: #F9F3F1;
         }
 
-        /* Input text color */
+        .auth-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-header {
+            font-size: 3rem;
+            color: #E6A8B7;
+            text-align: center;
+        }
+
+        .auth-subheader {
+            font-size: 1.5rem;
+            color: #B8D8B6;
+            text-align: center;
+        }
+
         input {
-            color: black;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            width: 100%;
+            border: 1px solid #ddd;
         }
 
-        /* Custom button and text hover effects */
+        button {
+            padding: 12px 24px;
+            background-color: #D0E8C9;
+            color: white;
+            border-radius: 20px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
         button:hover {
-            transition: background-color 0.3s ease;
+            background-color: #A7D7A1;
+        }
+
+        .footer {
+            text-align: center;
+            color: #B8D8B6;
+            margin-top: 2rem;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="flex justify-center items-center h-screen">
 
     <!-- Authentication Forms (Sign-Up / Login) -->
-    <div id="auth-container" class="flex justify-center py-6 space-x-6">
+    <div id="auth-container" class="flex flex-col space-y-6">
+        
         <!-- Sign-Up Form -->
-        <div id="signup-form" class="hidden space-y-4 bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-            <h1 class="text-5xl font-bold text-pastel-pink text-center">BigOctopus</h1>
-            <h2 class="text-3xl font-semibold text-pastel-green text-center">Sign Up</h2>
-            <input type="text" id="signup-username" placeholder="Username" class="border p-2 rounded w-full" />
-            <input type="password" id="signup-password" placeholder="Password" class="border p-2 rounded w-full" />
-            <button onclick="signUp()" class="bg-pastel-yellow text-white py-2 px-6 rounded-full shadow-md">Sign Up</button>
+        <div id="signup-form" class="auth-form hidden">
+            <h1 class="auth-header">BigOctopus</h1>
+            <h2 class="auth-subheader">Sign Up</h2>
+            <input type="text" id="signup-username" placeholder="Username" />
+            <input type="password" id="signup-password" placeholder="Password" />
+            <button onclick="signUp()">Sign Up</button>
             <p class="text-center text-pastel-pink">Already have an account? <a href="#" onclick="toggleAuthForms()">Login</a></p>
         </div>
 
         <!-- Login Form -->
-        <div id="login-form" class="space-y-4 bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-            <h1 class="text-5xl font-bold text-pastel-pink text-center">BigOctopus</h1>
-            <h2 class="text-3xl font-semibold text-pastel-green text-center">Login</h2>
-            <input type="text" id="login-username" placeholder="Username" class="border p-2 rounded w-full" />
-            <input type="password" id="login-password" placeholder="Password" class="border p-2 rounded w-full" />
-            <button onclick="login()" class="bg-pastel-green text-white py-2 px-6 rounded-full shadow-md">Login</button>
+        <div id="login-form" class="auth-form">
+            <h1 class="auth-header">BigOctopus</h1>
+            <h2 class="auth-subheader">Login</h2>
+            <input type="text" id="login-username" placeholder="Username" />
+            <input type="password" id="login-password" placeholder="Password" />
+            <button onclick="login()">Login</button>
             <p class="text-center text-pastel-pink">Don't have an account? <a href="#" onclick="toggleAuthForms()">Sign Up</a></p>
         </div>
     </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>Kisses from BigOctopus ♥</p>
+    </footer>
 
     <!-- JavaScript for Form Handling and Navigation -->
     <script>
@@ -72,7 +115,6 @@
             const password = document.getElementById('signup-password').value;
 
             if (username && password) {
-                // Store the username and password in localStorage
                 localStorage.setItem('username', username);
                 localStorage.setItem('password', password);
                 console.log('Sign-up successful! You can now log in.');
@@ -92,17 +134,10 @@
 
             if (username === storedUsername && password === storedPassword) {
                 console.log('Login successful!');
-                // Redirect to home page after login
-                window.location.href = 'home.html';
+                window.location.href = 'home.html'; // Redirect to home after successful login
             } else {
                 console.log('Incorrect username or password. Please try again.');
             }
-        }
-
-        // Check if the user is already logged in (by checking localStorage)
-        if (localStorage.getItem('username') && localStorage.getItem('password')) {
-            // If logged in, directly go to home page
-            window.location.href = 'home.html';
         }
     </script>
 
