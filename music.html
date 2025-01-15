@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music - BigOctopus</title>
+    <title>BigOctopus - Music</title>
 
     <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,14 +17,8 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: #9DBE9A; /* Darker Pistachio Green */
+            background-color: #9DBE9A;
             color: white;
-        }
-
-        .sticker-img {
-            width: 100px;
-            height: 100px;
-            cursor: pointer;
         }
 
         .button {
@@ -40,21 +34,6 @@
             background-color: #A0D79B;
         }
 
-        .dropdown {
-            background-color: #A7D7A1;
-            border-radius: 10px;
-            margin-top: 20px;
-            width: 220px;
-            text-align: center;
-            padding: 10px;
-        }
-
-        select {
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 1.2rem;
-        }
-
         .home-button {
             padding: 8px 16px;
             background-color: #B9E0B1;
@@ -67,10 +46,9 @@
 </head>
 <body>
 
-    <!-- Home Button to return to home page -->
+    <!-- Home Button -->
     <button onclick="goHome()" class="home-button mb-4">Back to Home</button>
 
-    <!-- Page Title -->
     <h2 class="text-center text-4xl font-bold mb-10">Music Page</h2>
 
     <!-- Play/Pause Button -->
@@ -78,42 +56,37 @@
         <img id="play-pause-button" src="images/play.png" alt="Play Button" class="sticker-img" onclick="togglePlayPause()" />
     </div>
 
-    <!-- Dropdown Menu for Track Selection -->
-    <div class="text-center">
-        <div class="dropdown">
-            <select id="track-selector" onchange="changeTrack()">
-                <option value="0">Track 1</option>
-                <option value="1">Track 2</option>
-                <option value="2">Track 3</option>
-                <option value="3">Track 4</option>
-                <option value="4">Track 5</option>
-            </select>
-        </div>
+    <!-- Track Selection -->
+    <div class="text-center mb-6">
+        <select id="track-selector" onchange="changeTrack()">
+            <option value="0">Track 1</option>
+            <option value="1">Track 2</option>
+            <option value="2">Track 3</option>
+            <option value="3">Track 4</option>
+            <option value="4">Track 5</option>
+        </select>
     </div>
 
-    <!-- Music Player -->
+    <!-- Audio Player -->
     <audio id="audio-player" controls hidden>
         <source id="audio-source" src="music/Goblin_Tinker_Soldier_Spy.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
     </audio>
 
-    <!-- JavaScript for Music Control -->
+    <!-- JavaScript for Audio Controls -->
     <script>
         let audioPlayer = document.getElementById('audio-player');
         let playPauseButton = document.getElementById('play-pause-button');
         let trackSelector = document.getElementById('track-selector');
         let audioSource = document.getElementById('audio-source');
 
-        // Track paths (using track names as keys)
         const tracks = [
-            "music/Goblin_Tinker_Soldier_Spy.mp3",   // Track 1
-            "music/Island Meet and Greet.mp3",        // Track 2
-            "music/Magic Scout - Cottages.mp3",       // Track 3
-            "music/Night in Venice.mp3",              // Track 4
-            "music/Pleasant Porridge.mp3"             // Track 5
+            "music/Goblin_Tinker_Soldier_Spy.mp3",
+            "music/Island Meet and Greet.mp3",
+            "music/Magic Scout - Cottages.mp3",
+            "music/Night in Venice.mp3",
+            "music/Pleasant Porridge.mp3"
         ];
 
-        // Function to play or pause the music
         function togglePlayPause() {
             if (audioPlayer.paused) {
                 audioPlayer.play();
@@ -124,16 +97,14 @@
             }
         }
 
-        // Function to change the music track based on dropdown selection
         function changeTrack() {
             const selectedTrack = trackSelector.value;
             audioSource.src = tracks[selectedTrack];
             audioPlayer.load();
             audioPlayer.play();
-            playPauseButton.src = "images/pause.png"; // Change to pause when a track starts
+            playPauseButton.src = "images/pause.png";
         }
 
-        // Function to return to the home page
         function goHome() {
             window.location.href = 'home.html';
         }
