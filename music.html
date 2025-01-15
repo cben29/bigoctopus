@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music</title>
+    <title>Music - BigOctopus</title>
 
     <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,102 +17,125 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: #C9E3C4; /* Lighter Pistachio Green */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #9DBE9A; /* Darker Pistachio Green */
+            color: white;
         }
 
-        .cursor-pointer {
+        .sticker-img {
+            width: 100px;
+            height: 100px;
             cursor: pointer;
         }
 
+        .button {
+            padding: 12px 24px;
+            background-color: #B9E0B1;
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #A0D79B;
+        }
+
         .dropdown {
+            background-color: #A7D7A1;
+            border-radius: 10px;
             margin-top: 20px;
-            background-color: white;
+            width: 220px;
+            text-align: center;
             padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         select {
             padding: 10px;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .home-button {
+            padding: 8px 16px;
+            background-color: #B9E0B1;
+            color: white;
+            border-radius: 20px;
             cursor: pointer;
+            font-size: 1.2rem;
         }
     </style>
 </head>
-<body class="text-white">
+<body>
 
-    <!-- Play/Pause Image Section -->
-    <div class="text-center">
-        <img id="play-pause-img" src="images/play.png" alt="Play" class="cursor-pointer w-48 h-48" onclick="togglePlayPause()" />
+    <!-- Home Button to return to home page -->
+    <button onclick="goHome()" class="home-button mb-4">Back to Home</button>
+
+    <!-- Page Title -->
+    <h2 class="text-center text-4xl font-bold mb-10">Music Page</h2>
+
+    <!-- Play/Pause Button -->
+    <div class="text-center mb-6">
+        <img id="play-pause-button" src="images/play.png" alt="Play Button" class="sticker-img" onclick="togglePlayPause()" />
     </div>
-
-    <!-- Audio Element -->
-    <audio id="audio-player" src="" preload="auto" style="display:none;"></audio>
 
     <!-- Dropdown Menu for Track Selection -->
-    <div class="dropdown">
-        <select id="track-selector" onchange="changeTrack()">
-            <option value="goblinTinker">Track 1</option>
-            <option value="islandMeetGreet">Track 2</option>
-            <option value="magicScout">Track 3</option>
-            <option value="nightInVenice">Track 4</option>
-            <option value="pleasantPorridge">Track 5</option>
-        </select>
+    <div class="text-center">
+        <div class="dropdown">
+            <select id="track-selector" onchange="changeTrack()">
+                <option value="0">Track 1</option>
+                <option value="1">Track 2</option>
+                <option value="2">Track 3</option>
+                <option value="3">Track 4</option>
+                <option value="4">Track 5</option>
+            </select>
+        </div>
     </div>
 
-    <script>
-        let isPlaying = false;
-        const audioPlayer = document.getElementById('audio-player');
+    <!-- Music Player -->
+    <audio id="audio-player" controls hidden>
+        <source id="audio-source" src="music/Goblin_Tinker_Soldier_Spy.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 
-        // Toggle between play and pause images
+    <!-- JavaScript for Music Control -->
+    <script>
+        let audioPlayer = document.getElementById('audio-player');
+        let playPauseButton = document.getElementById('play-pause-button');
+        let trackSelector = document.getElementById('track-selector');
+        let audioSource = document.getElementById('audio-source');
+
+        // Track paths (using track names as keys)
+        const tracks = [
+            "music/Goblin_Tinker_Soldier_Spy.mp3",   // Track 1
+            "music/Island Meet and Greet.mp3",        // Track 2
+            "music/Magic Scout - Cottages.mp3",       // Track 3
+            "music/Night in Venice.mp3",              // Track 4
+            "music/Pleasant Porridge.mp3"             // Track 5
+        ];
+
+        // Function to play or pause the music
         function togglePlayPause() {
-            if (isPlaying) {
-                audioPlayer.pause();
-                document.getElementById('play-pause-img').src = 'images/play.png'; // Change to play
-            } else {
+            if (audioPlayer.paused) {
                 audioPlayer.play();
-                document.getElementById('play-pause-img').src = 'images/pause.png'; // Change to pause
+                playPauseButton.src = "images/pause.png";
+            } else {
+                audioPlayer.pause();
+                playPauseButton.src = "images/play.png";
             }
-            isPlaying = !isPlaying;
         }
 
-        // Change track based on dropdown selection
+        // Function to change the music track based on dropdown selection
         function changeTrack() {
-            const trackSelector = document.getElementById('track-selector');
             const selectedTrack = trackSelector.value;
+            audioSource.src = tracks[selectedTrack];
+            audioPlayer.load();
+            audioPlayer.play();
+            playPauseButton.src = "images/pause.png"; // Change to pause when a track starts
+        }
 
-            // Set the correct track based on user selection
-            switch (selectedTrack) {
-                case 'goblinTinker':
-                    audioPlayer.src = 'music/Goblin_Tinker_Soldier_Spy.mp3'; // Track 1
-                    break;
-                case 'islandMeetGreet':
-                    audioPlayer.src = 'music/Island Meet and Greet.mp3'; // Track 2
-                    break;
-                case 'magicScout':
-                    audioPlayer.src = 'music/Magic Scout - Cottages.mp3'; // Track 3
-                    break;
-                case 'nightInVenice':
-                    audioPlayer.src = 'music/Night in Venice.mp3'; // Track 4
-                    break;
-                case 'pleasantPorridge':
-                    audioPlayer.src = 'music/Pleasant Porridge.mp3'; // Track 5
-                    break;
-                default:
-                    audioPlayer.src = '';
-                    break;
-            }
-
-            // If the music is already playing, start the new track immediately
-            if (isPlaying) {
-                audioPlayer.play();
-            }
+        // Function to return to the home page
+        function goHome() {
+            window.location.href = 'home.html';
         }
     </script>
 
