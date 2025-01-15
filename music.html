@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music</title>
+
+    <!-- Font Links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS Link -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            font-family: 'Gamja Flower', cursive;
+            background-color: #B9E0B1; /* Pistachio color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Play/Pause Image Section -->
+    <div class="text-center">
+        <img id="play-pause-img" src="images/play.png" alt="Play" class="cursor-pointer w-48 h-48" onclick="togglePlayPause()" />
+    </div>
+
+    <script>
+        // Toggle between play and pause images
+        function togglePlayPause() {
+            const playPauseImg = document.getElementById('play-pause-img');
+            if (playPauseImg.src.includes('play.png')) {
+                playPauseImg.src = 'images/pause.png'; // Change to pause
