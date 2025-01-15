@@ -17,54 +17,38 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: #F9F3F1;
-            color: #3E3B3B;
+            background-color: #000;
+            color: white;
         }
 
         h1 {
             font-size: 3rem;
             color: #E6A8B7;
-            text-align: center;
-            margin-top: 100px;
         }
 
         .sticker {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .sticker:hover {
-            transform: scale(1.1);
         }
 
         .home-button {
-            padding: 12px 20px;
+            padding: 10px 20px;
             background-color: #D0E8C9;
             color: white;
             border-radius: 20px;
             cursor: pointer;
-            display: block;
-            margin: 20px auto;
-            text-align: center;
         }
 
         .home-button:hover {
             background-color: #A7D7A1;
-        }
-
-        footer {
-            text-align: center;
-            color: #B8D8B6;
-            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
     <!-- Welcome message -->
-    <h1>Welcome Home</h1>
+    <h1 class="text-center mt-10">Welcome Home</h1>
 
     <!-- Stickers Section -->
     <div class="flex justify-center space-x-6 py-10">
@@ -74,12 +58,7 @@
     </div>
 
     <!-- Logout Button -->
-    <button onclick="logout()" class="home-button">Logout</button>
-
-    <!-- Footer Section -->
-    <footer>
-        <p>Kisses from BigOctopus ♥</p>
-    </footer>
+    <button onclick="logout()" class="home-button mx-auto block">Logout</button>
 
     <!-- JavaScript for Navigation and Logout -->
     <script>
