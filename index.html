@@ -9,21 +9,21 @@
     <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS Link -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 
     <style>
+        /* Apply Gamja Flower font to all elements */
+        body {
+            font-family: 'Gamja Flower', cursive;
+        }
+
         /* Input text color */
         input {
             color: black;
-        }
-
-        /* Custom Font for Home page */
-        #home-title {
-            font-family: 'Charm', cursive;
         }
 
         /* Custom button and text hover effects */
@@ -33,7 +33,7 @@
     </style>
 </head>
 
-<body class="bg-gray-900 text-white font-sans">
+<body class="bg-gray-900 text-white">
 
     <!-- Authentication Forms (Sign-Up / Login) -->
     <div id="auth-container" class="flex justify-center py-6 space-x-6">
@@ -76,7 +76,7 @@
 
     <!-- Footer Section -->
     <footer class="text-center py-10">
-        <p class="text-pastel-green" style="font-family: 'Gamja Flower', cursive;">Kisses from Bigoc ♥</p>
+        <p class="text-pastel-green">Kisses from Bigoc ♥</p>
     </footer>
 
     <!-- JavaScript for Form Handling and Navigation -->
