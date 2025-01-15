@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +31,6 @@
         }
     </style>
 </head>
-
 <body class="bg-gray-900 text-white">
 
     <!-- Authentication Forms (Sign-Up / Login) -->
@@ -67,7 +65,7 @@
         <div class="flex justify-center space-x-6 py-6">
             <img src="images/plant.png" alt="Plant Sticker" class="w-40 h-40 cursor-pointer" onclick="stickerClicked('Plant')" />
             <img src="images/cookie.png" alt="Cookie Sticker" class="w-40 h-40 cursor-pointer" onclick="stickerClicked('Cookie')" />
-            <img src="images/phone.png" alt="Phone Sticker" class="w-40 h-40 cursor-pointer" onclick="stickerClicked('Phone')" />
+            <img src="images/phone.png" alt="Phone Sticker" class="w-40 h-40 cursor-pointer" onclick="goToMusicPage()" />
         </div>
 
         <!-- Logout Button -->
@@ -131,6 +129,11 @@
             document.getElementById('login-form').classList.remove('hidden');
         }
 
+        // Go to music page when the phone sticker is clicked
+        function goToMusicPage() {
+            window.location.href = 'music.html';
+        }
+
         // Sticker click function (no alert, just a log message)
         function stickerClicked(stickerName) {
             console.log(stickerName + " sticker clicked!");
@@ -145,5 +148,4 @@
     </script>
 
 </body>
-
 </html>
