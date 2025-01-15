@@ -17,102 +17,102 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: #9DBE9A;
+            background-color: #000;
             color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             text-align: center;
         }
 
-        .button {
-            padding: 12px 24px;
-            background-color: #B9E0B1;
+        .music-container {
+            background-color: #1A1A1A;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 350px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #E6A8B7;
+        }
+
+        .play-pause-btn {
+            background-color: #D0E8C9;
             color: white;
-            font-size: 1.2rem;
-            border-radius: 20px;
+            padding: 8px 12px;
+            border-radius: 50%;
             cursor: pointer;
+            font-size: 1.5rem;
+            border: none;
         }
 
-        .button:hover {
-            background-color: #A0D79B;
+        .play-pause-btn:hover {
+            background-color: #A7D7A1;
         }
 
-        .home-button {
-            padding: 8px 16px;
-            background-color: #B9E0B1;
-            color: white;
-            border-radius: 20px;
+        .dropdown {
+            background-color: white;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1.2rem;
-            margin-top: 20px;
+            width: 100%;
+            text-align: center;
         }
 
-        .home-button:hover {
-            background-color: #A0D79B;
+        .footer {
+            text-align: center;
+            color: #B8D8B6;
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- Home Button -->
-    <button onclick="goHome()" class="home-button mb-4">Back to Home</button>
+    <div class="music-container">
+        <h1>Music Page</h1>
 
-    <h2 class="text-center text-4xl font-bold mb-10">Music Page</h2>
-
-    <!-- Play/Pause Button -->
-    <div class="text-center mb-6">
-        <img id="play-pause-button" src="images/play.png" alt="Play Button" class="sticker-img" onclick="togglePlayPause()" />
-    </div>
-
-    <!-- Track Selection -->
-    <div class="text-center mb-6">
-        <select id="track-selector" onchange="changeTrack()">
-            <option value="0">Track 1</option>
-            <option value="1">Track 2</option>
-            <option value="2">Track 3</option>
-            <option value="3">Track 4</option>
-            <option value="4">Track 5</option>
+        <!-- Dropdown for Track Selection -->
+        <select id="track-dropdown" class="dropdown" onchange="updateTrackName()">
+            <option value="Track 1">Track 1</option>
+            <option value="Track 2">Track 2</option>
+            <option value="Track 3">Track 3</option>
         </select>
+
+        <!-- Play/Pause Button -->
+        <button class="play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()">▶️</button>
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <p>Kisses from BigOctopus ♥</p>
+        </footer>
     </div>
 
-    <!-- Audio Player -->
-    <audio id="audio-player" controls hidden>
-        <source id="audio-source" src="music/Goblin_Tinker_Soldier_Spy.mp3" type="audio/mp3">
-    </audio>
-
-    <!-- JavaScript for Audio Controls -->
+    <!-- JavaScript for Music Controls -->
     <script>
-        let audioPlayer = document.getElementById('audio-player');
-        let playPauseButton = document.getElementById('play-pause-button');
-        let trackSelector = document.getElementById('track-selector');
-        let audioSource = document.getElementById('audio-source');
+        let isPlaying = false;
+        let currentTrack = document.getElementById('track-dropdown').value;
 
-        const tracks = [
-            "music/Goblin_Tinker_Soldier_Spy.mp3",
-            "music/Island Meet and Greet.mp3",
-            "music/Magic Scout - Cottages.mp3",
-            "music/Night in Venice.mp3",
-            "music/Pleasant Porridge.mp3"
-        ];
-
+        // Function to toggle play/pause
         function togglePlayPause() {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                playPauseButton.src = "images/pause.png";
+            const btn = document.getElementById('play-pause-btn');
+            isPlaying = !isPlaying;
+
+            if (isPlaying) {
+                btn.textContent = '⏸️';  // Change to pause icon
             } else {
-                audioPlayer.pause();
-                playPauseButton.src = "images/play.png";
+                btn.textContent = '▶️';  // Change to play icon
             }
         }
 
-        function changeTrack() {
-            const selectedTrack = trackSelector.value;
-            audioSource.src = tracks[selectedTrack];
-            audioPlayer.load();
-            audioPlayer.play();
-            playPauseButton.src = "images/pause.png";
-        }
-
-        function goHome() {
-            window.location.href = 'home.html';
+        // Update the dropdown button text with the current track when the dropdown is closed
+        function updateTrackName() {
+            const trackName = document.getElementById('track-dropdown').value;
+            const btn = document.getElementById('track-dropdown');
+            btn.textContent = trackName;  // Update dropdown text with current track
         }
     </script>
 
