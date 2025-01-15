@@ -14,7 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-transparent font-sans">
+<body class="bg-gray-900 text-white font-sans">
 
     <!-- Header Section -->
     <header class="text-center py-10">
@@ -43,12 +43,22 @@
         </div>
     </div>
 
+    <!-- Homepage (After login) -->
+    <div id="home-page" class="hidden text-center py-10">
+        <h2 class="text-3xl font-semibold text-pastel-green">Welcome to Your Home!</h2>
+        <div class="flex justify-center space-x-4 py-6">
+            <img src="images/plant.png" alt="Plant Sticker" class="w-24 h-24" />
+            <img src="images/cookie.png" alt="Cookie Sticker" class="w-24 h-24" />
+            <img src="images/phone.png" alt="Phone Sticker" class="w-24 h-24" />
+        </div>
+    </div>
+
     <!-- Footer Section -->
     <footer class="text-center py-10">
         <p class="text-pastel-green" style="font-family: 'Gamja Flower', cursive;">Kisses from Bigoc ♥</p>
     </footer>
 
-    <!-- JavaScript for Form Handling -->
+    <!-- JavaScript for Form Handling and Navigation -->
     <script>
         // Toggle between Sign Up and Login forms
         function toggleAuthForms() {
@@ -84,11 +94,18 @@
 
             if (username === storedUsername && password === storedPassword) {
                 alert('Login successful!');
-                // Here, you could redirect the user to a new page or dashboard.
-                // window.location.href = "dashboard.html";
+                // Hide the login form and show the homepage
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('home-page').classList.remove('hidden');
             } else {
                 alert('Incorrect username or password. Please try again.');
             }
+        }
+
+        // Check if the user is already logged in
+        if (localStorage.getItem('username') && localStorage.getItem('password')) {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('home-page').classList.remove('hidden');
         }
     </script>
 
