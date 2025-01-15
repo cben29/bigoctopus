@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - BigOctopus</title>
+    <title>BigOctopus - Home</title>
 
     <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,72 +17,65 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: #A7D7A1; /* Slightly Darker Pistachio Green */
+            background-color: #F9F3F1;
+            color: #3E3B3B;
         }
 
-        .cursor-pointer {
+        h1 {
+            font-size: 3rem;
+            color: #E6A8B7;
+        }
+
+        .sticker {
+            width: 120px;
+            height: 120px;
             cursor: pointer;
         }
 
         .home-button {
-            padding: 8px 16px;
-            background-color: #B9E0B1;
+            padding: 10px 20px;
+            background-color: #D0E8C9;
             color: white;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 1.2rem;
         }
 
-        .sticker-img {
-            width: 100px;
-            height: 100px;
-        }
-
-        /* Optional: Style the Logout button */
-        .logout-btn {
-            padding: 8px 16px;
-            background-color: #FEC8D8;
-            color: white;
-            border-radius: 20px;
-            font-size: 1.2rem;
-            cursor: pointer;
+        .home-button:hover {
+            background-color: #A7D7A1;
         }
     </style>
 </head>
 <body>
 
-    <!-- Home Page Content -->
-    <div id="home-content" class="text-center py-10">
-        <h2 class="text-3xl font-bold mb-10">Welcome Home</h2>
+    <!-- Welcome message -->
+    <h1 class="text-center mt-10">Welcome Home</h1>
 
-        <!-- Stickers Section -->
-        <div class="flex justify-center space-x-6 py-6">
-            <img src="images/plant.png" alt="Plant Sticker" class="sticker-img cursor-pointer" onclick="stickerClicked('Plant')" />
-            <img src="images/cookie.png" alt="Cookie Sticker" class="sticker-img cursor-pointer" onclick="stickerClicked('Cookie')" />
-            <img src="images/phone.png" alt="Phone Sticker" class="sticker-img cursor-pointer" onclick="goToMusicPage()" />
-        </div>
-
-        <!-- Logout Button -->
-        <button onclick="logout()" class="logout-btn">Logout</button>
+    <!-- Stickers Section -->
+    <div class="flex justify-center space-x-6 py-10">
+        <img src="images/plant.png" alt="Plant Sticker" class="sticker" onclick="stickerClicked('Plant')" />
+        <img src="images/cookie.png" alt="Cookie Sticker" class="sticker" onclick="stickerClicked('Cookie')" />
+        <img src="images/phone.png" alt="Phone Sticker" class="sticker" onclick="goToMusicPage()" />
     </div>
+
+    <!-- Logout Button -->
+    <button onclick="logout()" class="home-button mx-auto block">Logout</button>
 
     <!-- JavaScript for Navigation and Logout -->
     <script>
-        // Navigate to the music page when phone sticker is clicked
+        // Redirect to Music Page when Phone Sticker is clicked
         function goToMusicPage() {
             window.location.href = 'music.html';
         }
 
-        // Sticker click function (no alert, just a log message)
-        function stickerClicked(stickerName) {
-            console.log(stickerName + " sticker clicked!");
+        // Handle Logout and redirect to Login page
+        function logout() {
+            console.log('Logged out');
+            window.location.href = 'index.html'; // Redirect to login page
         }
 
-        // Logout function (redirects to login page)
-        function logout() {
-            localStorage.removeItem('username');
-            localStorage.removeItem('password');
-            window.location.href = 'index.html'; // Redirect to the login page
+        // Sticker clicked function (no action, just a log)
+        function stickerClicked(stickerName) {
+            console.log(`${stickerName} sticker clicked!`);
         }
     </script>
 
