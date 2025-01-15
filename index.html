@@ -56,27 +56,6 @@
         </div>
     </div>
 
-    <!-- Homepage (After login) -->
-    <div id="home-page" class="hidden text-center py-10">
-        <!-- Home Title -->
-        <h1 id="home-title" class="text-5xl font-bold text-pastel-pink mb-10">Welcome Home</h1>
-
-        <!-- Stickers Section -->
-        <div class="flex justify-center space-x-6 py-6">
-            <img src="images/plant.png" alt="Plant Sticker" class="w-40 h-40 cursor-pointer" onclick="stickerClicked('Plant')" />
-            <img src="images/cookie.png" alt="Cookie Sticker" class="w-40 h-40 cursor-pointer" onclick="stickerClicked('Cookie')" />
-            <img src="images/phone.png" alt="Phone Sticker" class="w-40 h-40 cursor-pointer" onclick="goToMusicPage()" />
-        </div>
-
-        <!-- Logout Button -->
-        <button onclick="logout()" class="bg-pastel-pink text-white py-2 px-6 rounded-full shadow-md">Logout</button>
-    </div>
-
-    <!-- Footer Section -->
-    <footer class="text-center py-10">
-        <p class="text-pastel-green">Kisses from Bigoc ♥</p>
-    </footer>
-
     <!-- JavaScript for Form Handling and Navigation -->
     <script>
         // Toggle between Sign Up and Login forms
@@ -113,37 +92,17 @@
 
             if (username === storedUsername && password === storedPassword) {
                 console.log('Login successful!');
-                // Hide the login form and show the homepage
-                document.getElementById('login-form').classList.add('hidden');
-                document.getElementById('home-page').classList.remove('hidden');
+                // Redirect to home page after login
+                window.location.href = 'home.html';
             } else {
                 console.log('Incorrect username or password. Please try again.');
             }
         }
 
-        // Logout function (does not remove credentials, just redirects to login)
-        function logout() {
-            console.log('You have logged out!');
-            // Hide the homepage and show the login form
-            document.getElementById('home-page').classList.add('hidden');
-            document.getElementById('login-form').classList.remove('hidden');
-        }
-
-        // Go to music page when the phone sticker is clicked
-        function goToMusicPage() {
-            window.location.href = 'music.html';
-        }
-
-        // Sticker click function (no alert, just a log message)
-        function stickerClicked(stickerName) {
-            console.log(stickerName + " sticker clicked!");
-            // You can replace this with any action you'd like
-        }
-
         // Check if the user is already logged in (by checking localStorage)
         if (localStorage.getItem('username') && localStorage.getItem('password')) {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('home-page').classList.remove('hidden');
+            // If logged in, directly go to home page
+            window.location.href = 'home.html';
         }
     </script>
 
