@@ -74,6 +74,19 @@
             text-decoration: underline;
         }
 
+        .message {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            color: #28a745;
+        }
+
+        .error {
+            color: #dc3545;
+        }
+
         .footer {
             position: absolute;
             bottom: 10px;
@@ -94,6 +107,7 @@
             <input type="password" id="login-password" placeholder="Password" />
             <button onclick="login()">Login</button>
             <p class="mt-4">Don't have an account? <span class="switch-auth" onclick="toggleAuthForms()">Sign Up</span></p>
+            <div id="login-message" class="message"></div>
         </div>
 
         <!-- Sign-Up Form -->
@@ -104,6 +118,7 @@
             <input type="password" id="signup-password" placeholder="Password" />
             <button onclick="signUp()">Sign Up</button>
             <p class="mt-4">Already have an account? <span class="switch-auth" onclick="toggleAuthForms()">Login</span></p>
+            <div id="signup-message" class="message"></div>
         </div>
     </div>
 
@@ -117,22 +132,32 @@
         function toggleAuthForms() {
             const loginForm = document.getElementById('login-form');
             const signupForm = document.getElementById('signup-form');
+            const loginMessage = document.getElementById('login-message');
+            const signupMessage = document.getElementById('signup-message');
+            
             loginForm.classList.toggle('hidden');
             signupForm.classList.toggle('hidden');
+            
+            // Clear messages on form switch
+            loginMessage.textContent = '';
+            signupMessage.textContent = '';
         }
 
         // Sign-Up Function: Save username and password in localStorage
         function signUp() {
             const username = document.getElementById('signup-username').value.trim();
             const password = document.getElementById('signup-password').value.trim();
+            const signupMessage = document.getElementById('signup-message');
 
             if (username && password) {
                 localStorage.setItem('username', username);
                 localStorage.setItem('password', password);
-                alert('Sign-up successful! Please log in.');
+                signupMessage.textContent = 'Sign-up successful! Please log in.';
+                signupMessage.className = 'message success';
                 toggleAuthForms(); // Switch to login form
             } else {
-                alert('Please fill in both fields.');
+                signupMessage.textContent = 'Please fill in both fields.';
+                signupMessage.className = 'message error';
             }
         }
 
@@ -140,15 +165,16 @@
         function login() {
             const username = document.getElementById('login-username').value.trim();
             const password = document.getElementById('login-password').value.trim();
+            const loginMessage = document.getElementById('login-message');
 
             const storedUsername = localStorage.getItem('username');
             const storedPassword = localStorage.getItem('password');
 
             if (username === storedUsername && password === storedPassword) {
-                alert('Login successful!');
                 window.location.href = 'home.html'; // Redirect to home page
             } else {
-                alert('Incorrect username or password.');
+                loginMessage.textContent = 'Incorrect username or password.';
+                loginMessage.className = 'message error';
             }
         }
     </script>
