@@ -51,6 +51,8 @@
             <img src="images/cookie.png" alt="Cookie Sticker" class="w-24 h-24" />
             <img src="images/phone.png" alt="Phone Sticker" class="w-24 h-24" />
         </div>
+        <!-- Logout Button -->
+        <button onclick="logout()" class="bg-pastel-pink text-white py-2 px-6 rounded-full shadow-md hover:bg-pink-400 transition duration-300">Logout</button>
     </div>
 
     <!-- Footer Section -->
@@ -100,6 +102,17 @@
             } else {
                 alert('Incorrect username or password. Please try again.');
             }
+        }
+
+        // Logout function (removes user data from localStorage)
+        function logout() {
+            // Remove username and password from localStorage
+            localStorage.removeItem('username');
+            localStorage.removeItem('password');
+            alert('You have logged out!');
+            // Hide the homepage and show the login form
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
         }
 
         // Check if the user is already logged in
