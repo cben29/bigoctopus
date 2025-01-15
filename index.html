@@ -79,10 +79,10 @@
                 // Store the username and password in localStorage
                 localStorage.setItem('username', username);
                 localStorage.setItem('password', password);
-                alert('Sign-up successful! You can now log in.');
+                console.log('Sign-up successful! You can now log in.');
                 toggleAuthForms(); // Show the login form after sign-up
             } else {
-                alert('Please enter both a username and password.');
+                console.log('Please enter both a username and password.');
             }
         }
 
@@ -95,12 +95,12 @@
             const storedPassword = localStorage.getItem('password');
 
             if (username === storedUsername && password === storedPassword) {
-                alert('Login successful!');
+                console.log('Login successful!');
                 // Hide the login form and show the homepage
                 document.getElementById('login-form').classList.add('hidden');
                 document.getElementById('home-page').classList.remove('hidden');
             } else {
-                alert('Incorrect username or password. Please try again.');
+                console.log('Incorrect username or password. Please try again.');
             }
         }
 
@@ -109,7 +109,7 @@
             // Remove username and password from localStorage
             localStorage.removeItem('username');
             localStorage.removeItem('password');
-            alert('You have logged out!');
+            console.log('You have logged out!');
             // Hide the homepage and show the login form
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('login-form').classList.remove('hidden');
