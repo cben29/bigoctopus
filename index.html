@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,33 +16,44 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        /* Set text color inside the input fields to black */
+        /* Input text color */
         input {
             color: black;
         }
+
+        /* Custom Font for Home page */
+        #home-title {
+            font-family: 'Charm', cursive;
+        }
+
+        /* Custom button and text hover effects */
+        button:hover {
+            transition: background-color 0.3s ease;
+        }
     </style>
 </head>
+
 <body class="bg-gray-900 text-white font-sans">
 
     <!-- Authentication Forms (Sign-Up / Login) -->
-    <div id="auth-container" class="flex justify-center py-6">
+    <div id="auth-container" class="flex justify-center py-6 space-x-6">
         <!-- Sign-Up Form -->
-        <div id="signup-form" class="hidden space-y-4 bg-white p-8 rounded-lg shadow-lg">
+        <div id="signup-form" class="hidden space-y-4 bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
             <h1 class="text-5xl font-bold text-pastel-pink text-center">BigOctopus</h1>
             <h2 class="text-3xl font-semibold text-pastel-green text-center">Sign Up</h2>
             <input type="text" id="signup-username" placeholder="Username" class="border p-2 rounded w-full" />
             <input type="password" id="signup-password" placeholder="Password" class="border p-2 rounded w-full" />
-            <button onclick="signUp()" class="bg-pastel-yellow text-white py-2 px-6 rounded-full shadow-md hover:bg-yellow-400 transition duration-300">Sign Up</button>
+            <button onclick="signUp()" class="bg-pastel-yellow text-white py-2 px-6 rounded-full shadow-md">Sign Up</button>
             <p class="text-center text-pastel-pink">Already have an account? <a href="#" onclick="toggleAuthForms()">Login</a></p>
         </div>
 
         <!-- Login Form -->
-        <div id="login-form" class="space-y-4 bg-white p-8 rounded-lg shadow-lg">
+        <div id="login-form" class="space-y-4 bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
             <h1 class="text-5xl font-bold text-pastel-pink text-center">BigOctopus</h1>
             <h2 class="text-3xl font-semibold text-pastel-green text-center">Login</h2>
             <input type="text" id="login-username" placeholder="Username" class="border p-2 rounded w-full" />
             <input type="password" id="login-password" placeholder="Password" class="border p-2 rounded w-full" />
-            <button onclick="login()" class="bg-pastel-green text-white py-2 px-6 rounded-full shadow-md hover:bg-green-400 transition duration-300">Login</button>
+            <button onclick="login()" class="bg-pastel-green text-white py-2 px-6 rounded-full shadow-md">Login</button>
             <p class="text-center text-pastel-pink">Don't have an account? <a href="#" onclick="toggleAuthForms()">Sign Up</a></p>
         </div>
     </div>
@@ -49,16 +61,17 @@
     <!-- Homepage (After login) -->
     <div id="home-page" class="hidden text-center py-10">
         <!-- Home Title -->
-        <h1 class="text-5xl font-bold text-pastel-pink mb-10" style="font-family: 'Charm', cursive;">Home</h1>
+        <h1 id="home-title" class="text-5xl font-bold text-pastel-pink mb-10">Home</h1>
 
-        <!-- Stickers -->
+        <!-- Stickers Section -->
         <div class="flex justify-center space-x-6 py-6">
             <img src="images/plant.png" alt="Plant Sticker" class="w-40 h-40 cursor-pointer" onclick="stickerClicked('Plant')" />
             <img src="images/cookie.png" alt="Cookie Sticker" class="w-40 h-40 cursor-pointer" onclick="stickerClicked('Cookie')" />
             <img src="images/phone.png" alt="Phone Sticker" class="w-40 h-40 cursor-pointer" onclick="stickerClicked('Phone')" />
         </div>
+
         <!-- Logout Button -->
-        <button onclick="logout()" class="bg-pastel-pink text-white py-2 px-6 rounded-full shadow-md hover:bg-pink-400 transition duration-300">Logout</button>
+        <button onclick="logout()" class="bg-pastel-pink text-white py-2 px-6 rounded-full shadow-md">Logout</button>
     </div>
 
     <!-- Footer Section -->
@@ -135,4 +148,5 @@
     </script>
 
 </body>
+
 </html>
