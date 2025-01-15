@@ -1,1 +1,41 @@
+/* styles.css */
+body {
+    font-family: 'Poppins', sans-serif;
+}
 
+button {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+header h1 {
+    font-family: 'Comic Sans MS', sans-serif;
+    color: #ff7f7f;
+}
+
+footer p {
+    color: #ffb3b3;
+}
+
+/* Custom background for cute vibe */
+.bg-pink-100 {
+    background-color: #fbe0e6;
+}
+.bg-pink-300 {
+    background-color: #f5b3d1;
+}
+.bg-pink-500 {
+    background-color: #f093c1;
+}
+.bg-yellow-300 {
+    background-color: #fce68a;
+}
+.bg-yellow-400 {
+    background-color: #fbd35c;
+}
