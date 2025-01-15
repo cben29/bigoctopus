@@ -24,6 +24,24 @@
             align-items: center;
             height: 100vh;
             text-align: center;
+            flex-direction: column;
+        }
+
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 16px;
+            background-color: #B9E0B1;
+            color: white;
+            font-size: 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .home-btn:hover {
+            background-color: #A0D79B;
         }
 
         .music-container {
@@ -34,85 +52,94 @@
             width: 350px;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            color: #E6A8B7;
-        }
-
         .play-pause-btn {
-            background-color: #D0E8C9;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
+            background-color: transparent;
             border: none;
-        }
-
-        .play-pause-btn:hover {
-            background-color: #A7D7A1;
+            cursor: pointer;
+            width: 60px;
+            height: 60px;
+            display: inline-block;
+            background-size: cover;
+            margin-bottom: 1rem;
         }
 
         .dropdown {
             background-color: white;
             color: black;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px 18px;
+            border-radius: 10px;
             cursor: pointer;
             width: 100%;
+            font-size: 1.2rem;
             text-align: center;
-        }
-
-        .footer {
-            text-align: center;
-            color: #B8D8B6;
-            margin-top: 2rem;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="music-container">
-        <h1>Music Page</h1>
+    <!-- Home Button -->
+    <button class="home-btn" onclick="goHome()">Home</button>
 
-        <!-- Dropdown for Track Selection -->
-        <select id="track-dropdown" class="dropdown" onchange="updateTrackName()">
-            <option value="Track 1">Track 1</option>
-            <option value="Track 2">Track 2</option>
-            <option value="Track 3">Track 3</option>
+    <div class="music-container">
+        <!-- Track Dropdown -->
+        <select id="track-dropdown" class="dropdown" onchange="changeTrack()">
+            <option value="0">Track 1</option>
+            <option value="1">Track 2</option>
+            <option value="2">Track 3</option>
+            <option value="3">Track 4</option>
+            <option value="4">Track 5</option>
         </select>
 
         <!-- Play/Pause Button -->
-        <button class="play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()">▶️</button>
-
-        <!-- Footer Section -->
-        <footer class="footer">
-            <p>Kisses from BigOctopus ♥</p>
-        </footer>
+        <button class="play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()">
+            <img id="play-icon" src="images/play.png" alt="Play Button" />
+        </button>
     </div>
+
+    <!-- Audio Player -->
+    <audio id="audio-player" controls hidden>
+        <source id="audio-source" src="music/Goblin_Tinker_Soldier_Spy.mp3" type="audio/mp3">
+    </audio>
 
     <!-- JavaScript for Music Controls -->
     <script>
         let isPlaying = false;
         let currentTrack = document.getElementById('track-dropdown').value;
+        const audioPlayer = document.getElementById('audio-player');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const trackDropdown = document.getElementById('track-dropdown');
+        const audioSource = document.getElementById('audio-source');
 
-        // Function to toggle play/pause
+        const tracks = [
+            "music/Goblin_Tinker_Soldier_Spy.mp3",
+            "music/Island_Meet_and_Greet.mp3",
+            "music/Magic_Scout_Cottages.mp3",
+            "music/Night_in_Venice.mp3",
+            "music/Pleasant_Porridge.mp3"
+        ];
+
         function togglePlayPause() {
-            const btn = document.getElementById('play-pause-btn');
-            isPlaying = !isPlaying;
-
-            if (isPlaying) {
-                btn.textContent = '⏸️';  // Change to pause icon
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playIcon.src = "images/pause.png"; // Change to pause icon
             } else {
-                btn.textContent = '▶️';  // Change to play icon
+                audioPlayer.pause();
+                playIcon.src = "images/play.png"; // Change to play icon
             }
         }
 
-        // Update the dropdown button text with the current track when the dropdown is closed
-        function updateTrackName() {
-            const trackName = document.getElementById('track-dropdown').value;
-            const btn = document.getElementById('track-dropdown');
-            btn.textContent = trackName;  // Update dropdown text with current track
+        function changeTrack() {
+            const selectedTrack = trackDropdown.value;
+            audioSource.src = tracks[selectedTrack];
+            audioPlayer.load();
+            audioPlayer.play();
+            playIcon.src = "images/pause.png"; // Change to pause icon
+        }
+
+        function goHome() {
+            window.location.href = 'home.html'; // Redirect to home page
         }
     </script>
 
