@@ -13,6 +13,13 @@
     <!-- Tailwind CSS Link -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Set text color inside the input fields to black */
+        input {
+            color: black;
+        }
+    </style>
 </head>
 <body class="bg-gray-900 text-white font-sans">
 
@@ -47,9 +54,9 @@
     <div id="home-page" class="hidden text-center py-10">
         <h2 class="text-3xl font-semibold text-pastel-green">Welcome to Your Home!</h2>
         <div class="flex justify-center space-x-4 py-6">
-            <img src="images/plant.png" alt="Plant Sticker" class="w-24 h-24" />
-            <img src="images/cookie.png" alt="Cookie Sticker" class="w-24 h-24" />
-            <img src="images/phone.png" alt="Phone Sticker" class="w-24 h-24" />
+            <img src="images/plant.png" alt="Plant Sticker" class="w-24 h-24 cursor-pointer" onclick="stickerClicked('Plant')" />
+            <img src="images/cookie.png" alt="Cookie Sticker" class="w-24 h-24 cursor-pointer" onclick="stickerClicked('Cookie')" />
+            <img src="images/phone.png" alt="Phone Sticker" class="w-24 h-24 cursor-pointer" onclick="stickerClicked('Phone')" />
         </div>
         <!-- Logout Button -->
         <button onclick="logout()" class="bg-pastel-pink text-white py-2 px-6 rounded-full shadow-md hover:bg-pink-400 transition duration-300">Logout</button>
@@ -113,6 +120,12 @@
             // Hide the homepage and show the login form
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('login-form').classList.remove('hidden');
+        }
+
+        // Sticker click function
+        function stickerClicked(stickerName) {
+            console.log(stickerName + " sticker clicked!");
+            alert("You clicked on the " + stickerName + " sticker!");
         }
 
         // Check if the user is already logged in
