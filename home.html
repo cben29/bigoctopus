@@ -12,72 +12,85 @@
 
     <!-- Tailwind CSS Link -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
 
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: #000;
+            background-color: black;
             color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
 
         h1 {
             font-size: 3rem;
-            color: #E6A8B7;
+            margin-bottom: 2rem;
+        }
+
+        .stickers-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 2rem;
         }
 
         .sticker {
-            width: 150px;
-            height: 150px;
+            width: 140px; /* Increased size */
+            height: 140px; /* Increased size */
             cursor: pointer;
+            transition: transform 0.3s;
         }
 
-        .home-button {
+        .sticker:hover {
+            transform: scale(1.1); /* Slight zoom effect on hover */
+        }
+
+        .logout-button {
+            background-color: #B9E0B1;
+            color: black;
             padding: 10px 20px;
-            background-color: #D0E8C9;
-            color: white;
-            border-radius: 20px;
+            border-radius: 5px;
+            font-size: 1rem;
             cursor: pointer;
         }
 
-        .home-button:hover {
-            background-color: #A7D7A1;
+        .logout-button:hover {
+            background-color: #A0D79B;
         }
     </style>
 </head>
 <body>
-
-    <!-- Welcome message -->
-    <h1 class="text-center mt-10">Welcome Home</h1>
+    <!-- Welcome Message -->
+    <h1>Welcome Home</h1>
 
     <!-- Stickers Section -->
-    <div class="flex justify-center space-x-6 py-10">
+    <div class="stickers-container">
         <img src="images/plant.png" alt="Plant Sticker" class="sticker" onclick="stickerClicked('Plant')" />
         <img src="images/cookie.png" alt="Cookie Sticker" class="sticker" onclick="stickerClicked('Cookie')" />
         <img src="images/phone.png" alt="Phone Sticker" class="sticker" onclick="goToMusicPage()" />
     </div>
 
     <!-- Logout Button -->
-    <button onclick="logout()" class="home-button mx-auto block">Logout</button>
+    <button class="logout-button" onclick="logout()">Logout</button>
 
-    <!-- JavaScript for Navigation and Logout -->
+    <!-- JavaScript -->
     <script>
-        // Redirect to Music Page when Phone Sticker is clicked
         function goToMusicPage() {
             window.location.href = 'music.html';
         }
 
-        // Handle Logout and redirect to Login page
         function logout() {
             console.log('Logged out');
-            window.location.href = 'index.html'; // Redirect to login page
+            window.location.href = 'index.html';
         }
 
-        // Sticker clicked function (no action, just a log)
         function stickerClicked(stickerName) {
             console.log(`${stickerName} sticker clicked!`);
         }
     </script>
-
 </body>
 </html>
