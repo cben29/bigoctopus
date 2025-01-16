@@ -71,7 +71,7 @@
         .toggle-music-button::before {
             content: "\266B"; /* Unicode for a musical note symbol */
             font-size: 3rem;
-            color: #B9E0B1; /* Pink color */
+            color: green; /* Default to green (for Mana Two - Part 1) */
         }
     </style>
 </head>
@@ -114,9 +114,11 @@
             if (isManaTwoPlaying) {
                 // Change to Heavy Heart
                 audioElement.src = 'music/Heavy Heart.mp3';
+                document.querySelector('.toggle-music-button::before').style.color = '#B9E0B1'; // Change to pink
             } else {
                 // Change to Mana Two - Part 1
                 audioElement.src = 'music/Mana Two - Part 1.mp3';
+                document.querySelector('.toggle-music-button::before').style.color = 'green'; // Change to green
             }
             audioElement.play(); // Play the new music
             isManaTwoPlaying = !isManaTwoPlaying; // Toggle the music state
