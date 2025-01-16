@@ -33,17 +33,16 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #F4A6C9; /* Pink used previously */
+            background-color: #B9E0B1;
             color: black;
             padding: 10px 20px;
             border-radius: 5px;
             font-size: 1rem;
-            font-family: 'Gamja Flower', cursive; /* Your font applied here */
             cursor: pointer;
         }
 
         .home-button:hover {
-            background-color: #F2A0BC; /* Slightly darker pink on hover */
+            background-color: #A0D79B;
         }
 
         .form-container {
@@ -62,7 +61,7 @@
             border-radius: 5px;
             border: 1px solid #ddd;
             font-size: 1rem;
-            font-family: 'Gamja Flower', cursive;
+            font-family: 'Gamja Flower', cursive; /* Added to ensure font is applied here */
         }
 
         .form-container input {
@@ -129,11 +128,13 @@
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Firebase Setup -->
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
-    <script>
-        // Firebase configuration
+    <!-- Firebase Setup (Modular) -->
+    <script type="module">
+        // Import Firebase App and Firebase Database functions
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js';
+        import { getDatabase, ref, push, onChildAdded } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js';
+
+        // Firebase configuration object
         const firebaseConfig = {
             apiKey: "AIzaSyBefs5OOTNg8DmhH9SQfpKjHBnETBnJlN8",
             authDomain: "bigoctopus-29453.firebaseapp.com",
@@ -146,13 +147,13 @@
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-        // References
-        const notesRef = database.ref("notes");
+        // Create a reference to the "notes" section in Firebase
+        const notesRef = ref(database, 'notes');
 
-        // Post a new note
+        // Function to post a new note
         function postNote() {
             const username = document.getElementById("username").value.trim();
             const content = document.getElementById("note-content").value.trim();
@@ -163,7 +164,7 @@
             }
 
             // Push the new note to Firebase
-            notesRef.push({
+            push(notesRef, {
                 username: username,
                 content: content,
                 timestamp: Date.now()
@@ -175,9 +176,11 @@
         }
 
         // Display notes in real-time
-        notesRef.on("child_added", (snapshot) => {
+        const notesContainer = document.getElementById("notes-container");
+
+        // Listen for new notes added to Firebase
+        onChildAdded(notesRef, (snapshot) => {
             const note = snapshot.val();
-            const notesContainer = document.getElementById("notes-container");
 
             // Create note element
             const noteElement = document.createElement("div");
@@ -190,11 +193,6 @@
             notesContainer.appendChild(noteElement);
             notesContainer.scrollTop = notesContainer.scrollHeight; // Scroll to the latest note
         });
-
-        // Home redirection function
-        function goHome() {
-            window.location.href = 'home.html'; // Redirect to home page
-        }
     </script>
 </body>
 </html>
