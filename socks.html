@@ -13,234 +13,180 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: white;
+            background-color: black;
+            color: white;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
+            padding: 0;
             height: 100vh;
-            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
-        .home-button {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #B9E0B1;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .home-button:hover {
-            background-color: #A0D79B;
+        h1 {
+            font-size: 3rem;
+            margin: 20px 0;
         }
 
         .container {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             width: 100%;
-            height: calc(100vh - 100px); /* Space for toolbar */
+            height: 100%;
         }
 
         .sidebar {
             width: 200px;
-            background-color: #333;
-            padding: 10px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            position: fixed;
-            top: 60px;
-            left: 10px;
-            height: calc(100vh - 100px);
+            padding: 20px;
+            border-right: 2px solid white;
         }
 
-        .sidebar button {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #B9E0B1;
-            color: black;
-            border: none;
+        .sidebar img {
+            width: 100%;
             cursor: pointer;
+            margin-bottom: 10px;
         }
 
-        .sidebar button:hover {
-            background-color: #A0D79B;
-        }
-
-        .stockings-container {
+        .main-area {
             position: relative;
-            margin-left: 220px;
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
+            width: 70%;
+            height: 80vh;
+            background-color: black;
         }
 
-        .stockings-container img {
-            width: 300px;
-            cursor: pointer;
-        }
-
-        .toolbox {
+        .main-area img {
             position: absolute;
-            top: 20%;
-            right: 10px;
-            background-color: #444;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-            flex-direction: column;
-        }
-
-        .toolbox img {
-            width: 50px;
-            height: 50px;
-            margin: 5px;
-            cursor: pointer;
-        }
-
-        .toolbox.active {
-            display: flex;
+            cursor: move;
         }
 
         .bottom-toolbar {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 10px;
             display: flex;
-            gap: 15px;
+            justify-content: center;
+            gap: 20px;
+            background-color: black;
+            border-top: 2px solid white;
         }
 
         .bottom-toolbar img {
             width: 50px;
-            height: 50px;
             cursor: pointer;
         }
 
-        .asset {
+        .size-scaler {
             position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: white;
+            padding: 5px;
             cursor: pointer;
-            user-select: none;
+            border-radius: 5px;
         }
-
     </style>
 </head>
 <body>
-    <!-- Home Button -->
-    <button class="home-button" onclick="goHome()">Home</button>
 
-    <!-- Sidebar to change background color -->
-    <div class="sidebar">
-        <button onclick="changeBackgroundColor('white')">White</button>
-        <button onclick="changeBackgroundColor('lightblue')">Light Blue</button>
-        <button onclick="changeBackgroundColor('lightgreen')">Light Green</button>
-        <button onclick="changeBackgroundColor('lightpink')">Light Pink</button>
-    </div>
+    <h1>Design Your Socks</h1>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Stockings Image -->
-        <div class="stockings-container">
-            <img src="images/stockings.png" alt="Stockings Base" id="stockings" class="draggable" />
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <img src="stockings (1).png" alt="Stocking 1" class="draggable" id="stocking1">
+            <img src="stockings (2).png" alt="Stocking 2" class="draggable" id="stocking2">
+            <img src="stockings (3).png" alt="Stocking 3" class="draggable" id="stocking3">
+            <img src="stockings (4).png" alt="Stocking 4" class="draggable" id="stocking4">
+            <img src="stockings (5).png" alt="Stocking 5" class="draggable" id="stocking5">
         </div>
 
-        <!-- Expandable Tool Bar for Stockings -->
-        <div id="stockings-toolbar" class="toolbox">
-            <img src="images/stockings (1).png" alt="Stocking 1" class="draggable" />
-            <img src="images/stockings (2).png" alt="Stocking 2" class="draggable" />
-            <img src="images/stockings (3).png" alt="Stocking 3" class="draggable" />
-            <img src="images/stockings (4).png" alt="Stocking 4" class="draggable" />
-            <img src="images/stockings (5).png" alt="Stocking 5" class="draggable" />
-        </div>
+        <!-- Main Area -->
+        <div class="main-area" id="mainArea"></div>
     </div>
 
-    <!-- Bottom Toolbar for Assets -->
+    <!-- Bottom Toolbar -->
     <div class="bottom-toolbar">
-        <img src="images/heart.png" alt="Heart" onclick="addAsset('heart')" />
-        <img src="images/new-moon.png" alt="New Moon" onclick="addAsset('new-moon')" />
-        <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Lines" onclick="addAsset('zigzag-lines')" />
+        <img src="heart.png" alt="Heart Sticker" class="draggable sticker" id="heart">
+        <img src="new-moon.png" alt="Moon Sticker" class="draggable sticker" id="moon">
+        <img src="zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" class="draggable sticker" id="zigzag">
     </div>
 
-    <!-- JavaScript -->
     <script>
-        // Function to go back to home page
-        function goHome() {
-            window.location.href = 'home.html'; // Redirect to home page
+        const mainArea = document.getElementById('mainArea');
+
+        // Make elements draggable
+        function makeDraggable(element) {
+            let offsetX, offsetY;
+
+            element.addEventListener('mousedown', (e) => {
+                offsetX = e.clientX - element.getBoundingClientRect().left;
+                offsetY = e.clientY - element.getBoundingClientRect().top;
+
+                function moveAt(e) {
+                    element.style.left = `${e.clientX - offsetX}px`;
+                    element.style.top = `${e.clientY - offsetY}px`;
+                }
+
+                document.addEventListener('mousemove', moveAt);
+
+                element.addEventListener('mouseup', () => {
+                    document.removeEventListener('mousemove', moveAt);
+                });
+            });
         }
 
-        // Function to change the background color of the page
-        function changeBackgroundColor(color) {
-            document.body.style.backgroundColor = color;
+        // Create the size scaler
+        function createSizeScaler(element) {
+            const scaler = document.createElement('div');
+            scaler.classList.add('size-scaler');
+            scaler.innerText = 'Resize';
+            element.appendChild(scaler);
+
+            let initialWidth = element.offsetWidth;
+            let initialHeight = element.offsetHeight;
+
+            scaler.addEventListener('click', () => {
+                let newSize = prompt('Enter new size (width x height):', `${initialWidth} x ${initialHeight}`);
+                if (newSize) {
+                    const [newWidth, newHeight] = newSize.split('x').map(Number);
+                    element.style.width = `${newWidth}px`;
+                    element.style.height = `${newHeight}px`;
+                }
+            });
         }
 
-        // Draggable functionality
-        const draggableItems = document.querySelectorAll('.draggable');
-        draggableItems.forEach(item => {
-            item.addEventListener('mousedown', startDrag);
+        // Draggable stockings
+        document.querySelectorAll('.draggable').forEach((stocking) => {
+            makeDraggable(stocking);
+
+            stocking.addEventListener('click', (e) => {
+                const stockingClone = stocking.cloneNode(true);
+                stockingClone.style.position = 'absolute';
+                stockingClone.style.left = `${e.clientX - 50}px`;
+                stockingClone.style.top = `${e.clientY - 50}px`;
+                mainArea.appendChild(stockingClone);
+
+                makeDraggable(stockingClone);
+                createSizeScaler(stockingClone);
+            });
         });
 
-        let draggedItem = null;
-        let offsetX, offsetY;
+        // Draggable stickers
+        document.querySelectorAll('.sticker').forEach((sticker) => {
+            sticker.addEventListener('click', (e) => {
+                const stickerClone = sticker.cloneNode(true);
+                stickerClone.style.position = 'absolute';
+                stickerClone.style.left = `${e.clientX - 25}px`;
+                stickerClone.style.top = `${e.clientY - 25}px`;
+                mainArea.appendChild(stickerClone);
 
-        function startDrag(e) {
-            draggedItem = e.target;
-            offsetX = e.clientX - draggedItem.getBoundingClientRect().left;
-            offsetY = e.clientY - draggedItem.getBoundingClientRect().top;
-            window.addEventListener('mousemove', drag);
-            window.addEventListener('mouseup', stopDrag);
-        }
-
-        function drag(e) {
-            if (draggedItem) {
-                draggedItem.style.position = 'absolute';
-                draggedItem.style.left = `${e.clientX - offsetX}px`;
-                draggedItem.style.top = `${e.clientY - offsetY}px`;
-            }
-        }
-
-        function stopDrag() {
-            window.removeEventListener('mousemove', drag);
-            window.removeEventListener('mouseup', stopDrag);
-            draggedItem = null;
-        }
-
-        // Add assets to the screen
-        function addAsset(assetType) {
-            let assetImage = '';
-
-            if (assetType === 'heart') {
-                assetImage = 'images/heart.png';
-            } else if (assetType === 'new-moon') {
-                assetImage = 'images/new-moon.png';
-            } else if (assetType === 'zigzag-lines') {
-                assetImage = 'images/zigzag-lines-in-side-view-position.png';
-            }
-
-            const asset = document.createElement('img');
-            asset.src = assetImage;
-            asset.className = 'asset draggable';
-            asset.style.left = '50%';
-            asset.style.top = '50%';
-
-            document.body.appendChild(asset);
-
-            // Enable drag for the new asset
-            asset.addEventListener('mousedown', startDrag);
-        }
-
-        // Show the toolbox for stockings
-        document.getElementById('stockings-toolbar').classList.add('active');
+                makeDraggable(stickerClone);
+                createSizeScaler(stickerClone);
+            });
+        });
     </script>
 </body>
 </html>
