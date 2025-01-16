@@ -64,22 +64,31 @@
 
         .toggle-music-button {
             background-color: #B9E0B1;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            margin-bottom: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             cursor: pointer;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
         }
 
         .toggle-music-button:hover {
             background-color: #A0D79B;
         }
+
+        .toggle-music-button::before {
+            content: "\266B"; /* Unicode for a musical note symbol */
+            font-size: 2rem;
+            color: black;
+        }
     </style>
 </head>
 <body>
     <!-- Music Toggle Button -->
-    <button class="toggle-music-button" onclick="toggleMusic()">Toggle Music</button>
+    <button class="toggle-music-button" onclick="toggleMusic()"></button>
 
     <!-- Welcome Message -->
     <h1>Welcome Home</h1>
