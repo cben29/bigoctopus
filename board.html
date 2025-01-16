@@ -3,114 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigOctopus - Post Office</title>
+    <title>BigOctopus - Board</title>
 
     <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: 'Gamja Flower', cursive;
-            background-color: black;
-            color: white;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin: 20px 0;
-        }
-
-        .home-button {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #B9E0B1;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .home-button:hover {
-            background-color: #A0D79B;
-        }
-
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .form-container input, .form-container button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
-            font-family: 'Gamja Flower', cursive; /* Added to ensure font is applied here */
-        }
-
-        .form-container input {
-            color: black; /* Text in input fields is now black */
-        }
-
-        .form-container button {
-            background-color: #B9E0B1;
-            color: black;
-            cursor: pointer;
-        }
-
-        .form-container button:hover {
-            background-color: #A0D79B;
-        }
-
-        .notes-container {
-            width: 100%;
-            max-width: 600px;
-            border: 1px solid #444;
-            border-radius: 10px;
-            padding: 10px;
-            background-color: #222;
-            overflow-y: auto;
-            max-height: 400px;
-        }
-
-        .note {
-            border-bottom: 1px solid #444;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .note:last-child {
-            border-bottom: none;
-        }
-
-        .note .username {
-            font-weight: bold;
-            color: #B9E0B1;
-        }
-    </style>
+    <!-- Link to External Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Home Button -->
     <button class="home-button" onclick="goHome()">Home</button>
 
     <!-- Title -->
-    <h1>Post Office</h1>
+    <h1 class="text-pastel-yellow">Message Board</h1>
 
     <!-- Input Form -->
     <div class="form-container">
@@ -121,12 +29,6 @@
 
     <!-- Notes Feed -->
     <div class="notes-container" id="notes-container"></div>
-
-    <!-- Audio -->
-    <audio id="background-audio" loop autoplay>
-        <source src="music/Midnight Tale.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
 
     <!-- Firebase Setup -->
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
@@ -161,22 +63,16 @@
                 return;
             }
 
-            // Check if the user is logged in (authenticated)
-            if (auth.currentUser) {
-                // Push the new note to Firebase
-                notesRef.push({
-                    username: username,
-                    content: content,
-                    timestamp: Date.now()
-                });
+            // Push the new note to Firebase
+            notesRef.push({
+                username: username,
+                content: content,
+                timestamp: Date.now()
+            });
 
-                // Clear input fields
-                document.getElementById("username").value = "";
-                document.getElementById("note-content").value = "";
-            } else {
-                // Redirect to login page if not authenticated
-                window.location.href = 'login.html';  // Make sure your login page is named 'login.html'
-            }
+            // Clear input fields
+            document.getElementById("username").value = "";
+            document.getElementById("note-content").value = "";
         }
 
         // Display notes in real-time
