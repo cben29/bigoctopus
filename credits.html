@@ -17,12 +17,12 @@
             color: white;
             padding: 20px;
             margin: 0;
-            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             overflow-y: auto;
+            min-height: 100vh;
         }
 
         .home-button {
@@ -34,19 +34,20 @@
             font-family: 'Gamja Flower', cursive;
             cursor: pointer;
             margin-top: 20px;
-            position: absolute;
-            bottom: 20px;
+            background-color: #A0D79B;
+            align-self: center;
+            position: relative;
         }
 
         .home-button:hover {
-            background-color: #A0D79B;
+            background-color: #8DC68A;
         }
 
         .credits-container {
             max-width: 800px;
             margin-top: 20px;
             text-align: left;
-            margin-bottom: 60px; /* Ensure space for home button */
+            margin-bottom: 40px; /* Space above the home button */
         }
 
         .credits-container a {
@@ -66,6 +67,14 @@
 
         .credit-item {
             margin-bottom: 10px;
+        }
+
+        .footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            padding: 20px 0;
         }
     </style>
 </head>
@@ -150,8 +159,10 @@
         </div>
     </div>
 
-    <!-- Home Button -->
-    <button class="home-button" onclick="goHome()">Home</button>
+    <!-- Footer -->
+    <div class="footer">
+        <button class="home-button" onclick="goHome()">Home</button>
+    </div>
 
     <script>
         function goHome() {
