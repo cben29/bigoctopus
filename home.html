@@ -70,7 +70,7 @@
     <!-- Stickers Section -->
     <div class="stickers-container">
         <!-- Yarn Ball on the far left -->
-        <img src="images/yarn-ball.png" alt="Yarn Ball Sticker" class="sticker" onclick="stickerClicked('Yarn Ball')" />
+        <img src="images/yarn-ball.png" alt="Yarn Ball Sticker" class="sticker" onclick="goToSocksPage()" />
         
         <!-- Original Stickers in the middle -->
         <img src="images/plant.png" alt="Plant Sticker" class="sticker" onclick="stickerClicked('Plant')" />
@@ -78,7 +78,7 @@
         <img src="images/phone.png" alt="Phone Sticker" class="sticker" onclick="goToMusicPage()" />
         
         <!-- Candle on the far right -->
-        <img src="images/candle.png" alt="Candle Sticker" class="sticker" onclick="stickerClicked('Candle')" />
+        <img src="images/candle.png" alt="Candle Sticker" class="sticker" onclick="goToCalmPage()" />
     </div>
 
     <!-- Logout Button -->
@@ -92,6 +92,14 @@
 
         function goToBoardPage() {
             window.location.href = 'board.html';
+        }
+
+        function goToCalmPage() {
+            window.location.href = 'calm.html'; // Redirect to calm.html
+        }
+
+        function goToSocksPage() {
+            window.location.href = 'socks.html'; // Redirect to socks.html
         }
 
         function logout() {
