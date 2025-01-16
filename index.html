@@ -128,65 +128,119 @@
     </div>
 
     <script>
+        const GITHUB_USERNAME = 'cben29';
+        const REPO_NAME = 'bigoctopus';
+        const TOKEN = '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';
+        const FILE_PATH = 'data/users.json';
+        const API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`;
+
         // Toggle between Login and Sign-Up forms
         function toggleAuthForms() {
             const loginForm = document.getElementById('login-form');
             const signupForm = document.getElementById('signup-form');
             const loginMessage = document.getElementById('login-message');
             const signupMessage = document.getElementById('signup-message');
-            
+
             loginForm.classList.toggle('hidden');
             signupForm.classList.toggle('hidden');
-            
+
             // Clear messages on form switch
             loginMessage.textContent = '';
             signupMessage.textContent = '';
         }
 
-        // Sign-Up Function: Save new account in localStorage
-        function signUp() {
+        // Sign-Up Function: Save new account to GitHub
+        async function signUp() {
             const username = document.getElementById('signup-username').value.trim();
             const password = document.getElementById('signup-password').value.trim();
             const signupMessage = document.getElementById('signup-message');
-            
-            if (username && password) {
-                let users = JSON.parse(localStorage.getItem('users')) || [];
-                
-                // Check if username already exists
-                if (users.some(user => user.username === username)) {
-                    signupMessage.textContent = 'Username already exists. Please choose another one.';
-                    signupMessage.className = 'message error';
-                    return;
-                }
-                
-                // Save the new user to the users array
-                users.push({ username: username, password: password });
-                localStorage.setItem('users', JSON.stringify(users));
 
-                signupMessage.textContent = 'Sign-up successful! Please log in.';
-                signupMessage.className = 'message success';
-                toggleAuthForms(); // Switch to login form
+            if (username && password) {
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `token ${TOKEN}`,
+                        }
+                    });
+
+                    const data = await response.json();
+                    let users = [];
+
+                    if (data.content) {
+                        users = JSON.parse(atob(data.content));
+                    }
+
+                    if (users.some(user => user.username === username)) {
+                        signupMessage.textContent = 'Username already exists. Please choose another one.';
+                        signupMessage.className = 'message error';
+                        return;
+                    }
+
+                    users.push({ username, password });
+
+                    const updatedContent = btoa(JSON.stringify(users, null, 2));
+
+                    await fetch(API_URL, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${TOKEN}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: 'Add new user',
+                            content: updatedContent,
+                            sha: data.sha
+                        })
+                    });
+
+                    signupMessage.textContent = 'Sign-up successful! Please log in.';
+                    signupMessage.className = 'message success';
+                    toggleAuthForms(); // Switch to login form
+                } catch (error) {
+                    signupMessage.textContent = 'An error occurred. Please try again.';
+                    signupMessage.className = 'message error';
+                }
             } else {
                 signupMessage.textContent = 'Please fill in both fields.';
                 signupMessage.className = 'message error';
             }
         }
 
-        // Login Function: Validate username and password from localStorage
-        function login() {
+        // Login Function: Validate username and password from GitHub
+        async function login() {
             const username = document.getElementById('login-username').value.trim();
             const password = document.getElementById('login-password').value.trim();
             const loginMessage = document.getElementById('login-message');
 
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            
-            // Find the user with the matching username and password
-            const user = users.find(u => u.username === username && u.password === password);
-            
-            if (user) {
-                window.location.href = 'home.html'; // Redirect to home page
+            if (username && password) {
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `token ${TOKEN}`,
+                        }
+                    });
+
+                    const data = await response.json();
+                    const users = JSON.parse(atob(data.content));
+
+                    const user = users.find(u => u.username === username && u.password === password);
+
+                    if (user) {
+                        loginMessage.textContent = 'Login successful!';
+                        loginMessage.className = 'message success';
+                        window.location.href = 'home.html'; // Redirect to home page
+                    } else {
+                        loginMessage.textContent = 'Incorrect username or password.';
+                        loginMessage.className = 'message error';
+                    }
+                } catch (error) {
+                    loginMessage.textContent = 'An error occurred. Please try again.';
+                    loginMessage.className = 'message error';
+                }
             } else {
-                loginMessage.textContent = 'Incorrect username or password.';
+                loginMessage.textContent = 'Please fill in both fields.';
                 loginMessage.className = 'message error';
             }
         }
