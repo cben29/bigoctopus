@@ -48,6 +48,17 @@ body {
     cursor: pointer;
 }
 
+.logout-button {
+    background-color: #B9E0B1;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: 'Gamja Flower', cursive; /* Custom font for the logout button */
+    cursor: pointer;
+}
+
+
 .home-button:hover {
     background-color: #A0D79B; /* Slightly darker pastel green on hover */
 }
