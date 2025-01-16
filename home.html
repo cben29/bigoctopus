@@ -70,7 +70,7 @@
     <!-- Stickers Section -->
     <div class="stickers-container">
         <img src="images/plant.png" alt="Plant Sticker" class="sticker" onclick="stickerClicked('Plant')" />
-        <img src="images/cookie.png" alt="Cookie Sticker" class="sticker" onclick="stickerClicked('Cookie')" />
+        <img src="images/cookie.png" alt="Cookie Sticker" class="sticker" onclick="goToBoardPage()" />
         <img src="images/phone.png" alt="Phone Sticker" class="sticker" onclick="goToMusicPage()" />
     </div>
 
@@ -83,6 +83,9 @@
             window.location.href = 'music.html';
         }
 
+        function goToBoardPage() {
+            window.location.href = 'board.html';
+        
         function logout() {
             console.log('Logged out');
             window.location.href = 'index.html';
