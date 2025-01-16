@@ -46,9 +46,8 @@
         .home-button {
             position: absolute;
             top: 20px;
-            left: 20px;
             padding: 10px 20px;
-            background-color: #D8E2DC;
+            background-color: #A3C9A8; /* Darker Pistachio Green */
             color: black;
             font-size: 1rem;
             border-radius: 5px;
@@ -57,13 +56,13 @@
         }
 
         .home-button:hover {
-            background-color: #A3C9A8;
+            background-color: #6B8E66; /* Even Darker Green for Hover */
         }
     </style>
 </head>
 <body>
     <!-- Home Button -->
-    <a href="home.html" class="home-button">Home</a>
+    <a href="home.html" class="home-button" style="left: 50%; transform: translateX(-50%);">Home</a>
 
     <!-- Music Player -->
     <img id="play-pause" src="images/play.png" alt="Play Button" onclick="togglePlayPause()">
@@ -77,16 +76,13 @@
 
     <!-- Audio Player -->
     <audio id="audio-player">
-        <source src="music/Goblin_Tinker_Soldier_Spy.mp3" type="audio/mpeg">
-        <source src="music/Island_Meet_and_Greet.mp3" type="audio/mpeg">
-        <source src="music/Magic_Scout_Cottages.mp3" type="audio/mpeg">
-        <source src="music/Night_in_Venice.mp3" type="audio/mpeg">
-        <source src="music/Pleasant_Porridge.mp3" type="audio/mpeg">
+        <source id="audio-source" src="music/Goblin_Tinker_Soldier_Spy.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
     <script>
         const audioPlayer = document.getElementById('audio-player');
+        const audioSource = document.getElementById('audio-source');
         const playPauseButton = document.getElementById('play-pause');
         const trackSelector = document.getElementById('track-selector');
         let isPlaying = false;
@@ -106,7 +102,7 @@
         // Change Track
         function changeTrack() {
             const selectedTrack = trackSelector.value;
-            audioPlayer.src = selectedTrack; // Update the audio source to the selected track
+            audioSource.src = selectedTrack; // Update the audio source to the selected track
             audioPlayer.load(); // Load the selected track
             audioPlayer.play(); // Automatically play the new track
             playPauseButton.src = 'images/pause.png'; // Change button to pause icon
