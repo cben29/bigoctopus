@@ -41,7 +41,6 @@
             background-color: #F2A0BC; /* Darker pink color */
         }
 
-        /* Sidebars */
         .left-sidebar, .right-sidebar {
             position: absolute;
             top: 50%;
@@ -68,7 +67,6 @@
             margin-bottom: 10px;
         }
 
-        /* Main Image */
         .main-image {
             position: absolute;
             top: 50%;
@@ -81,17 +79,31 @@
         .sticker {
             position: absolute;
             cursor: pointer;
+            transition: transform 0.2s;
         }
 
-        .size-scaler {
+        .sticker-controls {
             position: absolute;
-            width: 10px;
-            background-color: white;
-            cursor: ns-resize;
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            top: 100%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, 10px);
         }
 
+        .control-button {
+            padding: 5px 10px;
+            background-color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .control-button:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
@@ -101,97 +113,104 @@
 
     <!-- Left Sidebar -->
     <div class="left-sidebar">
-        <img class="sidebar-img" src="images/new-moon.png" alt="Moon Sticker" onclick="createLeftSticker('images/new-moon.png')">
-        <img class="sidebar-img" src="images/heart.png" alt="Heart Sticker" onclick="createLeftSticker('images/heart.png')">
-        <img class="sidebar-img" src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" onclick="createLeftSticker('images/zigzag-lines-in-side-view-position.png')">
+        <img class="sidebar-img" src="images/new-moon.png" alt="Moon Sticker" onclick="createSticker('images/new-moon.png')">
+        <img class="sidebar-img" src="images/heart.png" alt="Heart Sticker" onclick="createSticker('images/heart.png')">
+        <img class="sidebar-img" src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" onclick="createSticker('images/zigzag-lines-in-side-view-position.png')">
     </div>
 
     <!-- Right Sidebar -->
     <div class="right-sidebar">
-        <img class="sidebar-img" src="images/stockings (1).png" alt="Stocking 1" onclick="createRightSticker('images/stockings (1).png')">
-        <img class="sidebar-img" src="images/stockings (2).png" alt="Stocking 2" onclick="createRightSticker('images/stockings (2).png')">
-        <img class="sidebar-img" src="images/stockings (3).png" alt="Stocking 3" onclick="createRightSticker('images/stockings (3).png')">
-        <img class="sidebar-img" src="images/stockings (4).png" alt="Stocking 4" onclick="createRightSticker('images/stockings (4).png')">
-        <img class="sidebar-img" src="images/stockings (5).png" alt="Stocking 5" onclick="createRightSticker('images/stockings (5).png')">
+        <img class="sidebar-img" src="images/stockings (1).png" alt="Stocking 1" onclick="createSticker('images/stockings (1).png')">
+        <img class="sidebar-img" src="images/stockings (2).png" alt="Stocking 2" onclick="createSticker('images/stockings (2).png')">
+        <img class="sidebar-img" src="images/stockings (3).png" alt="Stocking 3" onclick="createSticker('images/stockings (3).png')">
+        <img class="sidebar-img" src="images/stockings (4).png" alt="Stocking 4" onclick="createSticker('images/stockings (4).png')">
+        <img class="sidebar-img" src="images/stockings (5).png" alt="Stocking 5" onclick="createSticker('images/stockings (5).png')">
     </div>
 
     <!-- Main Image -->
     <img class="main-image" id="mainImage" src="images/stockings.png" alt="Stockings">
 
-    <!-- Audio -->
-    <audio id="background-audio" loop autoplay>
-        <source src="music/Vibing Over Venus.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-
     <script>
-        // Function to redirect to home
         function goHome() {
             window.location.href = 'home.html';
         }
 
-        // Create sticker from right sidebar
-        function createRightSticker(src) {
-            let sticker = document.createElement('img');
+        function createSticker(src) {
+            const sticker = document.createElement('img');
             sticker.src = src;
             sticker.classList.add('sticker');
-            sticker.style.width = 'auto';
-            sticker.style.height = '300px';
-            sticker.style.top = '50%';
-            sticker.style.left = '50%';
-            sticker.style.transform = 'translate(-50%, -50%)';
-            document.body.appendChild(sticker);
-        }
-
-        // Create sticker from left sidebar (with size scaler)
-        function createLeftSticker(src) {
-            let sticker = document.createElement('img');
-            sticker.src = src;
-            sticker.classList.add('sticker');
-            sticker.style.width = 'auto';
-            sticker.style.height = '100px';
+            sticker.style.width = '100px';
             sticker.style.top = '50%';
             sticker.style.left = '50%';
             sticker.style.transform = 'translate(-50%, -50%)';
             document.body.appendChild(sticker);
 
-            // Create the size scaler
-            let scaler = document.createElement('div');
-            scaler.classList.add('size-scaler');
-            scaler.style.top = `${sticker.offsetTop + sticker.offsetHeight / 2}px`;
-            scaler.style.height = '100px';
-            document.body.appendChild(scaler);
+            // Add controls
+            const controls = createStickerControls(sticker);
+            sticker.after(controls);
 
-            // Size scaling functionality
-            scaler.addEventListener('mousedown', (e) => {
-                document.addEventListener('mousemove', scaleSticker);
-                document.addEventListener('mouseup', () => {
-                    document.removeEventListener('mousemove', scaleSticker);
-                });
-
-                function scaleSticker(moveEvent) {
-                    let newHeight = moveEvent.clientY - sticker.offsetTop;
-                    sticker.style.height = `${newHeight}px`;
-                }
-            });
-
-            // Make sticker draggable
+            // Drag functionality
             sticker.addEventListener('mousedown', function (e) {
                 let shiftX = e.clientX - sticker.getBoundingClientRect().left;
                 let shiftY = e.clientY - sticker.getBoundingClientRect().top;
 
-                function moveSticker(moveEvent) {
-                    sticker.style.left = moveEvent.clientX - shiftX + 'px';
-                    sticker.style.top = moveEvent.clientY - shiftY + 'px';
+                function moveSticker(event) {
+                    sticker.style.left = event.clientX - shiftX + 'px';
+                    sticker.style.top = event.clientY - shiftY + 'px';
                 }
 
                 document.addEventListener('mousemove', moveSticker);
 
-                sticker.onmouseup = function () {
+                document.addEventListener('mouseup', function () {
                     document.removeEventListener('mousemove', moveSticker);
-                    sticker.onmouseup = null;
-                };
+                }, { once: true });
             });
+        }
+
+        function createStickerControls(sticker) {
+            const controls = document.createElement('div');
+            controls.classList.add('sticker-controls');
+
+            const increaseSize = document.createElement('button');
+            increaseSize.textContent = '+';
+            increaseSize.classList.add('control-button');
+            increaseSize.onclick = () => {
+                const currentWidth = parseInt(sticker.style.width);
+                sticker.style.width = `${currentWidth + 10}px`;
+            };
+
+            const decreaseSize = document.createElement('button');
+            decreaseSize.textContent = '-';
+            decreaseSize.classList.add('control-button');
+            decreaseSize.onclick = () => {
+                const currentWidth = parseInt(sticker.style.width);
+                sticker.style.width = `${currentWidth - 10}px`;
+            };
+
+            const rotateLeft = document.createElement('button');
+            rotateLeft.textContent = '↺';
+            rotateLeft.classList.add('control-button');
+            rotateLeft.onclick = () => {
+                const currentRotation = sticker.style.transform.match(/rotate\((\d+)deg\)/);
+                const rotation = currentRotation ? parseInt(currentRotation[1]) - 15 : -15;
+                sticker.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+            };
+
+            const rotateRight = document.createElement('button');
+            rotateRight.textContent = '↻';
+            rotateRight.classList.add('control-button');
+            rotateRight.onclick = () => {
+                const currentRotation = sticker.style.transform.match(/rotate\((\d+)deg\)/);
+                const rotation = currentRotation ? parseInt(currentRotation[1]) + 15 : 15;
+                sticker.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+            };
+
+            controls.appendChild(increaseSize);
+            controls.appendChild(decreaseSize);
+            controls.appendChild(rotateLeft);
+            controls.appendChild(rotateRight);
+
+            return controls;
         }
     </script>
 </body>
