@@ -46,10 +46,11 @@
         .home-button {
             position: absolute;
             top: 20px;
-            left: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 10px 20px;
-            background-color: #D8E2DC;
-            color: black;
+            background-color: #8FBC8F; /* Dark Pistachio Green */
+            color: white;
             font-size: 1rem;
             border-radius: 5px;
             cursor: pointer;
@@ -57,7 +58,7 @@
         }
 
         .home-button:hover {
-            background-color: #A3C9A8;
+            background-color: #6B8E23; /* Olive Drab */
         }
     </style>
 </head>
@@ -66,17 +67,17 @@
     <a href="home.html" class="home-button">Home</a>
 
     <!-- Music Player -->
-    <img id="play-pause" src="play.png" alt="Play Button" onclick="togglePlayPause()">
+    <img id="play-pause" src="images/play.png" alt="Play Button" onclick="togglePlayPause()">
     <select id="track-selector" onchange="changeTrack()">
-        <option value="Goblin_Tinker_Soldier_Spy.mp3">Track 1</option>
-        <option value="Island_Meet_and_Greet.mp3">Track 2</option>
-        <option value="Magic_Scout_Cottages.mp3">Track 3</option>
-        <option value="Night_in_Venice.mp3">Track 4</option>
-        <option value="Pleasant_Porridge.mp3">Track 5</option>
+        <option value="music/Goblin_Tinker_Soldier_Spy.mp3">Track 1</option>
+        <option value="music/Island_Meet_and_Greet.mp3">Track 2</option>
+        <option value="music/Magic_Scout_Cottages.mp3">Track 3</option>
+        <option value="music/Night_in_Venice.mp3">Track 4</option>
+        <option value="music/Pleasant_Porridge.mp3">Track 5</option>
     </select>
 
     <audio id="audio-player">
-        <source src="Goblin_Tinker_Soldier_Spy.mp3" type="audio/mpeg">
+        <source src="music/Goblin_Tinker_Soldier_Spy.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -90,10 +91,10 @@
         function togglePlayPause() {
             if (isPlaying) {
                 audioPlayer.pause();
-                playPauseButton.src = 'play.png';
+                playPauseButton.src = 'images/play.png';
             } else {
                 audioPlayer.play();
-                playPauseButton.src = 'pause.png';
+                playPauseButton.src = 'images/pause.png';
             }
             isPlaying = !isPlaying;
         }
@@ -111,7 +112,7 @@
         // Automatically switch icon when the track ends
         audioPlayer.addEventListener('ended', () => {
             isPlaying = false;
-            playPauseButton.src = 'play.png';
+            playPauseButton.src = 'images/play.png';
         });
     </script>
 </body>
