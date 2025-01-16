@@ -1,1 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigOctopus - Sock Designer</title>
 
+    <!-- Font Links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Gamja Flower', cursive;
+            background-color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            position: relative;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #B9E0B1;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .home-button:hover {
+            background-color: #A0D79B;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            height: calc(100vh - 100px); /* Space for toolbar */
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            padding: 10px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: fixed;
+            top: 60px;
+            left: 10px;
+            height: calc(100vh - 100px);
+        }
+
+        .sidebar button {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #B9E0B1;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+
+        .sidebar button:hover {
+            background-color: #A0D79B;
+        }
+
+        .stockings-container {
+            position: relative;
+            margin-left: 220px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .stockings-container img {
+            width: 300px;
+            cursor: pointer;
+        }
+
+        .toolbox {
+            position: absolute;
+            top: 20%;
+            right: 10px;
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            flex-direction: column;
+        }
+
+        .toolbox img {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .toolbox.active {
+            display: flex;
+        }
+
+        .bottom-toolbar {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .bottom-toolbar img {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .asset {
+            position: absolute;
+            cursor: pointer;
+            user-select: none;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Home Button -->
+    <button class="home-button" onclick="goHome()">Home</button>
+
+    <!-- Sidebar to change background color -->
+    <div class="sidebar">
+        <button onclick="changeBackgroundColor('white')">White</button>
+        <button onclick="changeBackgroundColor('lightblue')">Light Blue</button>
+        <button onclick="changeBackgroundColor('lightgreen')">Light Green</button>
+        <button onclick="changeBackgroundColor('lightpink')">Light Pink</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Stockings Image -->
+        <div class="stockings-container">
+            <img src="images/stockings.png" alt="Stockings Base" id="stockings" class="draggable" />
+        </div>
+
+        <!-- Expandable Tool Bar for Stockings -->
+        <div id="stockings-toolbar" class="toolbox">
+            <img src="images/stockings (1).png" alt="Stocking 1" class="draggable" />
+            <img src="images/stockings (2).png" alt="Stocking 2" class="draggable" />
+            <img src="images/stockings (3).png" alt="Stocking 3" class="draggable" />
+            <img src="images/stockings (4).png" alt="Stocking 4" class="draggable" />
+            <img src="images/stockings (5).png" alt="Stocking 5" class="draggable" />
+        </div>
+    </div>
+
+    <!-- Bottom Toolbar for Assets -->
+    <div class="bottom-toolbar">
+        <img src="images/heart.png" alt="Heart" onclick="addAsset('heart')" />
+        <img src="images/new-moon.png" alt="New Moon" onclick="addAsset('new-moon')" />
+        <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Lines" onclick="addAsset('zigzag-lines')" />
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to go back to home page
+        function goHome() {
+            window.location.href = 'home.html'; // Redirect to home page
+        }
+
+        // Function to change the background color of the page
+        function changeBackgroundColor(color) {
+            document.body.style.backgroundColor = color;
+        }
+
+        // Draggable functionality
+        const draggableItems = document.querySelectorAll('.draggable');
+        draggableItems.forEach(item => {
+            item.addEventListener('mousedown', startDrag);
+        });
+
+        let draggedItem = null;
+        let offsetX, offsetY;
+
+        function startDrag(e) {
+            draggedItem = e.target;
+            offsetX = e.clientX - draggedItem.getBoundingClientRect().left;
+            offsetY = e.clientY - draggedItem.getBoundingClientRect().top;
+            window.addEventListener('mousemove', drag);
+            window.addEventListener('mouseup', stopDrag);
+        }
+
+        function drag(e) {
+            if (draggedItem) {
+                draggedItem.style.position = 'absolute';
+                draggedItem.style.left = `${e.clientX - offsetX}px`;
+                draggedItem.style.top = `${e.clientY - offsetY}px`;
+            }
+        }
+
+        function stopDrag() {
+            window.removeEventListener('mousemove', drag);
+            window.removeEventListener('mouseup', stopDrag);
+            draggedItem = null;
+        }
+
+        // Add assets to the screen
+        function addAsset(assetType) {
+            let assetImage = '';
+
+            if (assetType === 'heart') {
+                assetImage = 'images/heart.png';
+            } else if (assetType === 'new-moon') {
+                assetImage = 'images/new-moon.png';
+            } else if (assetType === 'zigzag-lines') {
+                assetImage = 'images/zigzag-lines-in-side-view-position.png';
+            }
+
+            const asset = document.createElement('img');
+            asset.src = assetImage;
+            asset.className = 'asset draggable';
+            asset.style.left = '50%';
+            asset.style.top = '50%';
+
+            document.body.appendChild(asset);
+
+            // Enable drag for the new asset
+            asset.addEventListener('mousedown', startDrag);
+        }
+
+        // Show the toolbox for stockings
+        document.getElementById('stockings-toolbar').classList.add('active');
+    </script>
+</body>
+</html>
