@@ -1,1 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm Player</title>
 
+    <!-- Font Links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Gamja Flower', cursive;
+            background-color: black; /* Black Background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #gramophone-text {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: white; /* White text */
+        }
+
+        #play-pause {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        select {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: black;
+        }
+
+        .home-button {
+            margin-top: 40px; /* Position home button lower than dropdown */
+            padding: 10px 20px;
+            background-color: #E6A8B7; /* Previous Home Button Color */
+            color: black;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #F7F7F7; /* Slightly lighter on hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Calm Player -->
+    <div id="gramophone-text">Gramophone</div>
+    <img id="play-pause" src="images/play.png" alt="Play Button" onclick="togglePlayPause()">
+    <select id="track-selector" onchange="changeTrack()">
+        <option value="music/forest-river-flow-birdsong-gfx-sounds-1-1-02-31.mp3">Mix 1</option>
+        <option value="music/meadow-ambience-in-springtime-ivo-vicic-1-02-32.mp3">Mix 2</option>
+        <option value="music/swollen-river-flow-close-ivo-vicic-1-02-25.mp3">Mix 3</option>
+    </select>
+
+    <!-- Home Button -->
+    <a href="home.html" class="home-button">Home</a>
+
+    <!-- Audio Player -->
+    <audio id="audio-player">
+        <source id="audio-source" src="music/forest-river-flow-birdsong-gfx-sounds-1-1-02-31.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const audioPlayer = document.getElementById('audio-player');
+        const audioSource = document.getElementById('audio-source');
+        const playPauseButton = document.getElementById('play-pause');
+        const trackSelector = document.getElementById('track-selector');
+        let isPlaying = false;
+
+        // Toggle Play and Pause
+        function togglePlayPause() {
+            if (isPlaying) {
+                audioPlayer.pause();
+                playPauseButton.src = 'images/play.png';
+            } else {
+                audioPlayer.play();
+                playPauseButton.src = 'images/pause.png';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Change Track
+        function changeTrack() {
+            const selectedTrack = trackSelector.value;
+            audioSource.src = selectedTrack; // Update the audio source to the selected track
+            audioPlayer.load(); // Load the selected track
+            audioPlayer.play(); // Automatically play the new track
+            playPauseButton.src = 'images/pause.png'; // Change button to pause icon
+            isPlaying = true; // Set playing state to true
+        }
+
+        // Reset to play icon when the track ends
+        audioPlayer.addEventListener('ended', () => {
+            isPlaying = false;
+            playPauseButton.src = 'images/play.png';
+        });
+    </script>
+</body>
+</html>
