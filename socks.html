@@ -80,6 +80,7 @@
             position: absolute;
             cursor: grab;
             transition: transform 0.2s ease;
+            transform-origin: top left; /* Adjust position relative to top-left corner */
         }
 
         .immobile {
@@ -167,7 +168,7 @@
             sticker.style.width = '100px';
             sticker.style.top = '50%';
             sticker.style.left = '50%';
-            sticker.style.transform = 'translate(-50%, -50%)';
+            sticker.style.transform = 'translate(-50%, -50%)'; // Will be adjusted relative to top-left
             document.body.appendChild(sticker);
 
             // Show controls for adjustable stickers
