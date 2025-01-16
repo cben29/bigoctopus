@@ -143,15 +143,26 @@
             signupMessage.textContent = '';
         }
 
-        // Sign-Up Function: Save username and password in localStorage
+        // Sign-Up Function: Save new account in localStorage
         function signUp() {
             const username = document.getElementById('signup-username').value.trim();
             const password = document.getElementById('signup-password').value.trim();
             const signupMessage = document.getElementById('signup-message');
-
+            
             if (username && password) {
-                localStorage.setItem('username', username);
-                localStorage.setItem('password', password);
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Check if username already exists
+                if (users.some(user => user.username === username)) {
+                    signupMessage.textContent = 'Username already exists. Please choose another one.';
+                    signupMessage.className = 'message error';
+                    return;
+                }
+                
+                // Save the new user to the users array
+                users.push({ username: username, password: password });
+                localStorage.setItem('users', JSON.stringify(users));
+
                 signupMessage.textContent = 'Sign-up successful! Please log in.';
                 signupMessage.className = 'message success';
                 toggleAuthForms(); // Switch to login form
@@ -167,10 +178,12 @@
             const password = document.getElementById('login-password').value.trim();
             const loginMessage = document.getElementById('login-message');
 
-            const storedUsername = localStorage.getItem('username');
-            const storedPassword = localStorage.getItem('password');
-
-            if (username === storedUsername && password === storedPassword) {
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Find the user with the matching username and password
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
                 window.location.href = 'home.html'; // Redirect to home page
             } else {
                 loginMessage.textContent = 'Incorrect username or password.';
