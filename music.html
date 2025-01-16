@@ -44,12 +44,9 @@
         }
 
         .home-button {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-top: 40px; /* Position home button lower than dropdown */
             padding: 10px 20px;
-            background-color: #E6A8B7;
+            background-color: #E6A8B7; /* Previous Home Button Color */
             color: black;
             font-size: 1rem;
             border-radius: 5px;
@@ -58,14 +55,11 @@
         }
 
         .home-button:hover {
-            background-color: #F7F7F7;
+            background-color: #F7F7F7; /* Slightly lighter on hover */
         }
     </style>
 </head>
 <body>
-    <!-- Home Button -->
-    <a href="home.html" class="home-button">Home</a>
-
     <!-- Music Player -->
     <img id="play-pause" src="images/play.png" alt="Play Button" onclick="togglePlayPause()">
     <select id="track-selector" onchange="changeTrack()">
@@ -75,6 +69,9 @@
         <option value="music/Night in Venice.mp3">Track 4</option>
         <option value="music/Pleasant Porridge.mp3">Track 5</option>
     </select>
+
+    <!-- Home Button -->
+    <a href="home.html" class="home-button">Home</a>
 
     <!-- Audio Player -->
     <audio id="audio-player">
