@@ -1,1 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigOctopus - Credits</title>
 
+    <!-- Font Links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Gamja Flower', cursive;
+            background-color: black;
+            color: white;
+            padding: 20px;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #B9E0B1;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .home-button:hover {
+            background-color: #A0D79B;
+        }
+
+        .credits-container {
+            max-width: 800px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .credits-container a {
+            color: #B9E0B1;
+            text-decoration: none;
+        }
+
+        .credits-container a:hover {
+            text-decoration: underline;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .credit-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Home Button -->
+    <button class="home-button" onclick="goHome()">Home</button>
+
+    <h1>Credits</h1>
+
+    <div class="credits-container">
+        <!-- Image Credits -->
+        <div class="section-title">Image Credits:</div>
+        <div class="credit-item">
+            <a href="https://www.flaticon.com/free-stickers/autumn" title="autumn stickers">Autumn stickers created by Ina Mella - Flaticon</a>
+        </div>
+        <div class="credit-item">
+            <a href="https://www.flaticon.com/free-stickers/boho" title="boho stickers">Boho stickers created by Ina Mella - Flaticon</a>
+        </div>
+        <div class="credit-item">
+            <a href="https://www.flaticon.com/free-stickers/candle" title="candle stickers">Candle stickers created by Ina Mella - Flaticon</a>
+        </div>
+        <div class="credit-item">
+            <a href="https://www.flaticon.com/free-stickers/christmas" title="christmas stickers">Christmas stickers created by Ina Mella - Flaticon</a>
+        </div>
+        <div class="credit-item">
+            <a href="https://www.flaticon.com/free-icons/circle" title="circle icons">Circle icons created by Freepik - Flaticon</a>
+        </div>
+        <div class="credit-item">
+            <a href="https://www.flaticon.com/free-icons/zigzag" title="zigzag icons">Zigzag icons created by Freepik - Flaticon</a>
+        </div>
+        <div class="credit-item">
+            <a href="https://www.flaticon.com/free-icons/heart" title="heart icons">Heart icons created by Freepik - Flaticon</a>
+        </div>
+
+        <!-- Music Credits -->
+        <div class="section-title">Music Credits:</div>
+        <div class="credit-item">
+            Goblin_Tinker_Soldier_Spy Kevin MacLeod (incompetech.com) <br>
+            Licensed under Creative Commons: By Attribution 4.0 <br>
+            <a href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a>
+        </div>
+        <div class="credit-item">
+            Island Meet and Greet Kevin MacLeod (incompetech.com) <br>
+            Licensed under Creative Commons: By Attribution 4.0 <br>
+            <a href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a>
+        </div>
+        <div class="credit-item">
+            Magic Scout - Cottages Kevin MacLeod (incompetech.com) <br>
+            Licensed under Creative Commons: By Attribution 4.0 <br>
+            <a href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a>
+        </div>
+        <div class="credit-item">
+            Night in Venice Kevin MacLeod (incompetech.com) <br>
+            Licensed under Creative Commons: By Attribution 4.0 <br>
+            <a href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a>
+        </div>
+        <div class="credit-item">
+            Pleasant Porridge Kevin MacLeod (incompetech.com) <br>
+            Licensed under Creative Commons: By Attribution 4.0 <br>
+            <a href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a>
+        </div>
+        <div class="credit-item">
+            Swollen river flow (Close) Ivo Vecic (uppbeat.io)
+        </div>
+        <div class="credit-item">
+            Meadow ambience in springtime Ivo Vecic (uppbeat.io)
+        </div>
+        <div class="credit-item">
+            Forest river flow & birdsong GFX Sounds (uppbeat.io)
+        </div>
+    </div>
+
+    <script>
+        function goHome() {
+            window.location.href = 'home.html'; // Redirect to home page
+        }
+    </script>
+</body>
+</html>
