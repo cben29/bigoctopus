@@ -187,6 +187,12 @@
             const password = document.getElementById('login-password').value.trim();
             const message = document.getElementById('login-message');
 
+            if (!username || !password) {
+                message.textContent = "Both fields are required.";
+                message.className = "message error";
+                return;
+            }
+
             auth.signInWithEmailAndPassword(`${username}@big-octopus.com`, password)
                 .then(() => {
                     message.textContent = "Login successful!";
