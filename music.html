@@ -66,7 +66,7 @@
     <a href="home.html" class="home-button">Home</a>
 
     <!-- Music Player -->
-    <img id="play-pause" src="play.png" alt="Play Button" onclick="togglePlayPause()">
+    <img id="play-pause" src="images/play.png" alt="Play Button" onclick="togglePlayPause()">
     <select id="track-selector" onchange="changeTrack()">
         <option value="music/Goblin_Tinker_Soldier_Spy.mp3">Track 1</option>
         <option value="music/Island_Meet_and_Greet.mp3">Track 2</option>
@@ -95,10 +95,10 @@
         function togglePlayPause() {
             if (isPlaying) {
                 audioPlayer.pause();
-                playPauseButton.src = 'play.png';
+                playPauseButton.src = 'images/play.png';
             } else {
                 audioPlayer.play();
-                playPauseButton.src = 'pause.png';
+                playPauseButton.src = 'images/pause.png';
             }
             isPlaying = !isPlaying;
         }
@@ -109,14 +109,14 @@
             audioPlayer.src = selectedTrack; // Update the audio source to the selected track
             audioPlayer.load(); // Load the selected track
             audioPlayer.play(); // Automatically play the new track
-            playPauseButton.src = 'pause.png'; // Change button to pause icon
+            playPauseButton.src = 'images/pause.png'; // Change button to pause icon
             isPlaying = true; // Set playing state to true
         }
 
         // Reset to play icon when the track ends
         audioPlayer.addEventListener('ended', () => {
             isPlaying = false;
-            playPauseButton.src = 'play.png';
+            playPauseButton.src = 'images/play.png';
         });
     </script>
 </body>
