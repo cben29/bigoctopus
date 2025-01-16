@@ -12,13 +12,97 @@
 
     <!-- Link to External Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        body {
+            font-family: 'Gamja Flower', cursive;
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #A8D8A0;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .home-button:hover {
+            background-color: #94C88F;
+        }
+
+        h1 {
+            color: #F0E68C;
+            text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .form-container input {
+            margin: 10px;
+            padding: 10px;
+            font-size: 1rem;
+            width: 250px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container button {
+            background-color: #A8D8A0;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #94C88F;
+        }
+
+        .notes-container {
+            max-height: 60vh;
+            overflow-y: auto;
+            width: 80%;
+            margin-top: 20px;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .note {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .username {
+            font-weight: bold;
+            color: #F0E68C;
+        }
+    </style>
 </head>
 <body>
-    <!-- Audio Player -->
-    <audio id="background-audio" loop autoplay>
-        <source src="music/Midnight Tale.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
 
     <!-- Home Button -->
     <button class="home-button" onclick="goHome()">Home</button>
