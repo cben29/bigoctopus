@@ -17,7 +17,7 @@
         body {
             font-family: 'Gamja Flower', cursive;
             background-color: #C9E4C5; /* Pastel Pistachio Green */
-            color: white;
+            color: black;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,11 +46,10 @@
         .home-button {
             position: absolute;
             top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 20px;
             padding: 10px 20px;
-            background-color: #8FBC8F; /* Dark Pistachio Green */
-            color: white;
+            background-color: #D8E2DC;
+            color: black;
             font-size: 1rem;
             border-radius: 5px;
             cursor: pointer;
@@ -58,7 +57,7 @@
         }
 
         .home-button:hover {
-            background-color: #6B8E23; /* Olive Drab */
+            background-color: #A3C9A8;
         }
     </style>
 </head>
@@ -67,17 +66,17 @@
     <a href="home.html" class="home-button">Home</a>
 
     <!-- Music Player -->
-    <img id="play-pause" src="images/play.png" alt="Play Button" onclick="togglePlayPause()">
+    <img id="play-pause" src="play.png" alt="Play Button" onclick="togglePlayPause()">
     <select id="track-selector" onchange="changeTrack()">
-        <option value="music/Goblin_Tinker_Soldier_Spy.mp3">Track 1</option>
-        <option value="music/Island_Meet_and_Greet.mp3">Track 2</option>
+        <option value="Goblin_Tinker_Soldier_Spy.mp3">Track 1</option>
+        <option value="Island_Meet_and_Greet.mp3">Track 2</option>
         <option value="music/Magic_Scout_Cottages.mp3">Track 3</option>
         <option value="music/Night_in_Venice.mp3">Track 4</option>
         <option value="music/Pleasant_Porridge.mp3">Track 5</option>
     </select>
 
     <audio id="audio-player">
-        <source src="music/Goblin_Tinker_Soldier_Spy.mp3" type="audio/mpeg">
+        <source src="Goblin_Tinker_Soldier_Spy.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -91,10 +90,10 @@
         function togglePlayPause() {
             if (isPlaying) {
                 audioPlayer.pause();
-                playPauseButton.src = 'images/play.png';
+                playPauseButton.src = 'play.png';
             } else {
                 audioPlayer.play();
-                playPauseButton.src = 'images/pause.png';
+                playPauseButton.src = 'pause.png';
             }
             isPlaying = !isPlaying;
         }
@@ -102,17 +101,17 @@
         // Change Track
         function changeTrack() {
             const selectedTrack = trackSelector.value;
-            audioPlayer.src = selectedTrack;
-            audioPlayer.load();
-            if (isPlaying) {
-                audioPlayer.play();
-            }
+            audioPlayer.src = selectedTrack; // Update the audio source to the selected track
+            audioPlayer.load(); // Load the selected track
+            audioPlayer.play(); // Automatically play the new track
+            playPauseButton.src = 'pause.png'; // Change button to pause icon
+            isPlaying = true; // Set playing state to true
         }
 
-        // Automatically switch icon when the track ends
+        // Reset to play icon when the track ends
         audioPlayer.addEventListener('ended', () => {
             isPlaying = false;
-            playPauseButton.src = 'images/play.png';
+            playPauseButton.src = 'play.png';
         });
     </script>
 </body>
