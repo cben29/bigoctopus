@@ -52,6 +52,7 @@
             padding: 10px 20px;
             border-radius: 5px;
             font-size: 1rem;
+            font-family: 'Gamja Flower', cursive; /* Custom font for the logout button */
             cursor: pointer;
         }
 
@@ -67,6 +68,10 @@
             color: #B9E0B1; /* Default green color */
             margin-bottom: 2rem;
             transition: color 0.3s;
+        }
+
+        .toggle-music-button.pink {
+            color: #F7B7B7; /* Pastel pink for the music note */
         }
     </style>
 </head>
@@ -106,11 +111,11 @@
             if (isManaTwoPlaying) {
                 // Switch to Heavy Heart
                 audioElement.src = 'music/Heavy Heart.mp3';
-                musicToggle.style.color = '#F7B7B7'; // Pink color
+                musicToggle.classList.add('pink'); // Change to pastel pink
             } else {
                 // Switch to Mana Two - Part 1
                 audioElement.src = 'music/Mana Two - Part 1.mp3';
-                musicToggle.style.color = '#B9E0B1'; // Green color
+                musicToggle.classList.remove('pink'); // Change back to green
             }
             audioElement.play();
             isManaTwoPlaying = !isManaTwoPlaying;
