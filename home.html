@@ -10,9 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS Link -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
@@ -39,14 +36,14 @@
         }
 
         .sticker {
-            width: 140px; /* Increased size */
-            height: 140px; /* Increased size */
+            width: 140px;
+            height: 140px;
             cursor: pointer;
             transition: transform 0.3s;
         }
 
         .sticker:hover {
-            transform: scale(1.1); /* Slight zoom effect on hover */
+            transform: scale(1.1);
         }
 
         .logout-button {
@@ -63,36 +60,29 @@
         }
 
         .toggle-music-button {
-            background-color: transparent;
+            background: none;
+            border: none;
             cursor: pointer;
-            margin-bottom: 2rem;
-        }
-
-        .toggle-music-button::before {
-            content: "\266B"; /* Unicode for a musical note symbol */
             font-size: 3rem;
-            color: green; /* Default to green (for Mana Two - Part 1) */
+            color: #B9E0B1; /* Default green color */
+            margin-bottom: 2rem;
+            transition: color 0.3s;
         }
     </style>
 </head>
 <body>
     <!-- Music Toggle Button -->
-    <button class="toggle-music-button" onclick="toggleMusic()"></button>
+    <button class="toggle-music-button" id="music-toggle" onclick="toggleMusic()">&#9835;</button>
 
     <!-- Welcome Message -->
     <h1>Welcome Home</h1>
 
     <!-- Stickers Section -->
     <div class="stickers-container">
-        <!-- Yarn Ball on the far left -->
         <img src="images/yarn-ball.png" alt="Yarn Ball Sticker" class="sticker" onclick="goToSocksPage()" />
-        
-        <!-- Original Stickers in the middle -->
         <img src="images/plant.png" alt="Plant Sticker" class="sticker" onclick="goToCreditsPage()" />
         <img src="images/cookie.png" alt="Cookie Sticker" class="sticker" onclick="goToBoardPage()" />
         <img src="images/phone.png" alt="Phone Sticker" class="sticker" onclick="goToMusicPage()" />
-        
-        <!-- Candle on the far right -->
         <img src="images/candle.png" alt="Candle Sticker" class="sticker" onclick="goToCalmPage()" />
     </div>
 
@@ -107,21 +97,23 @@
 
     <!-- JavaScript -->
     <script>
-        var audioElement = document.getElementById('background-audio');
-        var isManaTwoPlaying = true;
+        const audioElement = document.getElementById('background-audio');
+        const musicToggle = document.getElementById('music-toggle');
+
+        let isManaTwoPlaying = true;
 
         function toggleMusic() {
             if (isManaTwoPlaying) {
-                // Change to Heavy Heart
+                // Switch to Heavy Heart
                 audioElement.src = 'music/Heavy Heart.mp3';
-                document.querySelector('.toggle-music-button::before').style.color = '#B9E0B1'; // Change to pink
+                musicToggle.style.color = '#FF69B4'; // Pink color
             } else {
-                // Change to Mana Two - Part 1
+                // Switch to Mana Two - Part 1
                 audioElement.src = 'music/Mana Two - Part 1.mp3';
-                document.querySelector('.toggle-music-button::before').style.color = 'green'; // Change to green
+                musicToggle.style.color = '#B9E0B1'; // Green color
             }
-            audioElement.play(); // Play the new music
-            isManaTwoPlaying = !isManaTwoPlaying; // Toggle the music state
+            audioElement.play();
+            isManaTwoPlaying = !isManaTwoPlaying;
         }
 
         function goToMusicPage() {
@@ -133,15 +125,15 @@
         }
 
         function goToCalmPage() {
-            window.location.href = 'calm.html'; // Redirect to calm.html
+            window.location.href = 'calm.html';
         }
 
         function goToSocksPage() {
-            window.location.href = 'socks.html'; // Redirect to socks.html
+            window.location.href = 'socks.html';
         }
 
         function goToCreditsPage() {
-            window.location.href = 'credits.html'; // Redirect to credits.html
+            window.location.href = 'credits.html';
         }
 
         function logout() {
