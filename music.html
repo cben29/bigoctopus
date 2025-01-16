@@ -16,8 +16,8 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: #C9E4C5; /* Pastel Pistachio Green */
-            color: black;
+            background-color: black; /* Black Background */
+            color: white;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,8 +46,10 @@
         .home-button {
             position: absolute;
             top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 10px 20px;
-            background-color: #A3C9A8; /* Darker Pistachio Green */
+            background-color: #B9E0B1; /* Lighter Pistachio Green */
             color: black;
             font-size: 1rem;
             border-radius: 5px;
@@ -56,13 +58,13 @@
         }
 
         .home-button:hover {
-            background-color: #6B8E66; /* Even Darker Green for Hover */
+            background-color: #9CC49A; /* Slightly darker green on hover */
         }
     </style>
 </head>
 <body>
     <!-- Home Button -->
-    <a href="home.html" class="home-button" style="left: 50%; transform: translateX(-50%);">Home</a>
+    <a href="home.html" class="home-button">Home</a>
 
     <!-- Music Player -->
     <img id="play-pause" src="images/play.png" alt="Play Button" onclick="togglePlayPause()">
