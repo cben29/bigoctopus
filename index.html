@@ -164,6 +164,10 @@
                         }
                     });
 
+                    if (!response.ok) {
+                        throw new Error(`Error fetching data: ${response.statusText}`);
+                    }
+
                     const data = await response.json();
                     let users = [];
                     let sha = data.sha;
@@ -182,7 +186,7 @@
 
                     const updatedContent = btoa(JSON.stringify(users, null, 2));
 
-                    await fetch(API_URL, {
+                    const updateResponse = await fetch(API_URL, {
                         method: 'PUT',
                         headers: {
                             'Authorization': `token ${TOKEN}`,
@@ -194,6 +198,10 @@
                             sha: sha
                         })
                     });
+
+                    if (!updateResponse.ok) {
+                        throw new Error(`Error updating data: ${updateResponse.statusText}`);
+                    }
 
                     signupMessage.textContent = 'Sign-up successful! Please log in.';
                     signupMessage.className = 'message success';
@@ -223,6 +231,10 @@
                             'Authorization': `token ${TOKEN}`,
                         }
                     });
+
+                    if (!response.ok) {
+                        throw new Error(`Error fetching data: ${response.statusText}`);
+                    }
 
                     const data = await response.json();
                     const users = JSON.parse(atob(data.content));
