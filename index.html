@@ -166,6 +166,7 @@
 
                     const data = await response.json();
                     let users = [];
+                    let sha = data.sha;
 
                     if (data.content) {
                         users = JSON.parse(atob(data.content));
@@ -190,7 +191,7 @@
                         body: JSON.stringify({
                             message: 'Add new user',
                             content: updatedContent,
-                            sha: data.sha
+                            sha: sha
                         })
                     });
 
@@ -200,6 +201,7 @@
                 } catch (error) {
                     signupMessage.textContent = 'An error occurred. Please try again.';
                     signupMessage.className = 'message error';
+                    console.error(error); // Log the error for debugging
                 }
             } else {
                 signupMessage.textContent = 'Please fill in both fields.';
@@ -238,6 +240,7 @@
                 } catch (error) {
                     loginMessage.textContent = 'An error occurred. Please try again.';
                     loginMessage.className = 'message error';
+                    console.error(error); // Log the error for debugging
                 }
             } else {
                 loginMessage.textContent = 'Please fill in both fields.';
