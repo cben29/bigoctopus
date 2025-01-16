@@ -24,14 +24,9 @@
             justify-content: center;
         }
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
         .home-button {
             position: absolute;
-            top: 20px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             background-color: #B9E0B1;
@@ -73,11 +68,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Home Button -->
-    <button class="home-button" onclick="goHome()">Home</button>
-
-    <h1>Credits</h1>
 
     <div class="credits-container">
         <!-- Image Credits -->
@@ -141,6 +131,9 @@
             Forest river flow & birdsong GFX Sounds (uppbeat.io)
         </div>
     </div>
+
+    <!-- Home Button -->
+    <button class="home-button" onclick="goHome()">Home</button>
 
     <script>
         function goHome() {
