@@ -61,9 +61,26 @@
         .logout-button:hover {
             background-color: #A0D79B;
         }
+
+        .toggle-music-button {
+            background-color: #B9E0B1;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            cursor: pointer;
+        }
+
+        .toggle-music-button:hover {
+            background-color: #A0D79B;
+        }
     </style>
 </head>
 <body>
+    <!-- Music Toggle Button -->
+    <button class="toggle-music-button" onclick="toggleMusic()">Toggle Music</button>
+
     <!-- Welcome Message -->
     <h1>Welcome Home</h1>
 
@@ -92,6 +109,21 @@
 
     <!-- JavaScript -->
     <script>
+        var audioElement = document.getElementById('background-audio');
+        var isManaTwoPlaying = true;
+
+        function toggleMusic() {
+            if (isManaTwoPlaying) {
+                // Change to Heavy Heart
+                audioElement.src = 'music/Heavy Heart.mp3';
+            } else {
+                // Change to Mana Two - Part 1
+                audioElement.src = 'music/Mana Two - Part 1.mp3';
+            }
+            audioElement.play(); // Play the new music
+            isManaTwoPlaying = !isManaTwoPlaying; // Toggle the music state
+        }
+
         function goToMusicPage() {
             window.location.href = 'music.html';
         }
