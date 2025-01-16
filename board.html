@@ -128,13 +128,12 @@
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Firebase Setup (Modular) -->
-    <script type="module">
-        // Import Firebase App and Firebase Database functions
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js';
-        import { getDatabase, ref, push, onChildAdded } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js';
-
-        // Firebase configuration object
+    <!-- Firebase Setup -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
+    <script>
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBefs5OOTNg8DmhH9SQfpKjHBnETBnJlN8",
             authDomain: "bigoctopus-29453.firebaseapp.com",
@@ -147,13 +146,12 @@
         };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const notesRef = database.ref("notes");
 
-        // Create a reference to the "notes" section in Firebase
-        const notesRef = ref(database, 'notes');
-
-        // Function to post a new note
+        // Post a new note
         function postNote() {
             const username = document.getElementById("username").value.trim();
             const content = document.getElementById("note-content").value.trim();
@@ -163,24 +161,28 @@
                 return;
             }
 
-            // Push the new note to Firebase
-            push(notesRef, {
-                username: username,
-                content: content,
-                timestamp: Date.now()
-            });
+            // Check if the user is logged in (authenticated)
+            if (auth.currentUser) {
+                // Push the new note to Firebase
+                notesRef.push({
+                    username: username,
+                    content: content,
+                    timestamp: Date.now()
+                });
 
-            // Clear input fields
-            document.getElementById("username").value = "";
-            document.getElementById("note-content").value = "";
+                // Clear input fields
+                document.getElementById("username").value = "";
+                document.getElementById("note-content").value = "";
+            } else {
+                // Redirect to login page if not authenticated
+                window.location.href = 'login.html';  // Make sure your login page is named 'login.html'
+            }
         }
 
         // Display notes in real-time
-        const notesContainer = document.getElementById("notes-container");
-
-        // Listen for new notes added to Firebase
-        onChildAdded(notesRef, (snapshot) => {
+        notesRef.on("child_added", (snapshot) => {
             const note = snapshot.val();
+            const notesContainer = document.getElementById("notes-container");
 
             // Create note element
             const noteElement = document.createElement("div");
@@ -193,6 +195,11 @@
             notesContainer.appendChild(noteElement);
             notesContainer.scrollTop = notesContainer.scrollHeight; // Scroll to the latest note
         });
+
+        // Home redirection function
+        function goHome() {
+            window.location.href = 'home.html'; // Redirect to home page
+        }
     </script>
 </body>
 </html>
