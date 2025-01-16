@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigOctopus - Sock Designer</title>
+    <title>BigOctopus - Socks</title>
 
     <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,185 +14,179 @@
         body {
             font-family: 'Gamja Flower', cursive;
             background-color: black;
-            color: white;
             margin: 0;
-            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #F4A6C9; /* Pink color */
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: 'Gamja Flower', cursive;
+            cursor: pointer;
+        }
+
+        .home-button:hover {
+            background-color: #F2A0BC; /* Darker pink color */
+        }
+
+        /* Sidebars */
+        .left-sidebar, .right-sidebar {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 80%;
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin: 20px 0;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
+            justify-content: space-around;
             align-items: center;
-            width: 100%;
-            height: 100%;
         }
 
-        .sidebar {
-            width: 200px;
-            padding: 20px;
-            border-right: 2px solid white;
+        .left-sidebar {
+            left: 0;
         }
 
-        .sidebar img {
-            width: 100%;
+        .right-sidebar {
+            right: 0;
+        }
+
+        .sidebar-img {
+            width: 80%;
             cursor: pointer;
             margin-bottom: 10px;
         }
 
-        .main-area {
-            position: relative;
-            width: 70%;
-            height: 80vh;
-            background-color: black;
-        }
-
-        .main-area img {
+        /* Main Image */
+        .main-image {
             position: absolute;
-            cursor: move;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            height: 300px;
         }
 
-        .bottom-toolbar {
+        .sticker {
             position: absolute;
-            bottom: 0;
-            width: 100%;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            background-color: black;
-            border-top: 2px solid white;
-        }
-
-        .bottom-toolbar img {
-            width: 50px;
             cursor: pointer;
         }
 
         .size-scaler {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            width: 10px;
             background-color: white;
-            padding: 5px;
-            cursor: pointer;
-            border-radius: 5px;
+            cursor: ns-resize;
+            left: 50%;
+            transform: translateX(-50%);
         }
+
     </style>
 </head>
 <body>
 
-    <h1>Design Your Socks</h1>
+    <!-- Home Button -->
+    <button class="home-button" onclick="goHome()">Home</button>
 
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <img src="images/stockings (1).png" alt="Stocking 1" class="draggable" id="stocking1">
-            <img src="images/stockings (2).png" alt="Stocking 2" class="draggable" id="stocking2">
-            <img src="images/stockings (3).png" alt="Stocking 3" class="draggable" id="stocking3">
-            <img src="images/stockings (4).png" alt="Stocking 4" class="draggable" id="stocking4">
-            <img src="images/stockings (5).png" alt="Stocking 5" class="draggable" id="stocking5">
-        </div>
-
-        <!-- Main Area -->
-        <div class="main-area" id="mainArea"></div>
+    <!-- Left Sidebar -->
+    <div class="left-sidebar">
+        <img class="sidebar-img" src="images/new-moon.png" alt="Moon Sticker" onclick="createLeftSticker('images/new-moon.png')">
+        <img class="sidebar-img" src="images/heart.png" alt="Heart Sticker" onclick="createLeftSticker('images/heart.png')">
+        <img class="sidebar-img" src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" onclick="createLeftSticker('images/zigzag-lines-in-side-view-position.png')">
     </div>
 
-    <!-- Bottom Toolbar -->
-    <div class="bottom-toolbar">
-        <img src="images/heart.png" alt="Heart Sticker" class="draggable sticker" id="heart">
-        <img src="images/new-moon.png" alt="Moon Sticker" class="draggable sticker" id="moon">
-        <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" class="draggable sticker" id="zigzag">
+    <!-- Right Sidebar -->
+    <div class="right-sidebar">
+        <img class="sidebar-img" src="images/stockings (1).png" alt="Stocking 1" onclick="createRightSticker('images/stockings (1).png')">
+        <img class="sidebar-img" src="images/stockings (2).png" alt="Stocking 2" onclick="createRightSticker('images/stockings (2).png')">
+        <img class="sidebar-img" src="images/stockings (3).png" alt="Stocking 3" onclick="createRightSticker('images/stockings (3).png')">
+        <img class="sidebar-img" src="images/stockings (4).png" alt="Stocking 4" onclick="createRightSticker('images/stockings (4).png')">
+        <img class="sidebar-img" src="images/stockings (5).png" alt="Stocking 5" onclick="createRightSticker('images/stockings (5).png')">
     </div>
 
-    <!-- Audio -->
-    <audio id="background-audio" autoplay loop>
-        <source src="music/Vibing Over Venus.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+    <!-- Main Image -->
+    <img class="main-image" id="mainImage" src="images/stockings.png" alt="Stockings">
 
     <script>
-        const mainArea = document.getElementById('mainArea');
-
-        // Make elements draggable
-        function makeDraggable(element) {
-            let offsetX, offsetY;
-
-            element.addEventListener('mousedown', (e) => {
-                offsetX = e.clientX - element.getBoundingClientRect().left;
-                offsetY = e.clientY - element.getBoundingClientRect().top;
-
-                function moveAt(e) {
-                    element.style.left = `${e.clientX - offsetX}px`;
-                    element.style.top = `${e.clientY - offsetY}px`;
-                }
-
-                document.addEventListener('mousemove', moveAt);
-
-                element.addEventListener('mouseup', () => {
-                    document.removeEventListener('mousemove', moveAt);
-                });
-            });
+        // Function to redirect to home
+        function goHome() {
+            window.location.href = 'home.html';
         }
 
-        // Create the size scaler
-        function createSizeScaler(element) {
-            const scaler = document.createElement('div');
+        // Create sticker from right sidebar
+        function createRightSticker(src) {
+            let sticker = document.createElement('img');
+            sticker.src = src;
+            sticker.classList.add('sticker');
+            sticker.style.width = 'auto';
+            sticker.style.height = '300px';
+            sticker.style.top = '50%';
+            sticker.style.left = '50%';
+            sticker.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(sticker);
+        }
+
+        // Create sticker from left sidebar (with size scaler)
+        function createLeftSticker(src) {
+            let sticker = document.createElement('img');
+            sticker.src = src;
+            sticker.classList.add('sticker');
+            sticker.style.width = 'auto';
+            sticker.style.height = '100px';
+            sticker.style.top = '50%';
+            sticker.style.left = '50%';
+            sticker.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(sticker);
+
+            // Create the size scaler
+            let scaler = document.createElement('div');
             scaler.classList.add('size-scaler');
-            scaler.innerText = 'Resize';
-            element.appendChild(scaler);
+            scaler.style.top = `${sticker.offsetTop + sticker.offsetHeight / 2}px`;
+            scaler.style.height = '100px';
+            document.body.appendChild(scaler);
 
-            let initialWidth = element.offsetWidth;
-            let initialHeight = element.offsetHeight;
+            // Size scaling functionality
+            scaler.addEventListener('mousedown', (e) => {
+                document.addEventListener('mousemove', scaleSticker);
+                document.addEventListener('mouseup', () => {
+                    document.removeEventListener('mousemove', scaleSticker);
+                });
 
-            scaler.addEventListener('click', () => {
-                let newSize = prompt('Enter new size (width x height):', `${initialWidth} x ${initialHeight}`);
-                if (newSize) {
-                    const [newWidth, newHeight] = newSize.split('x').map(Number);
-                    element.style.width = `${newWidth}px`;
-                    element.style.height = `${newHeight}px`;
+                function scaleSticker(moveEvent) {
+                    let newHeight = moveEvent.clientY - sticker.offsetTop;
+                    sticker.style.height = `${newHeight}px`;
                 }
             });
+
+            // Make sticker draggable
+            sticker.addEventListener('mousedown', function (e) {
+                let shiftX = e.clientX - sticker.getBoundingClientRect().left;
+                let shiftY = e.clientY - sticker.getBoundingClientRect().top;
+
+                function moveSticker(moveEvent) {
+                    sticker.style.left = moveEvent.clientX - shiftX + 'px';
+                    sticker.style.top = moveEvent.clientY - shiftY + 'px';
+                }
+
+                document.addEventListener('mousemove', moveSticker);
+
+                sticker.onmouseup = function () {
+                    document.removeEventListener('mousemove', moveSticker);
+                    sticker.onmouseup = null;
+                };
+            });
         }
-
-        // Draggable stockings
-        document.querySelectorAll('.draggable').forEach((stocking) => {
-            makeDraggable(stocking);
-
-            stocking.addEventListener('click', (e) => {
-                const stockingClone = stocking.cloneNode(true);
-                stockingClone.style.position = 'absolute';
-                stockingClone.style.left = `${e.clientX - 50}px`;
-                stockingClone.style.top = `${e.clientY - 50}px`;
-                mainArea.appendChild(stockingClone);
-
-                makeDraggable(stockingClone);
-                createSizeScaler(stockingClone);
-            });
-        });
-
-        // Draggable stickers
-        document.querySelectorAll('.sticker').forEach((sticker) => {
-            sticker.addEventListener('click', (e) => {
-                const stickerClone = sticker.cloneNode(true);
-                stickerClone.style.position = 'absolute';
-                stickerClone.style.left = `${e.clientX - 25}px`;
-                stickerClone.style.top = `${e.clientY - 25}px`;
-                mainArea.appendChild(stickerClone);
-
-                makeDraggable(stickerClone);
-                createSizeScaler(stickerClone);
-            });
-        });
     </script>
 </body>
 </html>
