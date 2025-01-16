@@ -95,6 +95,22 @@
             color: white;
             font-size: 1rem;
         }
+
+        .guest-button {
+            margin-top: 20px;
+            background-color: #E6A8B7;
+            color: white;
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .guest-button:hover {
+            background-color: #F7B0C7;
+        }
     </style>
 </head>
 <body>
@@ -120,6 +136,9 @@
             <p class="mt-4">Already have an account? <span class="switch-auth" onclick="toggleAuthForms()">Login</span></p>
             <div id="signup-message" class="message"></div>
         </div>
+
+        <!-- Guest Login Button -->
+        <button class="guest-button" onclick="loginAsGuest()">Login as Guest</button>
     </div>
 
     <!-- Footer -->
@@ -129,6 +148,7 @@
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
@@ -145,6 +165,7 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const db = firebase.database();
 
         // Toggle between Login and Sign-Up forms
@@ -165,26 +186,18 @@
                 return;
             }
 
-            // Check if username already exists
-            const usernameRef = db.ref("users/" + username);
-            usernameRef.once("value", (snapshot) => {
-                if (snapshot.exists()) {
-                    message.textContent = "Username already taken.";
+            auth.createUserWithEmailAndPassword(`${username}@big-octopus.com`, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    db.ref("users/" + user.uid).set({ username });
+                    message.textContent = "Sign-up successful! Please log in.";
+                    message.className = "message success";
+                    toggleAuthForms();
+                })
+                .catch((error) => {
+                    message.textContent = error.message;
                     message.className = "message error";
-                } else {
-                    // Save username and password to Firebase Realtime Database
-                    db.ref("users/" + username).set({ password: password })
-                        .then(() => {
-                            message.textContent = "Sign-up successful! Please log in.";
-                            message.className = "message success";
-                            toggleAuthForms();
-                        })
-                        .catch((error) => {
-                            message.textContent = "Error during sign-up: " + error.message;
-                            message.className = "message error";
-                        });
-                }
-            });
+                });
         }
 
         // Login Function
@@ -199,24 +212,21 @@
                 return;
             }
 
-            // Retrieve the stored password for the entered username
-            const usernameRef = db.ref("users/" + username);
-            usernameRef.once("value", (snapshot) => {
-                if (snapshot.exists()) {
-                    const storedPassword = snapshot.val().password;
-                    if (storedPassword === password) {
-                        message.textContent = "Login successful!";
-                        message.className = "message success";
-                        window.location.href = "home.html"; // Redirect on successful login
-                    } else {
-                        message.textContent = "Incorrect password.";
-                        message.className = "message error";
-                    }
-                } else {
-                    message.textContent = "Username not found.";
+            auth.signInWithEmailAndPassword(`${username}@big-octopus.com`, password)
+                .then(() => {
+                    message.textContent = "Login successful!";
+                    message.className = "message success";
+                    window.location.href = "home.html";
+                })
+                .catch((error) => {
+                    message.textContent = error.message;
                     message.className = "message error";
-                }
-            });
+                });
+        }
+
+        // Guest Login Function
+        function loginAsGuest() {
+            window.location.href = "home.html";
         }
     </script>
 </body>
