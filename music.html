@@ -26,11 +26,17 @@
             margin: 0;
         }
 
+        #stereo-text {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: white; /* White text */
+        }
+
         #play-pause {
             width: 100px;
             height: 100px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         select {
@@ -61,6 +67,7 @@
 </head>
 <body>
     <!-- Music Player -->
+    <div id="stereo-text">Stereo</div>
     <img id="play-pause" src="images/play.png" alt="Play Button" onclick="togglePlayPause()">
     <select id="track-selector" onchange="changeTrack()">
         <option value="music/Goblin_Tinker_Soldier_Spy.mp3">Track 1</option>
