@@ -67,11 +67,16 @@
             font-size: 3rem;
             color: #B9E0B1; /* Default green color */
             margin-bottom: 2rem;
-            transition: color 0.3s;
+            transition: color 0.3s, transform 0.2s; /* Add transition for transform */
         }
 
         .toggle-music-button.pink {
             color: #F7B7B7; /* Pastel pink for the music note */
+        }
+
+        /* Enlarge the music note on hover */
+        .toggle-music-button:hover {
+            transform: scale(1.2); /* Slightly enlarge */
         }
     </style>
 </head>
