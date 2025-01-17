@@ -13,206 +13,159 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            background-color: black;
             margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             height: 100vh;
+        }
+
+        .main-container {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            background-color: white;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 120px;
+            background-color: #eaeaea;
+            border-radius: 15px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .left-sidebar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            height: calc(100% - 20px);
+        }
+
+        .right-sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            height: calc(100% - 20px);
+        }
+
+        .sticker {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .canvas {
+            flex-grow: 1;
             position: relative;
             overflow: hidden;
         }
 
-        .home-button {
+        .draggable {
             position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #A8D8A0; /* Pastel green color */
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-family: 'Gamja Flower', cursive;
-            cursor: pointer;
+            cursor: move;
         }
 
-        .home-button:hover {
-            background-color: #94C88F; /* Slightly darker green */
-        }
-
-        .left-sidebar, .right-sidebar {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 100px;
-            height: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .left-sidebar {
-            left: 0;
-        }
-
-        .right-sidebar {
-            right: 0;
-        }
-
-        .sidebar-img {
-            width: 80%;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .main-image {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: auto;
-            height: 300px;
-        }
-
-        .sticker {
-            position: absolute;
-            cursor: grab;
-            transition: transform 0.2s ease;
-            transform-origin: top left; /* Adjust position relative to top-left corner */
-        }
-
-        .immobile {
-            position: absolute;
-            width: auto;
-            height: 300px; /* Matches size of stockings.png */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none; /* Immobile stickers cannot be moved */
-        }
-
-        .controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-            flex-direction: column;
-        }
-
-        .control-label {
-            margin-bottom: 5px;
-        }
-
-        .slider {
-            margin: 5px;
-            width: 150px;
+        .selected {
+            outline: 2px dashed #888;
         }
     </style>
 </head>
 <body>
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar left-sidebar">
+            <img src="images/star.png" alt="Star Sticker" class="sticker" onclick="addSticker('left', this.src)">
+            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="addSticker('left', this.src)">
+        </div>
 
-    <!-- Audio Player -->
-    <audio id="background-audio" loop autoplay>
-        <source src="music/Vibing Over Venus.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+        <!-- Canvas -->
+        <div class="canvas" id="canvas"></div>
 
-    <!-- Home Button -->
-    <button class="home-button" onclick="goHome()">Home</button>
-
-    <!-- Left Sidebar -->
-    <div class="left-sidebar">
-        <img class="sidebar-img" src="images/new-moon.png" alt="Moon Sticker" onclick="createAdjustableSticker('images/new-moon.png')">
-        <img class="sidebar-img" src="images/heart.png" alt="Heart Sticker" onclick="createAdjustableSticker('images/heart.png')">
-        <img class="sidebar-img" src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" onclick="createAdjustableSticker('images/zigzag-lines-in-side-view-position.png')">
-    </div>
-
-    <!-- Right Sidebar -->
-    <div class="right-sidebar">
-        <img class="sidebar-img" src="images/stockings (1).png" alt="Stocking 1" onclick="createImmobileSticker('images/stockings (1).png')">
-        <img class="sidebar-img" src="images/stockings (2).png" alt="Stocking 2" onclick="createImmobileSticker('images/stockings (2).png')">
-        <img class="sidebar-img" src="images/stockings (3).png" alt="Stocking 3" onclick="createImmobileSticker('images/stockings (3).png')">
-        <img class="sidebar-img" src="images/stockings (4).png" alt="Stocking 4" onclick="createImmobileSticker('images/stockings (4).png')">
-        <img class="sidebar-img" src="images/stockings (5).png" alt="Stocking 5" onclick="createImmobileSticker('images/stockings (5).png')">
-    </div>
-
-    <!-- Main Image -->
-    <img class="main-image" id="mainImage" src="images/stockings.png" alt="Stockings">
-
-    <!-- Controls for Sticker -->
-    <div class="controls" id="controls">
-        <div class="control-label">Rotate:</div>
-        <input type="range" id="rotateSlider" class="slider" min="0" max="360" value="0">
-        
-        <div class="control-label">Resize:</div>
-        <input type="range" id="resizeSlider" class="slider" min="50" max="300" value="100">
+        <!-- Right Sidebar -->
+        <div class="sidebar right-sidebar">
+            <img src="images/circle.png" alt="Circle Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/square.png" alt="Square Sticker" class="sticker" onclick="addSticker('right', this.src)">
+        </div>
     </div>
 
     <script>
-        let currentSticker = null;
+        const canvas = document.getElementById("canvas");
+        let selectedSticker = null;
 
-        function goHome() {
-            window.location.href = 'home.html';
-        }
-
-        // Function to create adjustable stickers
-        function createAdjustableSticker(src) {
-            const sticker = document.createElement('img');
+        function addSticker(side, src) {
+            const sticker = document.createElement("img");
             sticker.src = src;
-            sticker.classList.add('sticker');
-            sticker.style.width = '100px';
-            sticker.style.top = '50%';
-            sticker.style.left = '50%';
-            sticker.style.transform = 'translate(-50%, -50%)'; // Will be adjusted relative to top-left
-            document.body.appendChild(sticker);
+            sticker.className = "draggable";
+            sticker.style.zIndex = side === "left" ? "2" : "1";
 
-            // Show controls for adjustable stickers
-            document.getElementById('controls').style.display = 'flex';
-            currentSticker = sticker;
+            // Add event listeners for sticker manipulation
+            sticker.addEventListener("mousedown", selectSticker);
+            sticker.addEventListener("dblclick", resizeSticker);
 
-            // Drag functionality for adjustable stickers
-            sticker.addEventListener('mousedown', function (e) {
-                let shiftX = e.clientX - sticker.getBoundingClientRect().left;
-                let shiftY = e.clientY - sticker.getBoundingClientRect().top;
+            // Append to canvas
+            canvas.appendChild(sticker);
 
-                function moveSticker(event) {
-                    sticker.style.left = event.clientX - shiftX + 'px';
-                    sticker.style.top = event.clientY - shiftY + 'px';
-                }
-
-                document.addEventListener('mousemove', moveSticker);
-
-                document.addEventListener('mouseup', function () {
-                    document.removeEventListener('mousemove', moveSticker);
-                }, { once: true });
-            });
-
-            // Rotate functionality
-            document.getElementById('rotateSlider').addEventListener('input', function (e) {
-                const rotationValue = e.target.value;
-                sticker.style.transform = `translate(-50%, -50%) rotate(${rotationValue}deg)`;
-            });
-
-            // Resize functionality
-            document.getElementById('resizeSlider').addEventListener('input', function (e) {
-                const sizeValue = e.target.value;
-                sticker.style.width = sizeValue + 'px';
-                sticker.style.height = 'auto'; // Maintain aspect ratio
-            });
+            // Make it draggable
+            makeDraggable(sticker);
         }
 
-        // Function to create immobile stickers
-        function createImmobileSticker(src) {
-            const sticker = document.createElement('img');
-            sticker.src = src;
-            sticker.classList.add('sticker', 'immobile');
-            document.body.appendChild(sticker);
+        function selectSticker(event) {
+            // Deselect other stickers
+            if (selectedSticker) selectedSticker.classList.remove("selected");
+
+            selectedSticker = event.target;
+            selectedSticker.classList.add("selected");
         }
+
+        function resizeSticker() {
+            if (!selectedSticker) return;
+
+            // Increase the size of the selected sticker
+            const currentWidth = selectedSticker.offsetWidth;
+            selectedSticker.style.width = currentWidth * 1.2 + "px";
+        }
+
+        function makeDraggable(sticker) {
+            let offsetX, offsetY;
+
+            sticker.addEventListener("mousedown", (event) => {
+                offsetX = event.clientX - sticker.offsetLeft;
+                offsetY = event.clientY - sticker.offsetTop;
+
+                document.addEventListener("mousemove", moveSticker);
+                document.addEventListener("mouseup", stopDrag);
+            });
+
+            function moveSticker(event) {
+                sticker.style.left = event.clientX - offsetX + "px";
+                sticker.style.top = event.clientY - offsetY + "px";
+            }
+
+            function stopDrag() {
+                document.removeEventListener("mousemove", moveSticker);
+                document.removeEventListener("mouseup", stopDrag);
+            }
+        }
+
+        // Deselect sticker when clicking on the canvas
+        canvas.addEventListener("click", (event) => {
+            if (event.target === canvas) {
+                if (selectedSticker) selectedSticker.classList.remove("selected");
+                selectedSticker = null;
+            }
+        });
     </script>
 </body>
 </html>
