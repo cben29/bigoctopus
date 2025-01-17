@@ -10,32 +10,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="styles.css">
-
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background-color: black;
+            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             height: 100vh;
         }
 
         h1 {
             margin: 20px 0;
+            color: white;
         }
 
         .home-button {
             position: absolute;
             top: 10px;
-            left: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 10px 15px;
-            font-size: 16px;
+            font-size: 18px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+        }
+
+        .home-button:hover {
+            background-color: #ff45a1;
         }
 
         .form-container {
@@ -46,7 +55,7 @@
             margin: 5px;
             padding: 10px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: none;
             border-radius: 5px;
             width: 250px;
         }
@@ -70,17 +79,17 @@
             width: 80%;
             max-height: 50%;
             overflow-y: auto;
-            background-color: white;
+            background-color: #333;
             padding: 15px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .note {
             margin-bottom: 10px;
             padding: 10px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
+            background-color: #444;
+            border: 1px solid #555;
             border-radius: 5px;
             position: relative;
             display: flex;
@@ -90,20 +99,24 @@
         .note .username {
             font-weight: bold;
             margin-right: 10px;
-            color: black;
+            color: #ff69b4;
+        }
+
+        .note .content {
+            color: white;
         }
 
         .note .delete-btn {
             cursor: pointer;
-            color: #ff69b4; /* Pink color */
-            font-size: 12px;
+            color: #ff69b4;
+            font-size: 14px;
             border: none;
             background: transparent;
             margin-left: auto;
         }
 
         .note .delete-btn:hover {
-            color: #ff45a1; /* Darker pink on hover */
+            color: #ff45a1;
         }
     </style>
 </head>
@@ -148,12 +161,13 @@
 
         let currentUser = null;
 
+        // Check if the user is logged in
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
             } else {
                 currentUser = null;
-                window.location.href = "index.html"; // Redirect to login if not logged in
+                window.location.href = "index.html"; // Redirect guests to login
             }
         });
 
@@ -162,7 +176,7 @@
             const content = document.getElementById("note-content").value.trim();
 
             if (!currentUser) {
-                window.location.href = "index.html"; // Redirect if not logged in
+                window.location.href = "index.html"; // Redirect guests to login
                 return;
             }
 
@@ -171,7 +185,6 @@
                 return;
             }
 
-            // Push the new note to Firebase
             push(notesRef, {
                 username: currentUser.displayName || currentUser.email,
                 content: content,
@@ -179,41 +192,40 @@
                 uid: currentUser.uid
             });
 
-            // Clear input field
-            document.getElementById("note-content").value = "";
+            document.getElementById("note-content").value = ""; // Clear input
         };
 
-        // Display notes in real-time
+        // Display notes and set up delete functionality
         onChildAdded(notesRef, (snapshot) => {
             const note = snapshot.val();
-            const notesContainer = document.getElementById("notes-container");
             const noteKey = snapshot.key;
 
-            // Create note element
+            const notesContainer = document.getElementById("notes-container");
             const noteElement = document.createElement("div");
             noteElement.className = "note";
+
             noteElement.innerHTML = `
                 <span class="username">${note.username}</span>: 
                 <span class="content">${note.content}</span>
-                ${note.uid === currentUser?.uid
-                    ? `<button class="delete-btn" onclick="deleteNote('${noteKey}')">X</button>`
+                ${note.uid === currentUser?.uid 
+                    ? `<button class="delete-btn" onclick="deleteNote('${noteKey}', this)">X</button>` 
                     : ""}
             `;
 
-            // Append note to the feed
             notesContainer.appendChild(noteElement);
-            notesContainer.scrollTop = notesContainer.scrollHeight; // Scroll to latest note
         });
 
         // Delete a note
-        window.deleteNote = (noteKey) => {
+        window.deleteNote = (noteKey, button) => {
             const noteRef = ref(database, `notes/${noteKey}`);
-            remove(noteRef);
+            remove(noteRef).then(() => {
+                button.closest(".note").remove(); // Immediately update UI
+            });
         };
 
-        // Home redirection function
+        // Redirect to home
         window.goHome = () => {
-            window.location.href = "home.html"; // Redirect to home page
+            window.location.href = "home.html";
         };
     </script>
 </body>
