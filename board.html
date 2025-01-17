@@ -10,127 +10,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 
-    <!-- Link to External Stylesheet -->
     <link rel="stylesheet" href="styles.css">
-    
+
     <style>
-        body {
-            font-family: 'Gamja Flower', cursive;
-            background-color: black;
-            color: white;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .home-button {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #A8D8A0;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .home-button:hover {
-            background-color: #94C88F;
-        }
-
-        h1 {
-            color: #F0E68C;
-            text-align: center;
-        }
-
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px;
-        }
-
-        .form-container input {
-            margin: 10px;
-            padding: 10px;
-            font-size: 1rem;
-            width: 250px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .form-container button {
-            background-color: #A8D8A0;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .form-container button:hover {
-            background-color: #94C88F;
-        }
-
-        .notes-container {
-            max-height: 60vh;
-            overflow-y: auto;
-            width: 80%;
-            margin-top: 20px;
-            background-color: #333;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .note {
-            background-color: #444;
-            color: white;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-
-        .username {
-            font-weight: bold;
-            color: #F0E68C;
-        }
+        /* Your styles go here */
     </style>
 </head>
 <body>
 
-    <!-- Home Button -->
     <button class="home-button" onclick="goHome()">Home</button>
-
-    <!-- Title -->
-    <h1 class="text-pastel-yellow">Message Board</h1>
-
-    <!-- Audio Player for background music -->
+    <h1>Message Board</h1>
     <audio id="background-audio" loop autoplay>
         <source src="music/Midnight Tale.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Input Form -->
     <div class="form-container">
         <input id="username" type="text" placeholder="Your nickname" />
         <input id="note-content" type="text" placeholder="Write your note..." />
         <button onclick="postNote()">Post Note</button>
     </div>
 
-    <!-- Notes Feed -->
     <div class="notes-container" id="notes-container"></div>
 
-    <!-- Firebase Setup -->
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
-    <script>
+    <!-- Firebase App and Modules -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
         // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBefs5OOTNg8DmhH9SQfpKjHBnETBnJlN8",
@@ -144,13 +51,12 @@
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-        const notesRef = database.ref("notes");
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const notesRef = ref(database, "notes");
 
         // Post a new note
-        function postNote() {
+        window.postNote = () => {
             const username = document.getElementById("username").value.trim();
             const content = document.getElementById("note-content").value.trim();
 
@@ -160,7 +66,7 @@
             }
 
             // Push the new note to Firebase
-            notesRef.push({
+            push(notesRef, {
                 username: username,
                 content: content,
                 timestamp: Date.now()
@@ -169,10 +75,10 @@
             // Clear input fields
             document.getElementById("username").value = "";
             document.getElementById("note-content").value = "";
-        }
+        };
 
         // Display notes in real-time
-        notesRef.on("child_added", (snapshot) => {
+        onChildAdded(notesRef, (snapshot) => {
             const note = snapshot.val();
             const notesContainer = document.getElementById("notes-container");
 
@@ -189,9 +95,9 @@
         });
 
         // Home redirection function
-        function goHome() {
-            window.location.href = 'home.html'; // Redirect to home page
-        }
+        window.goHome = () => {
+            window.location.href = "home.html"; // Redirect to home page
+        };
     </script>
 </body>
 </html>
