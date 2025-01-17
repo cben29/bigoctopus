@@ -19,8 +19,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
             height: 100vh;
+            overflow: hidden;
         }
 
         .main-container {
@@ -61,10 +61,28 @@
             height: calc(100% - 20px);
         }
 
+        .center-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 60%;
+            max-height: 60%;
+        }
+
         .sticker {
             width: 50px;
             height: 50px;
             cursor: pointer;
+        }
+
+        .bin {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
         }
 
         .canvas {
@@ -76,42 +94,60 @@
         .draggable {
             position: absolute;
             cursor: move;
+            z-index: 2; /* Stickers from left sidebar are above */
+        }
+
+        .static-sticker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 60%;
+            max-height: 60%;
+            z-index: 1; /* Stickers from right sidebar are below */
         }
 
         .selected {
             outline: 2px dashed #888;
         }
 
-        .bin {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 100px;
+        audio {
+            display: none;
         }
     </style>
 </head>
 <body>
+    <!-- Background Music -->
+    <audio autoplay loop>
+        <source src="music/Vibing Over Venus.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <div class="main-container">
         <!-- Left Sidebar -->
         <div class="sidebar left-sidebar">
-            <img src="images/star.png" alt="Star Sticker" class="sticker" onclick="addSticker('left', this.src)">
             <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="addSticker('left', this.src)">
+            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="addSticker('left', this.src)">
+            <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Lines Sticker" class="sticker" onclick="addSticker('left', this.src)">
         </div>
 
         <!-- Canvas -->
-        <div class="canvas" id="canvas"></div>
+        <div class="canvas" id="canvas">
+            <img src="images/stockings.png" alt="Central Image" class="center-image">
+        </div>
 
         <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
-            <img src="images/circle.png" alt="Circle Sticker" class="sticker" onclick="addSticker('right', this.src)">
-            <img src="images/square.png" alt="Square Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (1).png" alt="Stockings 1 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (2).png" alt="Stockings 2 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (3).png" alt="Stockings 3 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (4).png" alt="Stockings 4 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (5).png" alt="Stockings 5 Sticker" class="sticker" onclick="addSticker('right', this.src)">
         </div>
-    </div>
 
-    <!-- Bin Icon -->
-    <img src="images/bin.png" alt="Trash Bin" class="bin" id="bin">
+        <!-- Bin -->
+        <img src="images/bin.png" alt="Bin Icon" class="bin" id="bin">
+    </div>
 
     <script>
         const canvas = document.getElementById("canvas");
@@ -121,32 +157,29 @@
         function addSticker(side, src) {
             const sticker = document.createElement("img");
             sticker.src = src;
-            sticker.className = "draggable";
-            sticker.style.zIndex = side === "left" ? "2" : "1";
 
-            // Add event listeners for sticker manipulation
-            sticker.addEventListener("mousedown", selectSticker);
-            sticker.addEventListener("dblclick", resizeSticker);
+            if (side === "left") {
+                sticker.className = "draggable";
+                sticker.style.zIndex = "2"; // Above right-side stickers
+                sticker.addEventListener("mousedown", selectSticker);
+                sticker.addEventListener("dblclick", resizeSticker);
+                makeDraggable(sticker);
+            } else if (side === "right") {
+                sticker.className = "static-sticker";
+                sticker.style.zIndex = "1"; // Below left-side stickers
+            }
 
-            // Append to canvas
             canvas.appendChild(sticker);
-
-            // Make it draggable
-            makeDraggable(sticker);
         }
 
         function selectSticker(event) {
-            // Deselect other stickers
             if (selectedSticker) selectedSticker.classList.remove("selected");
-
             selectedSticker = event.target;
             selectedSticker.classList.add("selected");
         }
 
         function resizeSticker() {
             if (!selectedSticker) return;
-
-            // Increase the size of the selected sticker
             const currentWidth = selectedSticker.offsetWidth;
             selectedSticker.style.width = currentWidth * 1.2 + "px";
         }
@@ -166,31 +199,45 @@
                 sticker.style.left = event.clientX - offsetX + "px";
                 sticker.style.top = event.clientY - offsetY + "px";
 
-                // Check for collision with the bin
                 const binRect = bin.getBoundingClientRect();
                 const stickerRect = sticker.getBoundingClientRect();
 
+                // Check if sticker overlaps with bin
                 if (
                     stickerRect.left < binRect.right &&
                     stickerRect.right > binRect.left &&
                     stickerRect.top < binRect.bottom &&
-                    stickerRect.bottom > binRect.top &&
-                    sticker.style.zIndex === "2" // Ensure only left-side stickers are deleted
+                    stickerRect.bottom > binRect.top
                 ) {
-                    sticker.remove();
+                    sticker.style.opacity = "0.5";
+                } else {
+                    sticker.style.opacity = "1";
                 }
             }
 
             function stopDrag() {
+                const binRect = bin.getBoundingClientRect();
+                const stickerRect = sticker.getBoundingClientRect();
+
+                // Delete sticker if dropped on bin
+                if (
+                    stickerRect.left < binRect.right &&
+                    stickerRect.right > binRect.left &&
+                    stickerRect.top < binRect.bottom &&
+                    stickerRect.bottom > binRect.top
+                ) {
+                    sticker.remove();
+                }
+
+                sticker.style.opacity = "1";
                 document.removeEventListener("mousemove", moveSticker);
                 document.removeEventListener("mouseup", stopDrag);
             }
         }
 
-        // Deselect sticker when clicking on the canvas
         canvas.addEventListener("click", (event) => {
-            if (event.target === canvas) {
-                if (selectedSticker) selectedSticker.classList.remove("selected");
+            if (event.target === canvas && selectedSticker) {
+                selectedSticker.classList.remove("selected");
                 selectedSticker = null;
             }
         });
