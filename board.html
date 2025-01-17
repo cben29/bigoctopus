@@ -26,7 +26,6 @@
     </audio>
 
     <div class="form-container">
-        <input id="username" type="text" placeholder="Your nickname" />
         <input id="note-content" type="text" placeholder="Write your note..." />
         <button onclick="postNote()">Post Note</button>
     </div>
@@ -71,29 +70,26 @@
         // Post a new note
         window.postNote = () => {
             if (!currentUser || currentUser.isAnonymous) {
-                alert("You need to log in before posting a note.");
-                window.location.href = "login.html"; // Redirect to login page
+                window.location.href = "index.html"; // Redirect to login page if guest
                 return;
             }
 
-            const username = document.getElementById("username").value.trim();
             const content = document.getElementById("note-content").value.trim();
 
-            if (!username || !content) {
-                alert("Please fill in both fields.");
+            if (!content) {
+                alert("Please write a note before posting.");
                 return;
             }
 
             // Push the new note to Firebase
             push(notesRef, {
-                username: username,
+                username: currentUser.displayName || "Anonymous",  // Use displayName or fallback to "Anonymous"
                 content: content,
                 timestamp: Date.now(),
                 uid: currentUser.uid
             });
 
-            // Clear input fields
-            document.getElementById("username").value = "";
+            // Clear input field
             document.getElementById("note-content").value = "";
         };
 
