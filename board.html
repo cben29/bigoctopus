@@ -13,36 +13,101 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        .note {
-            margin: 10px 0;
-            padding: 10px;
+        body {
+            font-family: 'Gamja Flower', cursive;
+            margin: 0;
+            padding: 0;
             background-color: #f0f0f0;
-            border-radius: 8px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-        }
-        
-        .username {
-            font-weight: bold;
-            margin-right: 10px;
+            justify-content: center;
+            height: 100vh;
         }
 
-        .delete-btn {
+        h1 {
+            margin: 20px 0;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
             cursor: pointer;
-            color: red;
-            font-size: 18px;
-            border: none;
-            background: transparent;
         }
 
         .form-container {
-            margin-bottom: 20px;
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .notes-container {
+            margin-top: 20px;
+            width: 80%;
+            max-height: 50%;
+            overflow-y: auto;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .note {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .note .username {
+            font-weight: bold;
+            margin-right: 10px;
+            color: black;
+        }
+
+        .note .delete-btn {
+            cursor: pointer;
+            color: #ff69b4; /* Pink color */
+            font-size: 12px;
+            border: none;
+            background: transparent;
+            margin-left: auto;
+        }
+
+        .note .delete-btn:hover {
+            color: #ff45a1; /* Darker pink on hover */
         }
     </style>
 </head>
 <body>
-
     <button class="home-button" onclick="goHome()">Home</button>
     <h1>Message Board</h1>
     <audio id="background-audio" loop autoplay>
@@ -60,7 +125,7 @@
     <!-- Firebase App and Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
         import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
         // Firebase configuration
@@ -81,7 +146,6 @@
         const database = getDatabase(app);
         const notesRef = ref(database, "notes");
 
-        // Check if user is logged in
         let currentUser = null;
 
         onAuthStateChanged(auth, (user) => {
@@ -89,28 +153,27 @@
                 currentUser = user;
             } else {
                 currentUser = null;
+                window.location.href = "index.html"; // Redirect to login if not logged in
             }
         });
 
         // Post a new note
         window.postNote = () => {
-            if (!currentUser || currentUser.isAnonymous) {
-                window.location.href = "index.html"; // Redirect to login page if guest
+            const content = document.getElementById("note-content").value.trim();
+
+            if (!currentUser) {
+                window.location.href = "index.html"; // Redirect if not logged in
                 return;
             }
-
-            const content = document.getElementById("note-content").value.trim();
 
             if (!content) {
                 alert("Please write a note before posting.");
                 return;
             }
 
-            const username = currentUser.displayName || "Anonymous"; // Use displayName if available
-
             // Push the new note to Firebase
-            const newNoteRef = push(notesRef, {
-                username: username,
+            push(notesRef, {
+                username: currentUser.displayName || currentUser.email,
                 content: content,
                 timestamp: Date.now(),
                 uid: currentUser.uid
@@ -124,26 +187,28 @@
         onChildAdded(notesRef, (snapshot) => {
             const note = snapshot.val();
             const notesContainer = document.getElementById("notes-container");
+            const noteKey = snapshot.key;
 
             // Create note element
             const noteElement = document.createElement("div");
             noteElement.className = "note";
             noteElement.innerHTML = `
-                <span class="username">${note.username}</span>: ${note.content}
-                <button class="delete-btn" onclick="deleteNote('${snapshot.key}')">X</button>
+                <span class="username">${note.username}</span>: 
+                <span class="content">${note.content}</span>
+                ${note.uid === currentUser?.uid
+                    ? `<button class="delete-btn" onclick="deleteNote('${noteKey}')">X</button>`
+                    : ""}
             `;
 
             // Append note to the feed
             notesContainer.appendChild(noteElement);
-            notesContainer.scrollTop = notesContainer.scrollHeight; // Scroll to the latest note
+            notesContainer.scrollTop = notesContainer.scrollHeight; // Scroll to latest note
         });
 
-        // Function to delete a note
-        window.deleteNote = (noteId) => {
-            if (currentUser) {
-                const noteRef = ref(database, `notes/${noteId}`);
-                remove(noteRef); // Delete the note from Firebase
-            }
+        // Delete a note
+        window.deleteNote = (noteKey) => {
+            const noteRef = ref(database, `notes/${noteKey}`);
+            remove(noteRef);
         };
 
         // Home redirection function
