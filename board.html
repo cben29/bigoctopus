@@ -20,32 +20,32 @@
             align-items: center;
             justify-content: flex-start;
             margin: 0;
+            padding: 0;
             height: 100vh;
-            overflow: hidden;
         }
 
         h1 {
-            font-size: 3.5rem;
-            margin: 20px 0;
+            font-size: 3rem;
             color: #F7B7B7;
-            text-shadow: 2px 2px 5px rgba(255, 105, 180, 0.6);
+            text-shadow: 2px 2px 5px rgba(255, 182, 193, 0.5);
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         .home-button {
             background-color: #F7B7B7;
             color: black;
-            padding: 10px 20px;
+            padding: 10px 25px;
             border: none;
             border-radius: 20px;
             font-size: 1rem;
-            font-family: 'Gamja Flower', cursive;
             cursor: pointer;
             position: absolute;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
-            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4);
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .home-button:hover {
@@ -58,32 +58,35 @@
             flex-direction: column;
             align-items: center;
             gap: 15px;
-            margin: 30px 0;
-            width: 80%;
+            width: 100%;
+            margin-bottom: 20px;
         }
 
         input[type="text"] {
-            padding: 15px;
-            font-size: 1.1rem;
+            padding: 12px 20px;
+            font-size: 1.2rem;
             border: none;
             border-radius: 20px;
-            width: 100%;
+            width: 90%;
             max-width: 400px;
-            color: black;
-            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.2);
+            box-shadow: 0 4px 8px rgba(185, 224, 177, 0.3);
             outline: none;
+        }
+
+        input[type="text"]:focus {
+            outline: 2px solid #B9E0B1;
         }
 
         button {
             background-color: #B9E0B1;
             color: black;
-            padding: 10px 30px;
+            padding: 12px 40px;
+            border: none;
             border-radius: 20px;
             font-size: 1.2rem;
             cursor: pointer;
-            border: none;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 4px 8px rgba(185, 224, 177, 0.5);
+            box-shadow: 0 4px 10px rgba(185, 224, 177, 0.5);
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         button:hover {
@@ -94,19 +97,19 @@
         .notes-container {
             background-color: #333;
             width: 90%;
+            max-width: 800px;
             height: 50%;
             overflow-y: auto;
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 6px 10px rgba(255, 255, 255, 0.1);
-            margin-bottom: 30px;
+            box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1);
         }
 
         .note {
             background-color: #444;
             padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
+            margin-bottom: 15px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -116,12 +119,12 @@
         .note .username {
             font-weight: bold;
             color: #B9E0B1;
-            text-shadow: 1px 1px 3px rgba(185, 224, 177, 0.5);
+            text-shadow: 1px 1px 3px rgba(185, 224, 177, 0.4);
+            margin-right: 10px;
         }
 
         .note .content {
             color: white;
-            margin-left: 10px;
             flex-grow: 1;
         }
 
@@ -131,12 +134,16 @@
             color: #F7B7B7;
             font-size: 1.5rem;
             cursor: pointer;
-            transition: color 0.3s, transform 0.2s;
+            transition: color 0.3s, transform 0.3s;
         }
 
         .note .delete-btn:hover {
             color: #ff45a1;
             transform: scale(1.2);
+        }
+
+        audio {
+            display: none;
         }
     </style>
 </head>
@@ -145,11 +152,11 @@
     <button class="home-button" onclick="goHome()">Home</button>
 
     <!-- Title -->
-    <h1>Message Board</h1>
+    <h1>Post Office</h1>
 
     <!-- Note Form -->
     <div class="form-container">
-        <input id="note-content" type="text" placeholder="Write your note..." />
+        <input id="note-content" type="text" placeholder="Leave a note..." />
         <button onclick="postNote()">Post</button>
     </div>
 
