@@ -28,7 +28,7 @@
             font-size: 2.5rem;
             color: #F7B7B7;
             text-shadow: 2px 2px 5px rgba(255, 182, 193, 0.5);
-            margin: 20px 0;
+            margin: 50px 0 20px; /* Added spacing to push title down */
         }
 
         .home-button {
@@ -45,6 +45,7 @@
             transform: translateX(-50%);
             box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4);
             transition: background-color 0.3s, transform 0.3s;
+            font-family: 'Gamja Flower', cursive;
         }
 
         .home-button:hover {
@@ -62,6 +63,7 @@
         }
 
         input[type="text"] {
+            font-family: 'Gamja Flower', cursive;
             padding: 10px 15px;
             font-size: 1rem;
             border: none;
@@ -77,6 +79,7 @@
         }
 
         button {
+            font-family: 'Gamja Flower', cursive;
             background-color: #B9E0B1;
             color: black;
             padding: 10px 30px;
@@ -204,7 +207,7 @@
 
         window.postNote = () => {
             const content = document.getElementById("note-content").value.trim();
-            if (!currentUser) {
+            if (!currentUser || !currentUser.email) {
                 window.location.href = "index.html";
                 return;
             }
@@ -212,9 +215,10 @@
                 alert("Please write a note.");
                 return;
             }
+            const username = currentUser.displayName || currentUser.email.split("@")[0];
             push(notesRef, {
-                username: currentUser.displayName || currentUser.email,
-                content: content,
+                username,
+                content,
                 timestamp: Date.now(),
                 uid: currentUser.uid
             });
