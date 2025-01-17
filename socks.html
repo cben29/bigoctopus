@@ -19,6 +19,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
             height: 100vh;
         }
 
@@ -80,6 +81,15 @@
         .selected {
             outline: 2px dashed #888;
         }
+
+        .bin {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -100,8 +110,12 @@
         </div>
     </div>
 
+    <!-- Bin Icon -->
+    <img src="images/bin.png" alt="Trash Bin" class="bin" id="bin">
+
     <script>
         const canvas = document.getElementById("canvas");
+        const bin = document.getElementById("bin");
         let selectedSticker = null;
 
         function addSticker(side, src) {
@@ -151,6 +165,20 @@
             function moveSticker(event) {
                 sticker.style.left = event.clientX - offsetX + "px";
                 sticker.style.top = event.clientY - offsetY + "px";
+
+                // Check for collision with the bin
+                const binRect = bin.getBoundingClientRect();
+                const stickerRect = sticker.getBoundingClientRect();
+
+                if (
+                    stickerRect.left < binRect.right &&
+                    stickerRect.right > binRect.left &&
+                    stickerRect.top < binRect.bottom &&
+                    stickerRect.bottom > binRect.top &&
+                    sticker.style.zIndex === "2" // Ensure only left-side stickers are deleted
+                ) {
+                    sticker.remove();
+                }
             }
 
             function stopDrag() {
