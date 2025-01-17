@@ -15,7 +15,7 @@
             font-family: 'Gamja Flower', cursive;
             margin: 0;
             padding: 0;
-            background-color: #000000;
+            background-color: #000000; /* Black background */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -32,39 +32,6 @@
             display: flex;
             justify-content: space-between;
             overflow: hidden;
-        }
-
-        .header {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            text-align: center;
-        }
-
-        .header a {
-            text-decoration: none;
-            font-family: 'Gamja Flower', cursive;
-            font-size: 24px;
-            color: black;
-            background-color: white;
-            padding: 5px 15px;
-            border-radius: 15px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .header a:hover {
-            background-color: #f0c987;
-            color: white;
-        }
-
-        .header h1 {
-            font-family: 'Gamja Flower', cursive;
-            font-size: 36px;
-            color: black;
-            margin: 10px 0 0;
         }
 
         .sidebar {
@@ -109,15 +76,6 @@
             cursor: pointer;
         }
 
-        .bin {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
-        }
-
         .canvas {
             flex-grow: 1;
             position: relative;
@@ -127,7 +85,7 @@
         .draggable {
             position: absolute;
             cursor: move;
-            z-index: 2;
+            z-index: 2; /* Stickers from left sidebar are above */
         }
 
         .static-sticker {
@@ -135,57 +93,65 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            max-width: 60%;
-            max-height: 60%;
-            z-index: 1;
+            z-index: 1; /* Stickers from right sidebar are below */
         }
 
         .selected {
             outline: 2px dashed #888;
         }
 
-        audio {
-            display: none;
+        .home-button {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+            font-family: 'Gamja Flower', cursive;
+            background-color: #444;
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 100;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 80px;
-            }
+        .title {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+            color: white;
+            font-family: 'Gamja Flower', cursive;
+            text-align: center;
+        }
 
-            .sticker {
-                width: 40px;
-                height: 40px;
-            }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
 
-            .bin {
-                width: 60px;
-                height: 60px;
-            }
+        .slider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: white;
+        }
 
-            .header a {
-                font-size: 20px;
-                padding: 4px 12px;
-            }
-
-            .header h1 {
-                font-size: 28px;
-            }
+        .slider input {
+            width: 200px;
         }
     </style>
 </head>
 <body>
-    <!-- Background Music -->
-    <audio autoplay loop>
-        <source src="music/Vibing Over Venus.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-
-    <!-- Header with Home Button and Title -->
-    <div class="header">
-        <a href="index.html">Home</a>
-        <h1>Sock Factory</h1>
-    </div>
+    <a href="home.html" class="home-button">Home</a>
+    <div class="title">Sock Factory</div>
 
     <div class="main-container">
         <!-- Left Sidebar -->
@@ -208,13 +174,94 @@
             <img src="images/stockings (4).png" alt="Stockings 4 Sticker" class="sticker" onclick="addSticker('right', this.src)">
             <img src="images/stockings (5).png" alt="Stockings 5 Sticker" class="sticker" onclick="addSticker('right', this.src)">
         </div>
+    </div>
 
-        <!-- Bin -->
-        <img src="images/bin.png" alt="Bin Icon" class="bin" id="bin">
+    <!-- Controls -->
+    <div class="controls">
+        <div class="slider">
+            <label for="size-slider">Size</label>
+            <input id="size-slider" type="range" min="20" max="200" value="50">
+        </div>
+        <div class="slider">
+            <label for="rotation-slider">Rotation</label>
+            <input id="rotation-slider" type="range" min="0" max="360" value="0">
+        </div>
     </div>
 
     <script>
-        // Sticker handling logic as before...
+        const canvas = document.getElementById("canvas");
+        const sizeSlider = document.getElementById("size-slider");
+        const rotationSlider = document.getElementById("rotation-slider");
+        let selectedSticker = null;
+
+        function addSticker(side, src) {
+            const sticker = document.createElement("img");
+            sticker.src = src;
+
+            if (side === "left") {
+                sticker.className = "draggable";
+                sticker.style.left = "50%";
+                sticker.style.top = "50%";
+                sticker.style.transform = "translate(-50%, -50%)";
+                sticker.style.zIndex = "2"; // Left sidebar stickers on top
+                sticker.addEventListener("mousedown", () => selectSticker(sticker));
+                makeDraggable(sticker);
+                selectSticker(sticker);
+            } else if (side === "right") {
+                sticker.className = "static-sticker";
+            }
+
+            canvas.appendChild(sticker);
+        }
+
+        function selectSticker(sticker) {
+            if (selectedSticker) selectedSticker.classList.remove("selected");
+            selectedSticker = sticker;
+            selectedSticker.classList.add("selected");
+            sizeSlider.value = selectedSticker.offsetWidth;
+            rotationSlider.value = getRotation(selectedSticker);
+        }
+
+        sizeSlider.addEventListener("input", () => {
+            if (selectedSticker) selectedSticker.style.width = sizeSlider.value + "px";
+        });
+
+        rotationSlider.addEventListener("input", () => {
+            if (selectedSticker) {
+                selectedSticker.style.transform = `translate(-50%, -50%) rotate(${rotationSlider.value}deg)`;
+            }
+        });
+
+        function getRotation(element) {
+            const transform = window.getComputedStyle(element).transform;
+            if (transform === "none") return 0;
+            const matrix = transform.split(",");
+            const a = parseFloat(matrix[0].split("(")[1]);
+            const b = parseFloat(matrix[1]);
+            return Math.round(Math.atan2(b, a) * (180 / Math.PI));
+        }
+
+        function makeDraggable(sticker) {
+            let offsetX, offsetY;
+
+            sticker.addEventListener("mousedown", (event) => {
+                offsetX = event.clientX - sticker.offsetLeft;
+                offsetY = event.clientY - sticker.offsetTop;
+
+                document.addEventListener("mousemove", moveSticker);
+                document.addEventListener("mouseup", stopDrag);
+            });
+
+            function moveSticker(event) {
+                sticker.style.left = event.clientX - offsetX + "px";
+                sticker.style.top = event.clientY - offsetY + "px";
+            }
+
+            function stopDrag() {
+                document.removeEventListener("mousemove", moveSticker);
+                document.removeEventListener("mouseup", stopDrag);
+            }
+        }
     </script>
 </body>
 </html>
