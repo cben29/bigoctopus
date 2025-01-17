@@ -36,6 +36,7 @@
     <!-- Firebase App and Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
         import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
         // Firebase configuration
@@ -52,11 +53,29 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const database = getDatabase(app);
         const notesRef = ref(database, "notes");
 
+        // Check if user is logged in
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+            } else {
+                currentUser = null;
+            }
+        });
+
         // Post a new note
         window.postNote = () => {
+            if (!currentUser || currentUser.isAnonymous) {
+                alert("You need to log in before posting a note.");
+                window.location.href = "login.html"; // Redirect to login page
+                return;
+            }
+
             const username = document.getElementById("username").value.trim();
             const content = document.getElementById("note-content").value.trim();
 
@@ -69,7 +88,8 @@
             push(notesRef, {
                 username: username,
                 content: content,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                uid: currentUser.uid
             });
 
             // Clear input fields
