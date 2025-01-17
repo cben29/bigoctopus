@@ -13,8 +13,6 @@
     <style>
         body {
             font-family: 'Gamja Flower', cursive;
-            margin: 0;
-            padding: 0;
             background-color: black;
             color: white;
             display: flex;
@@ -22,51 +20,54 @@
             align-items: center;
             justify-content: flex-start;
             height: 100vh;
+            margin: 0;
         }
 
         h1 {
+            font-size: 3rem;
             margin: 20px 0;
-            color: white;
         }
 
         .home-button {
+            background-color: #B9E0B1;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: 'Gamja Flower', cursive;
+            cursor: pointer;
             position: absolute;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 10px 15px;
-            font-size: 18px;
-            background-color: #ff69b4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
 
         .home-button:hover {
-            background-color: #ff45a1;
+            background-color: #A0D79B;
         }
 
         .form-container {
-            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
         }
 
         input[type="text"] {
-            margin: 5px;
             padding: 10px;
-            font-size: 16px;
+            font-size: 1rem;
             border: none;
             border-radius: 5px;
-            width: 250px;
+            width: 300px;
         }
 
         button {
-            padding: 10px 15px;
-            font-size: 16px;
             background-color: #007BFF;
             color: white;
-            border: none;
+            padding: 10px 20px;
             border-radius: 5px;
+            font-size: 1rem;
             cursor: pointer;
         }
 
@@ -75,44 +76,43 @@
         }
 
         .notes-container {
-            margin-top: 20px;
-            width: 80%;
+            background-color: #333;
+            width: 90%;
             max-height: 50%;
             overflow-y: auto;
-            background-color: #333;
-            padding: 15px;
             border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .note {
-            margin-bottom: 10px;
-            padding: 10px;
             background-color: #444;
-            border: 1px solid #555;
+            padding: 10px;
+            margin-bottom: 10px;
             border-radius: 5px;
-            position: relative;
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }
 
         .note .username {
             font-weight: bold;
-            margin-right: 10px;
-            color: #ff69b4;
+            color: #B9E0B1;
         }
 
         .note .content {
             color: white;
+            margin-left: 10px;
+            flex-grow: 1;
         }
 
         .note .delete-btn {
-            cursor: pointer;
-            color: #ff69b4;
-            font-size: 14px;
+            background: none;
             border: none;
-            background: transparent;
-            margin-left: auto;
+            color: #F7B7B7;
+            font-size: 1rem;
+            cursor: pointer;
         }
 
         .note .delete-btn:hover {
@@ -121,27 +121,33 @@
     </style>
 </head>
 <body>
+    <!-- Home Button -->
     <button class="home-button" onclick="goHome()">Home</button>
+
+    <!-- Title -->
     <h1>Message Board</h1>
+
+    <!-- Note Form -->
+    <div class="form-container">
+        <input id="note-content" type="text" placeholder="Write your note..." />
+        <button onclick="postNote()">Post</button>
+    </div>
+
+    <!-- Notes Display -->
+    <div class="notes-container" id="notes-container"></div>
+
+    <!-- Background Music -->
     <audio id="background-audio" loop autoplay>
-        <source src="music/Midnight Tale.mp3" type="audio/mp3">
+        <source src="music/Mana Two - Part 1.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
 
-    <div class="form-container">
-        <input id="note-content" type="text" placeholder="Write your note..." />
-        <button onclick="postNote()">Post Note</button>
-    </div>
-
-    <div class="notes-container" id="notes-container"></div>
-
-    <!-- Firebase App and Modules -->
+    <!-- Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
         import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBefs5OOTNg8DmhH9SQfpKjHBnETBnJlN8",
             authDomain: "bigoctopus-29453.firebaseapp.com",
@@ -153,7 +159,6 @@
             measurementId: "G-J75Z76F4QJ"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app);
@@ -161,41 +166,33 @@
 
         let currentUser = null;
 
-        // Check if the user is logged in
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
             } else {
-                currentUser = null;
-                window.location.href = "index.html"; // Redirect guests to login
+                window.location.href = "index.html";
             }
         });
 
-        // Post a new note
         window.postNote = () => {
             const content = document.getElementById("note-content").value.trim();
-
             if (!currentUser) {
-                window.location.href = "index.html"; // Redirect guests to login
+                window.location.href = "index.html";
                 return;
             }
-
             if (!content) {
-                alert("Please write a note before posting.");
+                alert("Please write a note.");
                 return;
             }
-
             push(notesRef, {
                 username: currentUser.displayName || currentUser.email,
                 content: content,
                 timestamp: Date.now(),
                 uid: currentUser.uid
             });
-
-            document.getElementById("note-content").value = ""; // Clear input
+            document.getElementById("note-content").value = "";
         };
 
-        // Display notes and set up delete functionality
         onChildAdded(notesRef, (snapshot) => {
             const note = snapshot.val();
             const noteKey = snapshot.key;
@@ -205,25 +202,21 @@
             noteElement.className = "note";
 
             noteElement.innerHTML = `
-                <span class="username">${note.username}</span>: 
+                <span class="username">${note.username}</span>
                 <span class="content">${note.content}</span>
-                ${note.uid === currentUser?.uid 
-                    ? `<button class="delete-btn" onclick="deleteNote('${noteKey}', this)">X</button>` 
-                    : ""}
+                ${note.uid === currentUser?.uid ? 
+                    `<button class="delete-btn" onclick="deleteNote('${noteKey}', this)">X</button>` : ""}
             `;
-
             notesContainer.appendChild(noteElement);
         });
 
-        // Delete a note
         window.deleteNote = (noteKey, button) => {
             const noteRef = ref(database, `notes/${noteKey}`);
             remove(noteRef).then(() => {
-                button.closest(".note").remove(); // Immediately update UI
+                button.closest(".note").remove();
             });
         };
 
-        // Redirect to home
         window.goHome = () => {
             window.location.href = "home.html";
         };
