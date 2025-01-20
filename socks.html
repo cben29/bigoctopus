@@ -137,20 +137,23 @@
     </style>
 </head>
 <body>
-    <!-- Audio Player -->
+    <!-- Audio -->
     <audio id="background-music" autoplay loop>
         <source src="music/Vibing Over Venus.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
+    <!-- Home Button -->
     <a href="home.html" class="home-button">Home</a>
     <img src="images/camera.png" alt="Camera Icon" class="camera-icon" onclick="takeScreenshot()">
+
+    <!-- Main Container -->
     <div class="main-container">
         <!-- Left Sidebar -->
         <div class="sidebar left-sidebar">
-            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="cloneSticker('images/heart.png')">
-            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="cloneSticker('images/new-moon.png')">
-            <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" class="sticker" onclick="cloneSticker('images/zigzag-lines-in-side-view-position.png')">
+            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="cloneSticker('images/heart.png', true)">
+            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="cloneSticker('images/new-moon.png', true)">
+            <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" class="sticker" onclick="cloneSticker('images/zigzag-lines-in-side-view-position.png', true)">
         </div>
 
         <!-- Canvas -->
@@ -158,16 +161,18 @@
 
         <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
-            <img src="images/stockings (1).png" alt="Stockings 1" class="sticker" onclick="cloneSticker('images/stockings (1).png')">
-            <img src="images/stockings (2).png" alt="Stockings 2" class="sticker" onclick="cloneSticker('images/stockings (2).png')">
-            <img src="images/stockings (3).png" alt="Stockings 3" class="sticker" onclick="cloneSticker('images/stockings (3).png')">
-            <img src="images/stockings (4).png" alt="Stockings 4" class="sticker" onclick="cloneSticker('images/stockings (4).png')">
-            <img src="images/stockings (5).png" alt="Stockings 5" class="sticker" onclick="cloneSticker('images/stockings (5).png')">
+            <img src="images/stockings (1).png" alt="Stockings 1" class="sticker" onclick="cloneSticker('images/stockings (1).png', false)">
+            <img src="images/stockings (2).png" alt="Stockings 2" class="sticker" onclick="cloneSticker('images/stockings (2).png', false)">
+            <img src="images/stockings (3).png" alt="Stockings 3" class="sticker" onclick="cloneSticker('images/stockings (3).png', false)">
+            <img src="images/stockings (4).png" alt="Stockings 4" class="sticker" onclick="cloneSticker('images/stockings (4).png', false)">
+            <img src="images/stockings (5).png" alt="Stockings 5" class="sticker" onclick="cloneSticker('images/stockings (5).png', false)">
         </div>
     </div>
 
+    <!-- Bin -->
     <img src="images/bin.png" alt="Bin" class="bin" id="bin">
 
+    <!-- Controls -->
     <div class="controls" id="controls">
         <div class="slider">
             <label for="size-slider">Size</label>
@@ -181,15 +186,62 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        // Your existing JavaScript logic for sticker interaction here...
+        const canvas = document.getElementById("canvas");
+        const bin = document.getElementById("bin");
+        const sizeSlider = document.getElementById("size-slider");
+        const rotationSlider = document.getElementById("rotation-slider");
+        const controls = document.getElementById("controls");
+        let selectedSticker = null;
+
+        function cloneSticker(src, fromLeftSidebar) {
+            const sticker = document.createElement("img");
+            sticker.src = src;
+            sticker.className = "draggable";
+            sticker.style.position = "absolute";
+            sticker.style.width = "50px";
+            sticker.style.left = "50%";
+            sticker.style.top = "50%";
+            sticker.style.transform = "translate(-50%, -50%)";
+            sticker.draggable = fromLeftSidebar;
+            canvas.appendChild(sticker);
+
+            if (fromLeftSidebar) {
+                sticker.addEventListener("click", () => selectSticker(sticker));
+                makeDraggable(sticker);
+            }
+        }
+
+        function selectSticker(sticker) {
+            if (selectedSticker) {
+                selectedSticker.classList.remove("selected");
+            }
+            selectedSticker = sticker;
+            selectedSticker.classList.add("selected");
+            sizeSlider.value = selectedSticker.offsetWidth;
+            rotationSlider.value = getRotation(selectedSticker);
+            controls.style.display = "flex";
+        }
+
+        function makeDraggable(sticker) {
+            // Draggable logic...
+        }
 
         function takeScreenshot() {
-            html2canvas(document.getElementById('canvas')).then((canvas) => {
-                const link = document.createElement('a');
-                link.download = 'canvas-screenshot.png';
+            html2canvas(canvas).then((canvas) => {
+                const link = document.createElement("a");
+                link.download = "canvas-screenshot.png";
                 link.href = canvas.toDataURL();
                 link.click();
             });
+        }
+
+        function getRotation(element) {
+            const transform = window.getComputedStyle(element).transform;
+            if (transform === "none") return 0;
+            const values = transform.split("(")[1].split(")")[0].split(",");
+            const a = values[0];
+            const b = values[1];
+            return Math.round(Math.atan2(b, a) * (180 / Math.PI));
         }
     </script>
 </body>
