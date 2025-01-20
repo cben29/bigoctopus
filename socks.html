@@ -85,7 +85,7 @@
         .draggable {
             position: absolute;
             cursor: move;
-            z-index: 2; /* Stickers from left sidebar are above */
+            z-index: 2; /* Left sidebar stickers on top */
         }
 
         .static-sticker {
@@ -93,7 +93,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 1; /* Stickers from right sidebar are below */
+            z-index: 1; /* Right sidebar stickers below */
         }
 
         .selected {
@@ -170,9 +170,6 @@
         <div class="sidebar right-sidebar">
             <img src="images/stockings (1).png" alt="Stockings 1 Sticker" class="sticker" onclick="addSticker('right', this.src)">
             <img src="images/stockings (2).png" alt="Stockings 2 Sticker" class="sticker" onclick="addSticker('right', this.src)">
-            <img src="images/stockings (3).png" alt="Stockings 3 Sticker" class="sticker" onclick="addSticker('right', this.src)">
-            <img src="images/stockings (4).png" alt="Stockings 4 Sticker" class="sticker" onclick="addSticker('right', this.src)">
-            <img src="images/stockings (5).png" alt="Stockings 5 Sticker" class="sticker" onclick="addSticker('right', this.src)">
         </div>
     </div>
 
@@ -203,7 +200,7 @@
                 sticker.style.left = "50%";
                 sticker.style.top = "50%";
                 sticker.style.transform = "translate(-50%, -50%)";
-                sticker.style.zIndex = "2"; // Left sidebar stickers on top
+                sticker.style.zIndex = "2";
                 sticker.addEventListener("mousedown", () => selectSticker(sticker));
                 makeDraggable(sticker);
                 selectSticker(sticker);
@@ -262,6 +259,13 @@
                 document.removeEventListener("mouseup", stopDrag);
             }
         }
+
+        canvas.addEventListener("click", (event) => {
+            if (event.target === canvas && selectedSticker) {
+                selectedSticker.classList.remove("selected");
+                selectedSticker = null;
+            }
+        });
     </script>
 </body>
 </html>
