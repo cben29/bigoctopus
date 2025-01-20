@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigOctopus - Sock Factory</title>
+    <title>BigOctopus - Socks</title>
 
     <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,6 @@
             margin: 0;
             padding: 0;
             background-color: #000000; /* Black background */
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -69,8 +68,6 @@
             transform: translate(-50%, -50%);
             max-width: 60%;
             max-height: 60%;
-            background-color: #fff;
-            border-radius: 5px;
         }
 
         .sticker {
@@ -89,6 +86,14 @@
             position: absolute;
             cursor: move;
             z-index: 2; /* Stickers from left sidebar are above */
+        }
+
+        .static-sticker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1; /* Stickers from right sidebar are below */
         }
 
         .selected {
@@ -116,6 +121,8 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 32px;
+            color: white;
+            font-family: 'Gamja Flower', cursive;
             text-align: center;
         }
 
@@ -149,23 +156,23 @@
     <div class="main-container">
         <!-- Left Sidebar -->
         <div class="sidebar left-sidebar">
-            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="addSticker(this.src)">
-            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="addSticker(this.src)">
-            <img src="images/zigzag-lines.png" alt="Zigzag Sticker" class="sticker" onclick="addSticker(this.src)">
+            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="addSticker('left', this.src)">
+            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="addSticker('left', this.src)">
+            <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Lines Sticker" class="sticker" onclick="addSticker('left', this.src)">
         </div>
 
         <!-- Canvas -->
         <div class="canvas" id="canvas">
-            <div id="sock" class="center-image"></div>
+            <img src="images/stockings.png" alt="Central Image" class="center-image">
         </div>
 
         <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
-            <div class="sticker" style="background-color: red;" onclick="changeSockColor('red')"></div>
-            <div class="sticker" style="background-color: blue;" onclick="changeSockColor('blue')"></div>
-            <div class="sticker" style="background-color: green;" onclick="changeSockColor('green')"></div>
-            <div class="sticker" style="background-color: yellow;" onclick="changeSockColor('yellow')"></div>
-            <div class="sticker" style="background-color: purple;" onclick="changeSockColor('purple')"></div>
+            <img src="images/stockings (1).png" alt="Stockings 1 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (2).png" alt="Stockings 2 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (3).png" alt="Stockings 3 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (4).png" alt="Stockings 4 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (5).png" alt="Stockings 5 Sticker" class="sticker" onclick="addSticker('right', this.src)">
         </div>
     </div>
 
@@ -182,27 +189,29 @@
     </div>
 
     <script>
-        const sock = document.getElementById("sock");
+        const canvas = document.getElementById("canvas");
         const sizeSlider = document.getElementById("size-slider");
         const rotationSlider = document.getElementById("rotation-slider");
         let selectedSticker = null;
 
-        function addSticker(src) {
+        function addSticker(side, src) {
             const sticker = document.createElement("img");
             sticker.src = src;
-            sticker.className = "draggable";
-            sticker.style.left = "50%";
-            sticker.style.top = "50%";
-            sticker.style.transform = "translate(-50%, -50%)";
-            sticker.style.zIndex = "2";
-            sticker.addEventListener("mousedown", () => selectSticker(sticker));
-            makeDraggable(sticker);
-            sock.appendChild(sticker);
-            selectSticker(sticker);
-        }
 
-        function changeSockColor(color) {
-            sock.style.backgroundColor = color;
+            if (side === "left") {
+                sticker.className = "draggable";
+                sticker.style.left = "50%";
+                sticker.style.top = "50%";
+                sticker.style.transform = "translate(-50%, -50%)";
+                sticker.style.zIndex = "2"; // Left sidebar stickers on top
+                sticker.addEventListener("mousedown", () => selectSticker(sticker));
+                makeDraggable(sticker);
+                selectSticker(sticker);
+            } else if (side === "right") {
+                sticker.className = "static-sticker";
+            }
+
+            canvas.appendChild(sticker);
         }
 
         function selectSticker(sticker) {
