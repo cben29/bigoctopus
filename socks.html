@@ -88,11 +88,6 @@
             z-index: 2;
         }
 
-        .static-sticker {
-            position: absolute;
-            z-index: 1;
-        }
-
         .selected {
             outline: 2px dashed #888;
         }
@@ -153,9 +148,9 @@
     <div class="main-container">
         <!-- Left Sidebar -->
         <div class="sidebar left-sidebar">
-            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="addStickerToCanvas('images/heart.png')">
-            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="addStickerToCanvas('images/new-moon.png')">
-            <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" class="sticker" onclick="addStickerToCanvas('images/zigzag-lines-in-side-view-position.png')">
+            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="cloneSticker('images/heart.png')">
+            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="cloneSticker('images/new-moon.png')">
+            <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" class="sticker" onclick="cloneSticker('images/zigzag-lines-in-side-view-position.png')">
         </div>
 
         <!-- Canvas -->
@@ -190,14 +185,14 @@
         const rotationSlider = document.getElementById("rotation-slider");
         let selectedSticker = null;
 
-        function addStickerToCanvas(src) {
+        function cloneSticker(src) {
             const sticker = document.createElement("img");
             sticker.src = src;
             sticker.className = "draggable";
-            sticker.style.width = "50px";
             sticker.style.position = "absolute";
-            sticker.style.top = "50%";
+            sticker.style.width = "50px";
             sticker.style.left = "50%";
+            sticker.style.top = "50%";
             sticker.style.transform = "translate(-50%, -50%)";
             sticker.addEventListener("mousedown", () => selectSticker(sticker));
             makeDraggable(sticker);
@@ -210,9 +205,9 @@
                 selectedSticker.classList.remove("selected");
             }
             selectedSticker = sticker;
-            sticker.classList.add("selected");
-            sizeSlider.value = sticker.offsetWidth;
-            rotationSlider.value = getRotation(sticker);
+            selectedSticker.classList.add("selected");
+            sizeSlider.value = selectedSticker.offsetWidth;
+            rotationSlider.value = getRotation(selectedSticker);
         }
 
         sizeSlider.addEventListener("input", () => {
@@ -229,6 +224,7 @@
 
         function makeDraggable(sticker) {
             let offsetX, offsetY;
+
             sticker.addEventListener("mousedown", (event) => {
                 offsetX = event.clientX - sticker.offsetLeft;
                 offsetY = event.clientY - sticker.offsetTop;
@@ -238,13 +234,13 @@
                     sticker.style.top = `${e.clientY - offsetY}px`;
                 };
 
-                const stopDragging = () => {
+                const stopDrag = () => {
                     document.removeEventListener("mousemove", moveSticker);
-                    document.removeEventListener("mouseup", stopDragging);
+                    document.removeEventListener("mouseup", stopDrag);
                 };
 
                 document.addEventListener("mousemove", moveSticker);
-                document.addEventListener("mouseup", stopDragging);
+                document.addEventListener("mouseup", stopDrag);
             });
         }
 
