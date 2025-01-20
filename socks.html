@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BigOctopus - Socks</title>
-
-    <!-- Font Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
@@ -15,7 +13,7 @@
             font-family: 'Gamja Flower', cursive;
             margin: 0;
             padding: 0;
-            background-color: #000000;
+            background-color: #000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -47,39 +45,31 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
-        .left-sidebar {
+        .left-sidebar, .right-sidebar {
             position: absolute;
             top: 10px;
-            left: 10px;
             height: calc(100% - 20px);
+        }
+
+        .left-sidebar {
+            left: 10px;
         }
 
         .right-sidebar {
-            position: absolute;
-            top: 10px;
             right: 10px;
-            height: calc(100% - 20px);
         }
 
-        .center-image {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 60%;
-            max-height: 60%;
+        .canvas {
+            flex-grow: 1;
+            position: relative;
+            background-color: black;
+            overflow: hidden;
         }
 
         .sticker {
             width: 50px;
             height: 50px;
             cursor: pointer;
-        }
-
-        .canvas {
-            flex-grow: 1;
-            position: relative;
-            overflow: hidden;
         }
 
         .draggable {
@@ -95,27 +85,32 @@
         .home-button {
             position: absolute;
             top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 10px;
             font-size: 24px;
             color: white;
             text-decoration: none;
             font-family: 'Gamja Flower', cursive;
-            background-color: #444;
+            background-color: #ff69b4; /* Pink color */
             padding: 5px 10px;
             border-radius: 5px;
             z-index: 100;
         }
 
-        .title {
+        .camera-icon {
             position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 32px;
-            color: white;
-            font-family: 'Gamja Flower', cursive;
-            text-align: center;
+            top: 10px;
+            left: 120px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .bin {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 60px;
+            height: 60px;
         }
 
         .controls {
@@ -123,7 +118,7 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
+            display: none;
             gap: 20px;
             z-index: 10;
         }
@@ -142,9 +137,14 @@
     </style>
 </head>
 <body>
-    <a href="home.html" class="home-button">Home</a>
-    <div class="title">Sock Factory</div>
+    <!-- Audio Player -->
+    <audio id="background-music" autoplay loop>
+        <source src="music/Vibing Over Venus.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
+    <a href="home.html" class="home-button">Home</a>
+    <img src="images/camera.png" alt="Camera Icon" class="camera-icon" onclick="takeScreenshot()">
     <div class="main-container">
         <!-- Left Sidebar -->
         <div class="sidebar left-sidebar">
@@ -154,21 +154,21 @@
         </div>
 
         <!-- Canvas -->
-        <div class="canvas" id="canvas">
-            <img src="images/stockings.png" alt="Central Image" class="center-image">
-        </div>
+        <div class="canvas" id="canvas"></div>
 
         <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
-            <img src="images/stockings (1).png" alt="Stockings 1" class="sticker">
-            <img src="images/stockings (2).png" alt="Stockings 2" class="sticker">
-            <img src="images/stockings (3).png" alt="Stockings 3" class="sticker">
-            <img src="images/stockings (4).png" alt="Stockings 4" class="sticker">
-            <img src="images/stockings (5).png" alt="Stockings 5" class="sticker">
+            <img src="images/stockings (1).png" alt="Stockings 1" class="sticker" onclick="cloneSticker('images/stockings (1).png')">
+            <img src="images/stockings (2).png" alt="Stockings 2" class="sticker" onclick="cloneSticker('images/stockings (2).png')">
+            <img src="images/stockings (3).png" alt="Stockings 3" class="sticker" onclick="cloneSticker('images/stockings (3).png')">
+            <img src="images/stockings (4).png" alt="Stockings 4" class="sticker" onclick="cloneSticker('images/stockings (4).png')">
+            <img src="images/stockings (5).png" alt="Stockings 5" class="sticker" onclick="cloneSticker('images/stockings (5).png')">
         </div>
     </div>
 
-    <div class="controls">
+    <img src="images/bin.png" alt="Bin" class="bin" id="bin">
+
+    <div class="controls" id="controls">
         <div class="slider">
             <label for="size-slider">Size</label>
             <input id="size-slider" type="range" min="20" max="200" value="50">
@@ -179,78 +179,17 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        const canvas = document.getElementById("canvas");
-        const sizeSlider = document.getElementById("size-slider");
-        const rotationSlider = document.getElementById("rotation-slider");
-        let selectedSticker = null;
+        // Your existing JavaScript logic for sticker interaction here...
 
-        function cloneSticker(src) {
-            const sticker = document.createElement("img");
-            sticker.src = src;
-            sticker.className = "draggable";
-            sticker.style.position = "absolute";
-            sticker.style.width = "50px";
-            sticker.style.left = "50%";
-            sticker.style.top = "50%";
-            sticker.style.transform = "translate(-50%, -50%)";
-            sticker.addEventListener("mousedown", () => selectSticker(sticker));
-            makeDraggable(sticker);
-            canvas.appendChild(sticker);
-            selectSticker(sticker);
-        }
-
-        function selectSticker(sticker) {
-            if (selectedSticker) {
-                selectedSticker.classList.remove("selected");
-            }
-            selectedSticker = sticker;
-            selectedSticker.classList.add("selected");
-            sizeSlider.value = selectedSticker.offsetWidth;
-            rotationSlider.value = getRotation(selectedSticker);
-        }
-
-        sizeSlider.addEventListener("input", () => {
-            if (selectedSticker) {
-                selectedSticker.style.width = sizeSlider.value + "px";
-            }
-        });
-
-        rotationSlider.addEventListener("input", () => {
-            if (selectedSticker) {
-                selectedSticker.style.transform = `translate(-50%, -50%) rotate(${rotationSlider.value}deg)`;
-            }
-        });
-
-        function makeDraggable(sticker) {
-            let offsetX, offsetY;
-
-            sticker.addEventListener("mousedown", (event) => {
-                offsetX = event.clientX - sticker.offsetLeft;
-                offsetY = event.clientY - sticker.offsetTop;
-
-                const moveSticker = (e) => {
-                    sticker.style.left = `${e.clientX - offsetX}px`;
-                    sticker.style.top = `${e.clientY - offsetY}px`;
-                };
-
-                const stopDrag = () => {
-                    document.removeEventListener("mousemove", moveSticker);
-                    document.removeEventListener("mouseup", stopDrag);
-                };
-
-                document.addEventListener("mousemove", moveSticker);
-                document.addEventListener("mouseup", stopDrag);
+        function takeScreenshot() {
+            html2canvas(document.getElementById('canvas')).then((canvas) => {
+                const link = document.createElement('a');
+                link.download = 'canvas-screenshot.png';
+                link.href = canvas.toDataURL();
+                link.click();
             });
-        }
-
-        function getRotation(element) {
-            const transform = window.getComputedStyle(element).transform;
-            if (transform === "none") return 0;
-            const values = transform.split("(")[1].split(")")[0].split(",");
-            const a = values[0];
-            const b = values[1];
-            return Math.round(Math.atan2(b, a) * (180 / Math.PI));
         }
     </script>
 </body>
