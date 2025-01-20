@@ -15,7 +15,7 @@
             font-family: 'Gamja Flower', cursive;
             margin: 0;
             padding: 0;
-            background-color: #000000; /* Black background */
+            background-color: #000000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -85,15 +85,12 @@
         .draggable {
             position: absolute;
             cursor: move;
-            z-index: 2; /* Stickers from left sidebar are above */
+            z-index: 2;
         }
 
         .static-sticker {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1; /* Stickers from right sidebar are below */
+            z-index: 1;
         }
 
         .selected {
@@ -156,9 +153,9 @@
     <div class="main-container">
         <!-- Left Sidebar -->
         <div class="sidebar left-sidebar">
-            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="addSticker('left', this.src)">
-            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="addSticker('left', this.src)">
-            <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Lines Sticker" class="sticker" onclick="addSticker('left', this.src)">
+            <img src="images/heart.png" alt="Heart Sticker" class="sticker" onclick="addStickerToCanvas('images/heart.png')">
+            <img src="images/new-moon.png" alt="New Moon Sticker" class="sticker" onclick="addStickerToCanvas('images/new-moon.png')">
+            <img src="images/zigzag-lines-in-side-view-position.png" alt="Zigzag Sticker" class="sticker" onclick="addStickerToCanvas('images/zigzag-lines-in-side-view-position.png')">
         </div>
 
         <!-- Canvas -->
@@ -168,15 +165,14 @@
 
         <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
-            <img src="images/stockings (1).png" alt="Stockings 1 Sticker" class="sticker" onclick="addSticker('right', this.src)">
-            <img src="images/stockings (2).png" alt="Stockings 2 Sticker" class="sticker" onclick="addSticker('right', this.src)">
-            <img src="images/stockings (3).png" alt="Stockings 3 Sticker" class="sticker" onclick="addSticker('right', this.src)">
-            <img src="images/stockings (4).png" alt="Stockings 4 Sticker" class="sticker" onclick="addSticker('right', this.src)">
-            <img src="images/stockings (5).png" alt="Stockings 5 Sticker" class="sticker" onclick="addSticker('right', this.src)">
+            <img src="images/stockings (1).png" alt="Stockings 1" class="sticker">
+            <img src="images/stockings (2).png" alt="Stockings 2" class="sticker">
+            <img src="images/stockings (3).png" alt="Stockings 3" class="sticker">
+            <img src="images/stockings (4).png" alt="Stockings 4" class="sticker">
+            <img src="images/stockings (5).png" alt="Stockings 5" class="sticker">
         </div>
     </div>
 
-    <!-- Controls -->
     <div class="controls">
         <div class="slider">
             <label for="size-slider">Size</label>
@@ -194,26 +190,19 @@
         const rotationSlider = document.getElementById("rotation-slider");
         let selectedSticker = null;
 
-        function addSticker(side, src) {
+        function addStickerToCanvas(src) {
             const sticker = document.createElement("img");
             sticker.src = src;
-
-            if (side === "left") {
-                sticker.className = "draggable";
-                sticker.style.left = "50%";
-                sticker.style.top = "50%";
-                sticker.style.transform = "translate(-50%, -50%)";
-                sticker.style.position = "absolute";
-                sticker.style.cursor = "move";
-                sticker.style.zIndex = "2"; // Left sidebar stickers on top
-                sticker.addEventListener("mousedown", () => selectSticker(sticker));
-                makeDraggable(sticker);
-                selectSticker(sticker);
-            } else if (side === "right") {
-                sticker.className = "static-sticker";
-            }
-
+            sticker.className = "draggable";
+            sticker.style.width = "50px";
+            sticker.style.position = "absolute";
+            sticker.style.top = "50%";
+            sticker.style.left = "50%";
+            sticker.style.transform = "translate(-50%, -50%)";
+            sticker.addEventListener("mousedown", () => selectSticker(sticker));
+            makeDraggable(sticker);
             canvas.appendChild(sticker);
+            selectSticker(sticker);
         }
 
         function selectSticker(sticker) {
@@ -221,9 +210,9 @@
                 selectedSticker.classList.remove("selected");
             }
             selectedSticker = sticker;
-            selectedSticker.classList.add("selected");
-            sizeSlider.value = selectedSticker.offsetWidth;
-            rotationSlider.value = getRotation(selectedSticker);
+            sticker.classList.add("selected");
+            sizeSlider.value = sticker.offsetWidth;
+            rotationSlider.value = getRotation(sticker);
         }
 
         sizeSlider.addEventListener("input", () => {
@@ -238,43 +227,35 @@
             }
         });
 
-        function getRotation(element) {
-            const transform = window.getComputedStyle(element).transform;
-            if (transform === "none") return 0;
-            const matrix = transform.split(",");
-            const a = parseFloat(matrix[0].split("(")[1]);
-            const b = parseFloat(matrix[1]);
-            return Math.round(Math.atan2(b, a) * (180 / Math.PI));
-        }
-
         function makeDraggable(sticker) {
             let offsetX, offsetY;
-
             sticker.addEventListener("mousedown", (event) => {
                 offsetX = event.clientX - sticker.offsetLeft;
                 offsetY = event.clientY - sticker.offsetTop;
 
-                const moveSticker = (moveEvent) => {
-                    sticker.style.left = `${moveEvent.clientX - offsetX}px`;
-                    sticker.style.top = `${moveEvent.clientY - offsetY}px`;
+                const moveSticker = (e) => {
+                    sticker.style.left = `${e.clientX - offsetX}px`;
+                    sticker.style.top = `${e.clientY - offsetY}px`;
                 };
 
-                const stopDrag = () => {
+                const stopDragging = () => {
                     document.removeEventListener("mousemove", moveSticker);
-                    document.removeEventListener("mouseup", stopDrag);
+                    document.removeEventListener("mouseup", stopDragging);
                 };
 
                 document.addEventListener("mousemove", moveSticker);
-                document.addEventListener("mouseup", stopDrag);
+                document.addEventListener("mouseup", stopDragging);
             });
         }
 
-        canvas.addEventListener("click", (event) => {
-            if (event.target === canvas && selectedSticker) {
-                selectedSticker.classList.remove("selected");
-                selectedSticker = null;
-            }
-        });
+        function getRotation(element) {
+            const transform = window.getComputedStyle(element).transform;
+            if (transform === "none") return 0;
+            const values = transform.split("(")[1].split(")")[0].split(",");
+            const a = values[0];
+            const b = values[1];
+            return Math.round(Math.atan2(b, a) * (180 / Math.PI));
+        }
     </script>
 </body>
 </html>
