@@ -55,7 +55,7 @@
         }
 
         .sock {
-            width: 80px; /* Larger size for right sidebar socks */
+            width: 100px; /* Bigger size for right sidebar socks */
             cursor: pointer;
         }
 
@@ -68,11 +68,11 @@
 
         .draggable {
             position: absolute;
-            cursor: move;
+            cursor: grab;
         }
 
         .selected {
-            outline: 2px dashed #ff69b4;
+            outline: 2px dashed #32CD32;
         }
 
         /* Controls */
@@ -102,33 +102,48 @@
         /* Bin */
         .bin {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            width: 60px;
-            height: 60px;
+            top: 10px;
+            left: 45%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
         }
 
         /* Home Button and Camera */
         .home-button {
             position: absolute;
             top: 10px;
-            left: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 5px 15px;
-            background-color: #ff69b4;
+            background-color: #32CD32; /* Green color */
             color: white;
             text-decoration: none;
             border-radius: 5px;
             font-size: 18px;
             font-family: 'Gamja Flower', cursive;
+            z-index: 10;
         }
 
         .camera-icon {
             position: absolute;
             top: 10px;
-            left: 140px;
+            left: calc(50% + 100px);
             width: 30px;
             height: 30px;
             cursor: pointer;
+        }
+
+        .title {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Gamja Flower', cursive;
+            font-size: 24px;
+            color: black;
+            text-align: center;
+            z-index: 10;
         }
     </style>
 </head>
@@ -139,9 +154,11 @@
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Home and Camera -->
+    <!-- Top Controls -->
+    <img src="images/bin.png" alt="Bin" class="bin" id="bin">
     <a href="home.html" class="home-button">Home</a>
     <img src="images/camera.png" alt="Camera Icon" class="camera-icon" onclick="takeScreenshot()">
+    <div class="title">Sock Factory</div>
 
     <!-- Main Container -->
     <div class="main-container">
@@ -164,9 +181,6 @@
             <img src="images/stockings (5).png" class="sock" onclick="cloneSticker('images/stockings (5).png', false)">
         </div>
     </div>
-
-    <!-- Bin -->
-    <img src="images/bin.png" alt="Bin" class="bin" id="bin">
 
     <!-- Controls -->
     <div class="controls" id="controls">
@@ -194,7 +208,7 @@
             sticker.src = src;
             sticker.className = isAdjustable ? "draggable" : "";
             sticker.style.position = "absolute";
-            sticker.style.width = isAdjustable ? "50px" : "80px";
+            sticker.style.width = isAdjustable ? "70px" : "150px"; // Left vs Right
             sticker.style.left = "50%";
             sticker.style.top = "50%";
             sticker.style.transform = "translate(-50%, -50%)";
@@ -206,7 +220,6 @@
             }
         }
 
-        // Select and manipulate stickers
         function selectSticker(sticker) {
             if (selectedSticker) {
                 selectedSticker.classList.remove("selected");
@@ -219,7 +232,6 @@
             rotationSlider.value = getRotation(sticker);
         }
 
-        // Update size and rotation
         sizeSlider.addEventListener("input", () => {
             if (selectedSticker) {
                 selectedSticker.style.width = sizeSlider.value + "px";
@@ -232,10 +244,8 @@
             }
         });
 
-        // Drag-and-drop functionality
         function makeDraggable(element) {
             let offsetX, offsetY;
-
             element.addEventListener("mousedown", (event) => {
                 offsetX = event.clientX - element.offsetLeft;
                 offsetY = event.clientY - element.offsetTop;
@@ -249,7 +259,6 @@
                     document.removeEventListener("mousemove", moveElement);
                     document.removeEventListener("mouseup", stopMove);
 
-                    // Check if dragged over bin
                     if (isOverBin(element)) {
                         canvas.removeChild(element);
                     }
@@ -260,7 +269,6 @@
             });
         }
 
-        // Helper to detect if over bin
         function isOverBin(element) {
             const binRect = bin.getBoundingClientRect();
             const elementRect = element.getBoundingClientRect();
@@ -272,7 +280,6 @@
             );
         }
 
-        // Extract rotation from transform
         function getRotation(element) {
             const transform = window.getComputedStyle(element).transform;
             if (transform === "none") return 0;
