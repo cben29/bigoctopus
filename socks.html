@@ -54,6 +54,11 @@
             cursor: pointer;
         }
 
+        .sock {
+            width: 80px; /* Larger size for right sidebar socks */
+            cursor: pointer;
+        }
+
         /* Canvas */
         .canvas {
             flex-grow: 1;
@@ -152,11 +157,11 @@
 
         <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
-            <img src="images/stockings (1).png" class="sticker" onclick="cloneSticker('images/stockings (1).png', false)">
-            <img src="images/stockings (2).png" class="sticker" onclick="cloneSticker('images/stockings (2).png', false)">
-            <img src="images/stockings (3).png" class="sticker" onclick="cloneSticker('images/stockings (3).png', false)">
-            <img src="images/stockings (4).png" class="sticker" onclick="cloneSticker('images/stockings (4).png', false)">
-            <img src="images/stockings (5).png" class="sticker" onclick="cloneSticker('images/stockings (5).png', false)">
+            <img src="images/stockings (1).png" class="sock" onclick="cloneSticker('images/stockings (1).png', false)">
+            <img src="images/stockings (2).png" class="sock" onclick="cloneSticker('images/stockings (2).png', false)">
+            <img src="images/stockings (3).png" class="sock" onclick="cloneSticker('images/stockings (3).png', false)">
+            <img src="images/stockings (4).png" class="sock" onclick="cloneSticker('images/stockings (4).png', false)">
+            <img src="images/stockings (5).png" class="sock" onclick="cloneSticker('images/stockings (5).png', false)">
         </div>
     </div>
 
@@ -183,13 +188,13 @@
         const controls = document.getElementById("controls");
         let selectedSticker = null;
 
-        // Function to clone stickers
+        // Clone stickers onto the canvas
         function cloneSticker(src, isAdjustable) {
             const sticker = document.createElement("img");
             sticker.src = src;
-            sticker.className = "draggable";
+            sticker.className = isAdjustable ? "draggable" : "";
             sticker.style.position = "absolute";
-            sticker.style.width = "50px";
+            sticker.style.width = isAdjustable ? "50px" : "80px";
             sticker.style.left = "50%";
             sticker.style.top = "50%";
             sticker.style.transform = "translate(-50%, -50%)";
@@ -201,7 +206,81 @@
             }
         }
 
-        // More functions for selection, deletion, and interaction here...
+        // Select and manipulate stickers
+        function selectSticker(sticker) {
+            if (selectedSticker) {
+                selectedSticker.classList.remove("selected");
+            }
+            selectedSticker = sticker;
+            sticker.classList.add("selected");
+            controls.style.display = "flex";
+
+            sizeSlider.value = sticker.offsetWidth;
+            rotationSlider.value = getRotation(sticker);
+        }
+
+        // Update size and rotation
+        sizeSlider.addEventListener("input", () => {
+            if (selectedSticker) {
+                selectedSticker.style.width = sizeSlider.value + "px";
+            }
+        });
+
+        rotationSlider.addEventListener("input", () => {
+            if (selectedSticker) {
+                selectedSticker.style.transform = `translate(-50%, -50%) rotate(${rotationSlider.value}deg)`;
+            }
+        });
+
+        // Drag-and-drop functionality
+        function makeDraggable(element) {
+            let offsetX, offsetY;
+
+            element.addEventListener("mousedown", (event) => {
+                offsetX = event.clientX - element.offsetLeft;
+                offsetY = event.clientY - element.offsetTop;
+
+                const moveElement = (e) => {
+                    element.style.left = `${e.clientX - offsetX}px`;
+                    element.style.top = `${e.clientY - offsetY}px`;
+                };
+
+                const stopMove = () => {
+                    document.removeEventListener("mousemove", moveElement);
+                    document.removeEventListener("mouseup", stopMove);
+
+                    // Check if dragged over bin
+                    if (isOverBin(element)) {
+                        canvas.removeChild(element);
+                    }
+                };
+
+                document.addEventListener("mousemove", moveElement);
+                document.addEventListener("mouseup", stopMove);
+            });
+        }
+
+        // Helper to detect if over bin
+        function isOverBin(element) {
+            const binRect = bin.getBoundingClientRect();
+            const elementRect = element.getBoundingClientRect();
+            return !(
+                elementRect.right < binRect.left ||
+                elementRect.left > binRect.right ||
+                elementRect.bottom < binRect.top ||
+                elementRect.top > binRect.bottom
+            );
+        }
+
+        // Extract rotation from transform
+        function getRotation(element) {
+            const transform = window.getComputedStyle(element).transform;
+            if (transform === "none") return 0;
+            const values = transform.split("(")[1].split(")")[0].split(",");
+            const a = values[0];
+            const b = values[1];
+            return Math.round(Math.atan2(b, a) * (180 / Math.PI));
+        }
     </script>
 </body>
 </html>
