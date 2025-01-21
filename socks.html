@@ -55,7 +55,7 @@
         }
 
         .sock {
-            width: 100px; /* Bigger size for right sidebar socks */
+            width: 200px; /* Much larger size for right sidebar socks */
             cursor: pointer;
         }
 
@@ -102,8 +102,8 @@
         /* Bin */
         .bin {
             position: absolute;
-            top: 10px;
-            left: 45%;
+            bottom: 15px;
+            left: 15px;
             width: 40px;
             height: 40px;
             cursor: pointer;
@@ -208,7 +208,7 @@
             sticker.src = src;
             sticker.className = isAdjustable ? "draggable" : "";
             sticker.style.position = "absolute";
-            sticker.style.width = isAdjustable ? "70px" : "150px"; // Left vs Right
+            sticker.style.width = isAdjustable ? "70px" : "200px"; // Left vs Right
             sticker.style.left = "50%";
             sticker.style.top = "50%";
             sticker.style.transform = "translate(-50%, -50%)";
