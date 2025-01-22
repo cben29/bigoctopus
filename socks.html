@@ -50,12 +50,7 @@
         }
 
         .sticker {
-            width: 50px;
-            cursor: pointer;
-        }
-
-        .sock {
-            width: 200px; /* Much larger size for right sidebar socks */
+            width: 50px; /* Small size for sidebar stickers */
             cursor: pointer;
         }
 
@@ -174,11 +169,11 @@
 
         <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
-            <img src="images/stockings (1).png" class="sock" onclick="cloneSticker('images/stockings (1).png', false)">
-            <img src="images/stockings (2).png" class="sock" onclick="cloneSticker('images/stockings (2).png', false)">
-            <img src="images/stockings (3).png" class="sock" onclick="cloneSticker('images/stockings (3).png', false)">
-            <img src="images/stockings (4).png" class="sock" onclick="cloneSticker('images/stockings (4).png', false)">
-            <img src="images/stockings (5).png" class="sock" onclick="cloneSticker('images/stockings (5).png', false)">
+            <img src="images/stockings (1).png" class="sticker" onclick="cloneSticker('images/stockings (1).png', false)">
+            <img src="images/stockings (2).png" class="sticker" onclick="cloneSticker('images/stockings (2).png', false)">
+            <img src="images/stockings (3).png" class="sticker" onclick="cloneSticker('images/stockings (3).png', false)">
+            <img src="images/stockings (4).png" class="sticker" onclick="cloneSticker('images/stockings (4).png', false)">
+            <img src="images/stockings (5).png" class="sticker" onclick="cloneSticker('images/stockings (5).png', false)">
         </div>
     </div>
 
@@ -208,7 +203,7 @@
             sticker.src = src;
             sticker.className = isAdjustable ? "draggable" : "";
             sticker.style.position = "absolute";
-            sticker.style.width = isAdjustable ? "70px" : "200px"; // Left vs Right
+            sticker.style.width = isAdjustable ? "70px" : "300px"; // Right sidebar stickers cloned larger
             sticker.style.left = "50%";
             sticker.style.top = "50%";
             sticker.style.transform = "translate(-50%, -50%)";
@@ -284,9 +279,7 @@
             const transform = window.getComputedStyle(element).transform;
             if (transform === "none") return 0;
             const values = transform.split("(")[1].split(")")[0].split(",");
-            const a = values[0];
-            const b = values[1];
-            return Math.round(Math.atan2(b, a) * (180 / Math.PI));
+            return Math.round(Math.atan2(values[1], values[0]) * (180 / Math.PI));
         }
     </script>
 </body>
