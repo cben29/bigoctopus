@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
     <style>
-        /* Global Styles */
         body {
             margin: 0;
             font-family: 'Gamja Flower', cursive;
@@ -32,25 +31,17 @@
 
         /* Sidebars */
         .sidebar {
-            width: 120px;
+            width: 150px;
             background-color: #f5f5f5;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             padding: 10px;
         }
 
-        .left-sidebar {
-            border-radius: 15px 0 0 15px;
-        }
-
-        .right-sidebar {
-            border-radius: 0 15px 15px 0;
-        }
-
         .sticker {
-            width: 50px; /* Small size for sidebar stickers */
+            width: 100px; /* Increased size for sidebar stickers */
             cursor: pointer;
         }
 
@@ -203,7 +194,7 @@
             sticker.src = src;
             sticker.className = isAdjustable ? "draggable" : "";
             sticker.style.position = "absolute";
-            sticker.style.width = isAdjustable ? "70px" : "300px"; // Right sidebar stickers cloned larger
+            sticker.style.width = isAdjustable ? "100px" : "300px"; // Right sidebar stickers cloned larger
             sticker.style.left = "50%";
             sticker.style.top = "50%";
             sticker.style.transform = "translate(-50%, -50%)";
@@ -215,35 +206,11 @@
             }
         }
 
-        function selectSticker(sticker) {
-            if (selectedSticker) {
-                selectedSticker.classList.remove("selected");
-            }
-            selectedSticker = sticker;
-            sticker.classList.add("selected");
-            controls.style.display = "flex";
-
-            sizeSlider.value = sticker.offsetWidth;
-            rotationSlider.value = getRotation(sticker);
-        }
-
-        sizeSlider.addEventListener("input", () => {
-            if (selectedSticker) {
-                selectedSticker.style.width = sizeSlider.value + "px";
-            }
-        });
-
-        rotationSlider.addEventListener("input", () => {
-            if (selectedSticker) {
-                selectedSticker.style.transform = `translate(-50%, -50%) rotate(${rotationSlider.value}deg)`;
-            }
-        });
-
         function makeDraggable(element) {
             let offsetX, offsetY;
             element.addEventListener("mousedown", (event) => {
-                offsetX = event.clientX - element.offsetLeft;
-                offsetY = event.clientY - element.offsetTop;
+                offsetX = event.offsetX;
+                offsetY = event.offsetY;
 
                 const moveElement = (e) => {
                     element.style.left = `${e.clientX - offsetX}px`;
@@ -264,6 +231,15 @@
             });
         }
 
+        function takeScreenshot() {
+            html2canvas(canvas).then((canvasScreenshot) => {
+                const link = document.createElement("a");
+                link.download = "screenshot.png";
+                link.href = canvasScreenshot.toDataURL("image/png");
+                link.click();
+            });
+        }
+
         function isOverBin(element) {
             const binRect = bin.getBoundingClientRect();
             const elementRect = element.getBoundingClientRect();
@@ -274,13 +250,8 @@
                 elementRect.top > binRect.bottom
             );
         }
-
-        function getRotation(element) {
-            const transform = window.getComputedStyle(element).transform;
-            if (transform === "none") return 0;
-            const values = transform.split("(")[1].split(")")[0].split(",");
-            return Math.round(Math.atan2(values[1], values[0]) * (180 / Math.PI));
-        }
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
