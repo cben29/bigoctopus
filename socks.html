@@ -3,53 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigOctopus - Socks</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+    <title>Sock Factory</title>
+
+    <!-- Font Link -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap">
+
     <style>
         body {
-            margin: 0;
             font-family: 'Gamja Flower', cursive;
+            margin: 0;
             background-color: black;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
 
         .main-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90vh;
+            width: 90vw;
+            margin: auto;
             position: relative;
-            width: 90%;
-            height: 90%;
             background: white;
             border-radius: 15px;
-            display: flex;
             overflow: hidden;
         }
 
-        /* Sidebars */
+        /* Sidebar Styles */
         .sidebar {
-            width: 150px;
-            background-color: #f5f5f5;
+            background: #eaeaea;
+            padding: 10px;
+            border-radius: 15px;
             display: flex;
             flex-direction: column;
+            gap: 10px;
             align-items: center;
-            gap: 20px;
-            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .left-sidebar {
+            width: 120px;
+            height: calc(100% - 20px);
+            margin: 10px;
+        }
+
+        .right-sidebar {
+            width: 120px;
+            height: calc(100% - 20px);
+            margin: 10px;
         }
 
         .sticker {
-            width: 100px; /* Increased size for sidebar stickers */
+            width: 80px;
+            height: auto;
             cursor: pointer;
         }
 
-        /* Canvas */
+        /* Canvas Styles */
         .canvas {
             flex-grow: 1;
-            background-color: black;
             position: relative;
+            background-color: black;
+            border-radius: 15px;
+            overflow: hidden;
         }
 
         .draggable {
@@ -58,26 +74,61 @@
         }
 
         .selected {
-            outline: 2px dashed #32CD32;
+            outline: 2px dashed #888;
         }
 
-        /* Controls */
+        /* Header Styles */
+        .header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        .home-button {
+            font-size: 20px;
+            background-color: #93c572;
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .icon {
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            margin: 0 10px;
+        }
+
+        .title {
+            font-size: 24px;
+            margin-top: 10px;
+            color: black;
+            text-align: center;
+            font-family: 'Gamja Flower', cursive;
+        }
+
+        /* Controls (Sliders) */
         .controls {
             position: absolute;
-            bottom: 15px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            z-index: 10;
+            display: flex;
+            gap: 20px;
         }
 
         .slider {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 5px;
             color: white;
         }
 
@@ -88,83 +139,44 @@
         /* Bin */
         .bin {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-        }
-
-        /* Home Button and Camera */
-        .home-button {
-            position: absolute;
             top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 5px 15px;
-            background-color: #32CD32; /* Green color */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 18px;
-            font-family: 'Gamja Flower', cursive;
-            z-index: 10;
-        }
-
-        .camera-icon {
-            position: absolute;
-            top: 10px;
-            left: calc(50% + 100px);
-            width: 30px;
-            height: 30px;
+            left: 10px;
+            width: 50px;
+            height: auto;
             cursor: pointer;
-        }
-
-        .title {
-            position: absolute;
-            top: 45px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Gamja Flower', cursive;
-            font-size: 24px;
-            color: black;
-            text-align: center;
-            z-index: 10;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
-    <!-- Background Music -->
-    <audio id="background-music" autoplay loop>
-        <source src="music/Vibing Over Venus.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-
-    <!-- Top Controls -->
-    <img src="images/bin.png" alt="Bin" class="bin" id="bin">
-    <a href="home.html" class="home-button">Home</a>
-    <img src="images/camera.png" alt="Camera Icon" class="camera-icon" onclick="takeScreenshot()">
+    <!-- Header -->
+    <div class="header">
+        <img src="images/bin.png" class="icon bin" alt="Bin">
+        <a href="home.html" class="home-button">Home</a>
+        <img src="images/camera.png" class="icon camera" alt="Camera" onclick="takeScreenshot()">
+    </div>
     <div class="title">Sock Factory</div>
 
     <!-- Main Container -->
     <div class="main-container">
         <!-- Left Sidebar -->
         <div class="sidebar left-sidebar">
-            <img src="images/heart.png" class="sticker" onclick="cloneSticker('images/heart.png', true)">
-            <img src="images/new-moon.png" class="sticker" onclick="cloneSticker('images/new-moon.png', true)">
-            <img src="images/zigzag-lines-in-side-view-position.png" class="sticker" onclick="cloneSticker('images/zigzag-lines-in-side-view-position.png', true)">
+            <img src="images/heart.png" class="sticker" onclick="cloneSticker('images/heart.png', 'left')">
+            <img src="images/new-moon.png" class="sticker" onclick="cloneSticker('images/new-moon.png', 'left')">
+            <img src="images/zigzag-lines-in-side-view-position.png" class="sticker" onclick="cloneSticker('images/zigzag-lines-in-side-view-position.png', 'left')">
         </div>
 
         <!-- Canvas -->
-        <div class="canvas" id="canvas"></div>
+        <div class="canvas" id="canvas">
+        </div>
 
         <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
-            <img src="images/stockings (1).png" class="sticker" onclick="cloneSticker('images/stockings (1).png', false)">
-            <img src="images/stockings (2).png" class="sticker" onclick="cloneSticker('images/stockings (2).png', false)">
-            <img src="images/stockings (3).png" class="sticker" onclick="cloneSticker('images/stockings (3).png', false)">
-            <img src="images/stockings (4).png" class="sticker" onclick="cloneSticker('images/stockings (4).png', false)">
-            <img src="images/stockings (5).png" class="sticker" onclick="cloneSticker('images/stockings (5).png', false)">
+            <img src="images/stockings (1).png" class="sticker" onclick="cloneSticker('images/stockings (1).png', 'right')">
+            <img src="images/stockings (2).png" class="sticker" onclick="cloneSticker('images/stockings (2).png', 'right')">
+            <img src="images/stockings (3).png" class="sticker" onclick="cloneSticker('images/stockings (3).png', 'right')">
+            <img src="images/stockings (4).png" class="sticker" onclick="cloneSticker('images/stockings (4).png', 'right')">
+            <img src="images/stockings (5).png" class="sticker" onclick="cloneSticker('images/stockings (5).png', 'right')">
         </div>
     </div>
 
@@ -180,78 +192,89 @@
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
-        const canvas = document.getElementById("canvas");
-        const bin = document.getElementById("bin");
-        const sizeSlider = document.getElementById("size-slider");
-        const rotationSlider = document.getElementById("rotation-slider");
-        const controls = document.getElementById("controls");
+        const canvas = document.getElementById('canvas');
+        const sizeSlider = document.getElementById('size-slider');
+        const rotationSlider = document.getElementById('rotation-slider');
+        const controls = document.getElementById('controls');
         let selectedSticker = null;
 
-        // Clone stickers onto the canvas
-        function cloneSticker(src, isAdjustable) {
-            const sticker = document.createElement("img");
+        function cloneSticker(src, type) {
+            const sticker = document.createElement('img');
             sticker.src = src;
-            sticker.className = isAdjustable ? "draggable" : "";
-            sticker.style.position = "absolute";
-            sticker.style.width = isAdjustable ? "100px" : "300px"; // Right sidebar stickers cloned larger
-            sticker.style.left = "50%";
-            sticker.style.top = "50%";
-            sticker.style.transform = "translate(-50%, -50%)";
+            sticker.className = 'draggable';
+            sticker.style.width = type === 'right' ? '200px' : '80px';
+            sticker.style.left = '50%';
+            sticker.style.top = '50%';
+            sticker.style.transform = 'translate(-50%, -50%)';
+            sticker.addEventListener('mousedown', () => selectSticker(sticker));
+            makeDraggable(sticker);
             canvas.appendChild(sticker);
-
-            if (isAdjustable) {
-                sticker.addEventListener("click", () => selectSticker(sticker));
-                makeDraggable(sticker);
-            }
+            selectSticker(sticker);
         }
 
-        function makeDraggable(element) {
+        function selectSticker(sticker) {
+            if (selectedSticker) {
+                selectedSticker.classList.remove('selected');
+            }
+            selectedSticker = sticker;
+            selectedSticker.classList.add('selected');
+            sizeSlider.value = selectedSticker.offsetWidth;
+            rotationSlider.value = getRotation(selectedSticker);
+            controls.style.display = 'flex';
+        }
+
+        sizeSlider.addEventListener('input', () => {
+            if (selectedSticker) {
+                selectedSticker.style.width = `${sizeSlider.value}px`;
+            }
+        });
+
+        rotationSlider.addEventListener('input', () => {
+            if (selectedSticker) {
+                selectedSticker.style.transform = `translate(-50%, -50%) rotate(${rotationSlider.value}deg)`;
+            }
+        });
+
+        function makeDraggable(sticker) {
             let offsetX, offsetY;
-            element.addEventListener("mousedown", (event) => {
-                offsetX = event.offsetX;
-                offsetY = event.offsetY;
+            sticker.addEventListener('mousedown', (event) => {
+                offsetX = event.clientX - sticker.offsetLeft;
+                offsetY = event.clientY - sticker.offsetTop;
 
-                const moveElement = (e) => {
-                    element.style.left = `${e.clientX - offsetX}px`;
-                    element.style.top = `${e.clientY - offsetY}px`;
+                const moveSticker = (e) => {
+                    sticker.style.left = `${e.clientX - offsetX}px`;
+                    sticker.style.top = `${e.clientY - offsetY}px`;
                 };
 
-                const stopMove = () => {
-                    document.removeEventListener("mousemove", moveElement);
-                    document.removeEventListener("mouseup", stopMove);
-
-                    if (isOverBin(element)) {
-                        canvas.removeChild(element);
-                    }
+                const stopDrag = () => {
+                    document.removeEventListener('mousemove', moveSticker);
+                    document.removeEventListener('mouseup', stopDrag);
                 };
 
-                document.addEventListener("mousemove", moveElement);
-                document.addEventListener("mouseup", stopMove);
+                document.addEventListener('mousemove', moveSticker);
+                document.addEventListener('mouseup', stopDrag);
             });
+        }
+
+        function getRotation(element) {
+            const transform = window.getComputedStyle(element).transform;
+            if (transform === 'none') return 0;
+            const values = transform.split('(')[1].split(')')[0].split(',');
+            const a = values[0];
+            const b = values[1];
+            return Math.round(Math.atan2(b, a) * (180 / Math.PI));
         }
 
         function takeScreenshot() {
-            html2canvas(canvas).then((canvasScreenshot) => {
-                const link = document.createElement("a");
-                link.download = "screenshot.png";
-                link.href = canvasScreenshot.toDataURL("image/png");
+            html2canvas(canvas).then(canvasScreenshot => {
+                const link = document.createElement('a');
+                link.download = 'sock-factory.png';
+                link.href = canvasScreenshot.toDataURL();
                 link.click();
             });
         }
-
-        function isOverBin(element) {
-            const binRect = bin.getBoundingClientRect();
-            const elementRect = element.getBoundingClientRect();
-            return !(
-                elementRect.right < binRect.left ||
-                elementRect.left > binRect.right ||
-                elementRect.bottom < binRect.top ||
-                elementRect.top > binRect.bottom
-            );
-        }
     </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
