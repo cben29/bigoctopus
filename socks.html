@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sock Factory</title>
 
-    <!-- Font Link -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap">
 
     <style>
@@ -29,7 +28,6 @@
             overflow: hidden;
         }
 
-        /* Sidebar Styles */
         .sidebar {
             background: #eaeaea;
             padding: 10px;
@@ -59,7 +57,6 @@
             cursor: pointer;
         }
 
-        /* Canvas Styles */
         .canvas {
             flex-grow: 1;
             position: relative;
@@ -77,7 +74,6 @@
             outline: 2px dashed #888;
         }
 
-        /* Header Styles */
         .header {
             position: absolute;
             top: 0;
@@ -114,7 +110,6 @@
             font-family: 'Gamja Flower', cursive;
         }
 
-        /* Controls (Sliders) */
         .controls {
             position: absolute;
             bottom: 20px;
@@ -136,7 +131,6 @@
             width: 200px;
         }
 
-        /* Bin */
         .bin {
             position: absolute;
             top: 10px;
@@ -149,7 +143,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <img src="images/bin.png" class="icon bin" alt="Bin">
         <a href="home.html" class="home-button">Home</a>
@@ -157,20 +150,16 @@
     </div>
     <div class="title">Sock Factory</div>
 
-    <!-- Main Container -->
     <div class="main-container">
-        <!-- Left Sidebar -->
         <div class="sidebar left-sidebar">
             <img src="images/heart.png" class="sticker" onclick="cloneSticker('images/heart.png', 'left')">
             <img src="images/new-moon.png" class="sticker" onclick="cloneSticker('images/new-moon.png', 'left')">
             <img src="images/zigzag-lines-in-side-view-position.png" class="sticker" onclick="cloneSticker('images/zigzag-lines-in-side-view-position.png', 'left')">
         </div>
 
-        <!-- Canvas -->
         <div class="canvas" id="canvas">
         </div>
 
-        <!-- Right Sidebar -->
         <div class="sidebar right-sidebar">
             <img src="images/stockings (1).png" class="sticker" onclick="cloneSticker('images/stockings (1).png', 'right')">
             <img src="images/stockings (2).png" class="sticker" onclick="cloneSticker('images/stockings (2).png', 'right')">
@@ -180,7 +169,6 @@
         </div>
     </div>
 
-    <!-- Controls -->
     <div class="controls" id="controls">
         <div class="slider">
             <label for="size-slider">Size</label>
@@ -192,7 +180,6 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
     <script>
         const canvas = document.getElementById('canvas');
         const sizeSlider = document.getElementById('size-slider');
@@ -276,5 +263,6 @@
             });
         }
     </script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </body>
 </html>
